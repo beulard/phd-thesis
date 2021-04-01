@@ -1,0 +1,108 @@
+\documentclass[11pt, a4paper, twoside]{report}
+\usepackage{blindtext}
+\usepackage[margin=2cm]{geometry}
+\usepackage{subfig}
+\usepackage[hyperref]{xcolor}
+\usepackage{setspace}
+\usepackage{mathpazo}
+\usepackage{graphicx}
+\linespread{1.5}
+
+% Biblatex
+\usepackage[sorting=none]{biblatex}
+\bibliography{bibliography}
+
+% Hyperlinks
+\definecolor{blue1}{RGB}{50, 142, 237}
+\definecolor{red1}{RGB}{239, 83, 138}
+\definecolor{orange1}{RGB}{236,78,32}
+\usepackage[colorlinks=true, allcolors=blue1]{hyperref}
+
+\usepackage{amsmath}
+
+% Acronyms
+\usepackage[acronym,nonumberlist]{glossaries}
+\renewcommand*{\glstextformat}[1]{\textcolor{black}{#1}}
+%\makeglossaries
+\newacronym{COMET}{COMET}{Coherent Muon-to-Electron Conversion}
+
+% Path of figures for each chapter
+\graphicspath{{introduction/}{chapter2/}{conclusion/}}
+
+%
+\newcommand{\diff}[2]{\frac{\textrm{d}{#1}}{\textrm{d}{#2}}}
+\newcommand{\COMET}{{\sc comet}}
+
+% If table of contents goes too deep, we can limit depth.
+%\setcounter{tocdepth}{0}
+
+% To speed up compilation, we can choose to include only one section
+%\includeonly{introduction}
+
+% Color scheme: 
+%https://coolors.co/0081a7-00afb9-fdfcdc-fed9b7-f07167
+
+\begin{document}
+
+% Title page
+\includegraphics[width=0.4\textwidth]{IMP_ML_1CS_4CP.eps}
+\vfill
+\begin{center}
+    
+    {\huge Thesis Title}
+    
+    \rule{7cm}{1pt}
+    \vspace{2cm}
+    
+    Matthias Dubouchet\\
+    2022
+    \vspace{2cm}
+    
+    Department of High Energy Physics
+    
+    Imperial College London
+    \vspace{2cm}
+    
+    Submitted in partial fulfilment of the requirements for degree of PhD
+    
+\end{center}
+
+\vfill
+\clearpage
+
+\tableofcontents
+\listoffigures
+\listoftables
+\printglossary[type=\acronymtype]
+
+\chapter*{Abstract}
+
+300 words
+
+\blindtext
+
+\chapter*{Statement of Originality}
+\blindtext
+
+\chapter*{Copyright Statement}
+
+\include{introduction}
+
+\include{chapter2}
+
+\include{Conclusion}
+
+
+A citation \cite{butter_how_2019}.
+
+Another citation \cite{butter_how_2019}.
+
+\appendix
+\chapter{First one}
+\section{Hi}
+\chapter{Second one}
+\section{Sup}
+
+\printbibliography
+
+\end{document}
