@@ -1,10 +1,12 @@
-\documentclass[11pt, a4paper, twoside]{report}
+\documentclass[12pt, a4paper, twoside]{report}
+\usepackage[utf8]{inputenc}
 \usepackage{blindtext}
 \usepackage[margin=2cm]{geometry}
 \usepackage{subfig}
 \usepackage[hyperref]{xcolor}
 \usepackage{setspace}
-\usepackage{mathpazo}
+\usepackage{newpxtext}
+\usepackage{newpxmath}
 \usepackage{graphicx}
 \linespread{1.5}
 
@@ -17,8 +19,8 @@
 \definecolor{red1}{RGB}{239, 83, 138}
 \definecolor{orange1}{RGB}{236,78,32}
 \usepackage[colorlinks=true, allcolors=blue1]{hyperref}
-
 \usepackage{amsmath}
+\usepackage{marginnote}
 
 % Acronyms
 \usepackage[acronym,nonumberlist]{glossaries}
@@ -36,15 +38,13 @@
 % If table of contents goes too deep, we can limit depth.
 %\setcounter{tocdepth}{0}
 
-% To speed up compilation, we can choose to include only one section
-%\includeonly{introduction}
-
 % Color scheme: 
 %https://coolors.co/0081a7-00afb9-fdfcdc-fed9b7-f07167
 
 \begin{document}
 
 % Title page
+\thispagestyle{empty}
 \includegraphics[width=0.4\textwidth]{IMP_ML_1CS_4CP.eps}
 \vfill
 \begin{center}
@@ -54,50 +54,53 @@
     \rule{7cm}{1pt}
     \vspace{2cm}
     
-    Matthias Dubouchet\\
-    2022
-    \vspace{2cm}
+    {\Large Matthias Dubouchet}
+    \vspace{1cm}
     
-    Department of High Energy Physics
+    {\Large Department of High Energy Physics
     
-    Imperial College London
-    \vspace{2cm}
+    Imperial College London}
+    \vspace{3cm}
     
-    Submitted in partial fulfilment of the requirements for degree of PhD
+    {\large Submitted in partial fulfilment of the requirements\\for the degree of Doctor of Philosophy}
     
 \end{center}
 
 \vfill
 \clearpage
 
+% Blank page
+\shipout\null
+
+\pagenumbering{roman}
+
+\include{abstract}
+
+\include{declaration}
+
 \tableofcontents
-\listoffigures
-\listoftables
 \printglossary[type=\acronymtype]
+\clearpage
 
-\chapter*{Abstract}
+\pagenumbering{arabic}
 
-300 words
-
-Git test! Yass. Other way? Yass? Yup.
-
-\blindtext
-
-\chapter*{Statement of Originality}
-\blindtext
-
-\chapter*{Copyright Statement}
-
-\include{introduction}
-
+\include{chapter1}
 \include{chapter2}
+\include{chapter3}
+\include{chapter4}
+\include{chapter5}
+\include{chapter6}
 
-\include{Conclusion}
+\include{conclusion}
 
 
 A citation \cite{butter_how_2019}.
 
 Another citation \cite{butter_how_2019}.
+
+Here's Jang:~\cite{45822}.
+
+Gulrajani:~\cite{NIPS2017_892c3b1c}.
 
 \appendix
 \chapter{First one}
@@ -106,5 +109,8 @@ Another citation \cite{butter_how_2019}.
 \section{Sup}
 
 \printbibliography
+
+\listoffigures
+\listoftables
 
 \end{document}
