@@ -10,6 +10,8 @@
 \usepackage{newpxmath}
 \usepackage{graphicx}
 \linespread{1.5}
+\usepackage{xspace}
+\usepackage[margin=1cm, labelfont=bf]{caption}
 
 % Biblatex
 \usepackage[sorting=none]{biblatex}
@@ -25,6 +27,8 @@
 \usepackage{amsmath}
 \usepackage{marginnote}
 
+\usepackage[group-separator={,}]{siunitx}
+
 % Acronyms
 \usepackage[acronym,nonumberlist]{glossaries}
 \renewcommand*{\glstextformat}[1]{\textcolor{black}{#1}}
@@ -32,11 +36,10 @@
 \newacronym{COMET}{COMET}{Coherent Muon-to-Electron Conversion}
 
 % Path of figures for each chapter
-\graphicspath{{introduction/}{chapter2/}{conclusion/}}
+%\graphicspath{{introduction/}{chapter2/}{conclusion/}}
 
 %
 \newcommand{\diff}[2]{\frac{\textrm{d}{#1}}{\textrm{d}{#2}}}
-\newcommand{\COMET}{{\sc comet}}
 
 % If table of contents goes too deep, we can limit depth.
 %\setcounter{tocdepth}{0}
@@ -96,20 +99,8 @@
 
 \include{conclusion}
 
-
-A citation \cite{butter_how_2019}.
-
-Another citation \cite{butter_how_2019}.
-
-Here's Jang:~\cite{45822}.
-
-Gulrajani:~\cite{NIPS2017_892c3b1c}.
-
-\appendix
-\chapter{First one}
-\section{Hi}
-\chapter{Second one}
-\section{Sup}
+%\appendix
+%\chapter{Appendix A}
 
 \printbibliography
 
