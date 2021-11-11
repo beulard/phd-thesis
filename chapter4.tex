@@ -6,6 +6,7 @@
 - Problem description: 
  - We would like to produce larger amounts of simulation data, e.g. for a mock dataset in preparation for data-taking
  - But we have limited capability to produce MC data with simulation. The main bottleneck is in the pion-production section's hadronic interactions. Is there a faster way?
+  - The topic of this chapter is to consider the application of machine-learning methods in the fabrication of fake Monte Carlo data.
 
 
 - Creation of dataset from Monte Carlo simulation
@@ -19,13 +20,28 @@
 ---
 \end{markdown}
 
+% Need to wrap this chapter into a compelling narrative:
+% 1. MC allows us to see possible patterns in detector sys
+%  e.g., in CDC, high-mom tracks produce structured hits whereas low-mom make small 
+%  localised hit clusters --> Draw figures
+% 2. For an exercise such as a mock-data challenge (explain term),
+%  traditional MC is not efficient enough to produce the dataset.
+%  + Think about: why do we want mock data? Why is the standard sensitivity estimation
+%    process not sufficient?
+%    - Perhaps the extrapolation factor. Considering efficiencies on a limited sample cannot
+%       effectively be representative of the real situation.
+%    - The sheer sample size makes the exercise worth it? Test limits of the data processing
+%       chain and increase preparedness for real situation.
+% 3. Now consider the problem of producing artificial / fake / imitation / 
+%  fictitious / fabricated data.
+%  + Consider alternatives
+%  + Introduce GAN for detector-level data fabrication.
 
 As discussed in the previous chapter, Monte Carlo simulation allows us to draw a realistic picture of what will happen in our experimental setup once it is running. Most importantly, it provides an estimate of the kinds of patterns we can expect to observe in the detector system. 
 
 When performing a full simulation of COMET Phase-I, most of the activity takes place in the initial collision between the proton beam and the graphite target. The many hadronic interactions caused by the high-energy protons represent \SI{99.7}{\percent} of the computational cost of the Monte Carlo simulation.
-In contrast to that, because of the large distance between the pion-production section and the detector area, only one muon will come at rest in the stopping target for around every \num{2000} proton-on-target (POT) collisions. Hence, producing Monte Carlo data in the detector system by simulating POT events one by one is a very inefficient process. Not only is most of the computation time spent in determining how secondaries are produced in the proton collision, but statistically, any one collision only has a probability of $\mathcal{O}(\SI{0.1}{\percent})$ to produce meaningful, observable information in the detector system (i.e.\ hits).
-% Above number is not strictly true. Muon stopped != hits, beam can produce hits too, and neutrons.
-% TODO do a real calculation on MC5
+In contrast to that, because of the large distance between the pion-production section and the detector area, only one muon will come at rest in the stopping target for around every \num{2000} proton-on-target (POT) collisions. Hence, producing Monte Carlo data in the detector system by simulating POT events one by one is a very inefficient process. Not only is most of the computation time spent in determining how secondaries are produced in the proton collision, but statistically, any one collision only has a probability of \SI{0.12}{\percent} to produce meaningful, observable information in the detector system (i.e.\ hits).
+% Calculation of above number on MC5
 % We can RooTrackerTree->Draw("StdHepN", "StdHepN>0") to get the number of events with a downstream track, but to get the number of events with a hit, it's a bit more involved...
 % We need to use the downstream root files
 % MC5A01: StdHepN>0 --> 27267993 / 990678400 ~= 2.75% in all RT files
@@ -34,9 +50,9 @@ In contrast to that, because of the large distance between the pion-production s
 % MC5A02: StdHepN>0 && StdHepPdg==13 --> 486051 / 990678399 ~= 0.049%
 % ---> 0.049% of all POT events lead to >=1 stopped muon
 % /sps/mc5a02/count_events_with_cdc_hits.C --> 5939 / 4980700 ~= 0.12% in first root file
-% /sps/mc5a02/count_events_with_cdc_hits.C --> X / 990678399 in all dataset
+% /sps/mc5a02/count_events_with_cdc_hits.C --> 1173800 / 990678399 ~= 0.1185% in all dataset
     % Watch job 20862516 output for answer
-% ---> 0.1% of all POT events lead to hit in the CDC
+% ---> 0.12% of all POT events lead to >=1 hits in the CDC
 
 On average, simulating a single POT event in the upstream region requires \SI{2.73}{\second}. A single proton bunch contains \num{16000000} protons, which if simulated linearly would take 500 days of computation. During the data-taking period for COMET Phase-I, $2\times10^{12}$ bunches are expected to hit the target, which would make simulating a similar amount of data impossible on the infrastructure used to produce MC5.
 
@@ -58,24 +74,53 @@ At the boundary between the regions, we can draw histograms from the position an
 
 Another solution, which we have not yet exploited in COMET, could be to aggressively cut away particles produced in the hadronic interaction which have a small probability of resulting in observable detector hits. To select particles, several options are available such as cuts on position, momentum and particle type, or one could for instance train a more intelligent classifier out of those features.
 
-Lastly, and as is the topic of this chapter, one could partially replace the Monte Carlo simulation by finding % wrong word
+Lastly, and as is the topic of this chapter, one could partially replace the Monte Carlo simulation by constructing % right word?
 a generator which can replicate the patterns of simulated particles in the detectors.
 
 In this chapter, I will discuss my implementation of a Generative Adversarial Networks-based solution to the problem of fast realistic hit generation in the CDC. This restricted application ultimately strives toward a CyDet-wide event sampling algorithm whose lower computational cost compared to traditional Monte Carlo simulation would enable the production of larger datasets, on a scale approaching that of the measurement to be performed.
 
 \section{Procedure}
 % Describe the procedure to go from MC data to fake datasets, can use some math abstraction for the GAN, indicating that it could be something else entirely, e.g. G(z) = fake hits, F(x_i, p_i, PID_i) = real hits, distribution(G(z)) ~ distribution(F(.))
-Not all MC data can be replaced by an alternative algorithm. Monte Carlo simulation has the significant advantage of providing full truth information about every hit in the detector system, including the type and whereabouts of the particles that produced them.
+Not all MC data can be replaced by an alternative algorithm. Monte Carlo simulation has the particularity of providing full truth information about every hit in the detector system, including the type and whereabouts of the particles that produced them.
 Truth information is typically useful when a series of hits is susceptible to be reconstructed into a track, whose true provenance will be compared to the guess from the reconstruction algorithm. % Think about this. Is this true? What's the point of reconstruction? Should we consider a hypothetical scenario where we have a dataset with an unknown number of signal tracks and we ask someone to find the needles in the haystack?
 % Then why isn't our classification simply signal tracks versus all other tracks?
 
 % Characterisation of tracks in the CDC: high-momentum vs low-momentum
 Thankfully, not all hits in the detector require associated truth information, and in fact the majority of hits in the CDC appear like background noise whose origin is irrelevant to any reconstruction procedure. % The question is: DEFINE EXACTLY WHAT KIND OF DATA NEEDS TRUTH
-% Illustrate with figure
-To illustrate this idea, Fig.~\ref{fig:noise_vs_recon} showcases hits produced by two types of particles.
+% Illustrate with figure ?
+%To illustrate this idea, Fig.~\ref{fig:noise_vs_recon} showcases hits produced by two types of particles.
 
-% So: We've explained why we need to split the data and that we plan on using a hit sampling algorithm to generate one side
+To define our problem, let us consider the situation where a large quantity of artificial data must be produced but traditional simulation is simply too inefficient to reach the desired sample size.
 
+\subsection{Hit categorisation}
+% This is what hits from p>50MeV tracks look like, and this is what hits from p<50MeV tracks look like.
+% From the observation that the former tends to have reconstructible hit patterns while the latter contains single hits and localised patterns, we categorise MC events according to whether they contain a p>50MeV track or not.
+% We then use hits from non-reconstructible events as the training data for our generative model whose goal is to learn the patterns and generate original samples of hits that we can use as a background onto which we will overlay reconstructible MC-simulated events.
+% The result is the offloading of 99% of the simulation to the generative model which is highly efficient. Since the information generated is 
+Fig.~\ref{fig:cdc_rconst_vs_noise} outlines the difference in structure between hits produced by $p\leq\SI{50}{\MeV/\clight}$ tracks~(\ref{fig:cdc_rconst_vs_noise:low}) and hits produced by $p>\SI{50}{\MeV/\clight}$ tracks~(\ref{fig:cdc_rconst_vs_noise:high}) in the CDC. Generally, this loose momentum threshold separates what the detector recognises as prolonged circular tracks from more localised clusters of hits.
+
+\begin{figure}
+    \centering
+    \begin{subfigure}{0.4\textwidth}
+        \centering
+        %\includegraphics[width=\textwidth]{example-image}
+        \hl{TODO}
+        \caption{$p\leq\SI{50}{\MeV/\clight}$}
+        \label{fig:cdc_rconst_vs_noise:low}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}{0.4\textwidth}
+        \centering
+        %\includegraphics[width=\textwidth]{example-image}
+        \hl{TODO}
+        \caption{$p\leq\SI{50}{\MeV/\clight}$}
+        \label{fig:cdc_rconst_vs_noise:high}
+    \end{subfigure}
+    \caption{Comparison of hit patterns in the CDC produced by tracks of different momenta.}
+    \label{fig:cdc_rconst_vs_noise}
+\end{figure}
+
+This observation allows us to define \emph{reconstructible} events as those that induce one or more such high-momentum tracks, while other events can be seen as merely sources of \emph{noise} in the detector. This noise will be the target of our generative model. In fact, more than 97\% of hit-inducing events will contain only such hits, so offloading the simulation of this noise to an efficient generator is certain to make producing larger datasets possible.
 
 
 
@@ -85,12 +130,41 @@ Generative Adversarial Networks (GAN) are a class of data-driven sampling algori
 Originally proposed in~\cite{goodfellow_generative_2014}, the method consists in simultaneously training two models in an adversarial process [...].
 
 % Training framework for original GAN: minmax formulation etc
+Adversarial training of the discriminative and generative models can be described as a zero-sum game where the discriminator must learn to tell the difference between real and fake samples, while the generator aims to fool the discriminator.
+For concreteness, let us consider the case where both the discriminator and the generator are artificial neural networks, $D$ and $G$, respectively. $D$ is built as a binary classifier of real and fake samples. Given a sample $\mathbf{x}$, it outputs a score between 0 and 1, i.e.\ $D(\mathbf{x}) \in [0, 1]$. Similar to a classification task, we define the loss function of $D$ as the cross entropy between its prediction and the true label (conventionally, 0 for a fake sample and 1 for a real sample):
+\begin{equation}\label{eq:D_loss}
+    \mathcal{L}_D = 
+    -\mathbb{E}_{\mathbf{x} \sim p} [ \log D(\mathbf{x}) ] -
+    \mathbb{E}_{\tilde{\mathbf{x}} \sim g} [ \log( 1 - D(\tilde{\mathbf{x}}) )],
+\end{equation}
+where $\mathbb{E}$ denotes the expected value or mean, $p$ is the distribution of real samples and $g$ is the distribution of fake samples.
+Intuitively, minimising this function means that the discriminator will assign a high score to samples drawn from the training dataset and a low score to samples generated by $G$.
+
+% Ok so we explained the D training process, now for G
+The generator produces fake samples by mapping vectors from a latent space into data space. Latent-space vectors $\mathbf{z}$ are sampled according to a prior $p_\mathbf{z}(\mathbf{z})$, typically a multivariate normal distribution for simplicity and speed. The objective of $G$ is to generate samples $\tilde{\mathbf{x}} = G(\mathbf{z} \sim p_\mathbf{z})$ such that $D(\tilde{\mathbf{x}}) \rightarrow 1$. In other words, the generator aims to maximise the second term in Eq.~\ref{eq:D_loss}, and its loss function is
+\begin{align*}
+    \mathcal{L}_G &=     
+    \mathbb{E}_{\tilde{\mathbf{x}} \sim g} [ \log( 1 - D(\tilde{\mathbf{x}}) )]\\
+    &= \mathbb{E}_{\mathbf{z} \sim p_\mathbf{z}} [ \log( 1 - D(G(\mathbf{z}) )].
+\end{align*}
+
+Combining these minimisation tasks, we obtain the adversarial training objective which allows the generative model to learn a representation of the underlying data distribution:
+\begin{equation*}
+    \min_G \max_D \quad
+    \mathbb{E}_{\mathbf{x} \sim p} [ \log D(\mathbf{x}) ] +
+    \mathbb{E}_{\mathbf{z} \sim p_\mathbf{z}} [ \log( 1 - D(G(\mathbf{z}) )].
+\end{equation*}
+Using neural networks allows the task to be tackled with stochastic gradient descent. At every iteration, the derivative of the loss function is computed with respect to each weight and each weight is adjusted to lower the loss.
 
 % WGAN, WGAN with Gradient Penalty
+The original formulation of GAN is notoriously difficult to train due to either non-convergence, instability or mode collapse\footnote{Mode collapse is the situation where $G$ maps every point in the latent space onto the same output, leading to low diversity in the generated samples.}. Training a GAN model is highly sensitive to the choice of hyperparameters (learning rate, optimisation algorithm, network architecture). To address the stability issue,~\cite{arjovsky2017wasserstein} proposes [...]
+\cite{NIPS2017_892c3b1c} % WGAN-GP
 
 % Examples of usage in HEP (see zotero)
 
 % How do we plan on using this to sample CDC hits? Big brain time
+
+%%Compared to other methods such as variational auto-encoders (VAE), GAN are able to generate completely original samples.
 
 
 

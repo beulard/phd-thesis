@@ -103,8 +103,19 @@ From the normal beam simulation, one can estimate the spatial distribution of mu
 
 \begin{figure}
     \centering
-    %\includegraphics{}
-    \hl{TODO}
+    \captionsetup[subfigure]{justification=centering}
+    \begin{subfigure}[b]{0.41\textwidth}
+    \centering
+    \includegraphics[width=0.95\textwidth]{chapter3/signal_event_display_crop.png}
+    \caption{Event shown in \texttt{DisplayCore}, the 3D event display.}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.58\textwidth}
+    \centering
+    \includegraphics[width=0.95\textwidth]{chapter3/cydet_signal_track_v2.pdf}
+    \caption{Event as seen by the CDC and CTH detectors.}
+    \end{subfigure}
+    
     \caption{Example of a simulated signal event in the CyDet system. This particular event triggers the CTH and would be considered as an ideal candidate of a $\mu$--$e$ conversion signal.}
     \label{fig:signal_event}
 \end{figure}
