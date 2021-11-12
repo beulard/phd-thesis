@@ -161,11 +161,31 @@ The original formulation of GAN is notoriously difficult to train due to either 
 \cite{NIPS2017_892c3b1c} % WGAN-GP
 
 % Examples of usage in HEP (see zotero)
+In high-energy physics, GANs have been proposed in a variety of experiments to supplement traditional Monte Carlo simulation. 
 
 % How do we plan on using this to sample CDC hits? Big brain time
+\subsection{The CDC hit generator}
+In our case, we chose to make use of a GAN model to fabricate hits in the CDC.
+% Motivate: we bypass the bottleneck and produce data where it is most needed
+Hits from non-reconstructible events are selected and extracted to form the training dataset. Each hit is defined by four features: energy deposit, distance of closest approach between the track and wire, timing and position. We represent position by an integer wire index, ranging from 0 to 4986, which receives a different treatment to the other three continuous features.
+
+Training the GAN to generate individual hits is sufficient to model the underlying distributions of the four features, but the generated hits lack coherency. In the training dataset, when multiple hits are produced by a single track, there is a clear correlation in their features which the GAN must be able to see and replicate.
+
+To provide the GAN with this additional level of understanding, hits are arranged into sequences such that hits from the same track are laid out contiguously. In order to process these sequences, it is natural to use convolutional neural networks as $G$ and $D$. 
+
+
+The GAN is trained with the WGAN-GP loss on Nvidia V100 GPUs.
+
+% Evaluation
+
 
 %%Compared to other methods such as variational auto-encoders (VAE), GAN are able to generate completely original samples.
 
+% Use new MC5 downstream data from MSci to compare GAN-generated and real hits.
+
+
+% The hit generation rate is X hits/s, whereas a traditional MC simulation starting from the POT collision creates X hits/s. If re-seeding is used to sample particles at the detector region boundary, X hits/s can be produced, so the efficiency gain is about 1e7.
+% However the worry is not so much whether or not GANs can yield increase in efficiency (they can), but whether their output respects all the physical properties expected from MC data.
 
 
 

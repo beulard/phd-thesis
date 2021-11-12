@@ -96,6 +96,22 @@ To model hadronic interactions, \SimG uses the \texttt{QGSP\_BERT\_HP} reference
 Muons at rest receive special treatment in the COMET simulation due to their important contribution toward the background rate. The default energy spectrum of electrons from muon decay-in-orbit is replaced by the numerical evaluation of~\cite{czarnecki}, which includes the effect of nuclear recoil and thus allows electron energies up to \SI{104.973}{\MeV}. In addition, the nuclear muon capture (NMC) model is replaced to adhere to the results of the AlCap experiment~\cite{litchfield2015status}, where the frequency of proton emissions after NMC in an aluminium target was measured as well as their energy spectrum.
 
 
+\subsection{\hl{POSITION}}
+\subsubsection{Event generation}
+% Event generation 
+Protons are sampled from a beam profile histogram at a distance of \hl{where} from the target. The histogram is generated via a Turtle~\cite{rohrer} simulation of the beamline. % Show distribution? Not necessary...
+
+
+\subsubsection{Virtual monitors}
+% RooTracker files
+The simulation software provides utility to record particles that reach certain key points in the geometry, such as the transport solenoid or the detector region. Virtual monitors are volumes that can be placed in the geometry to record the passage of particles, in the form of virtual hits or into a separate file. The file format used to save particle states is called \texttt{RooTracker}. It stores the kinematics of simulated particles and can thus be used as input to another simulation run. % and?
+
+% Hit merging and bunch simulation
+\subsubsection{Event merging}
+In the simulation, a single proton is sampled from the beam histogram for each event, which differs from the real situation in that the beam is composed of bunches, each containing about 16 million protons. Hence we assume that proton collisions in a bunch are independent of each other, and we merge POT events into bunch events by overlaying the produced trajectories and hits. This task is handled by the \texttt{SimHitMerger} program. The structure of the proton bunch can be parametrised by various functions, the most common of which is a square-wave shaped timing structure with a width of \SI{100}{\ns}. For each POT event, all trajectories and hits are shifted by a uniformly sampled timing offset between -50 and \SI{50}{\ns} to simulate the bunch structure. 
+
+
+
 \subsection{Signal simulation}
 By default, the list of physical processes considered by \SimG includes only SM-allowed interactions and decays, and hence does not include $\mu$--$e$ conversion. In order to simulate signal events, one can manually produce conversion electrons out of the muons stopped inside the stopping target.
 
