@@ -54,7 +54,7 @@ In contrast to that, because of the large distance between the pion-production s
     % Watch job 20862516 output for answer
 % ---> 0.12% of all POT events lead to >=1 hits in the CDC
 
-On average, simulating a single POT event in the upstream region requires \SI{2.73}{\second}. A single proton bunch contains \num{16000000} protons, which if simulated linearly would take 500 days of computation. During the data-taking period for COMET Phase-I, $2\times10^{12}$ bunches are expected to hit the target, which would make simulating a similar amount of data impossible on the infrastructure used to produce MC5.
+On average, simulating a single POT event in the upstream region requires \SI{2.73}{\second}. A single proton bunch contains \num{16000000} protons, which if simulated linearly would take 500 days of computation. The MC5 production ran for around two weeks on 2000 concurrent machines in order to fully simulate 62 bunches, around $1\times10^9$ protons. During the data-taking period for COMET Phase-I, $2\times10^{12}$ bunches, or $1.6\times 10^{19}$ protons, are expected to hit the target. Simulating a similar amount of MC data is simply impossible with the same methods and infrastructure used to produce MC5.
 
 % Why would we want to do that though? Does anyone else do it? Asked Joe
  % Joe says: they only really care about signal MC, MC of just background seems pointless to them...
@@ -66,8 +66,9 @@ On average, simulating a single POT event in the upstream region requires \SI{2.
 % -> MC is heavily used to constrain or estimate the rates of various background processes
 
 In order to alleviate this issue, multiple solutions can be considered. One that is currently used in \texttt{SimG4} is to split the simulation into spatial regions, as was described in section~\ref{sec:mc5}. Particles that reach the boundary of the first region are saved and then propagated inside the second region. 
-% Reseeding
 
+% Reseeding
+\hl{RESEEDING}
 
 % Resampling
 At the boundary between the regions, we can draw histograms from the position and momentum of particles crossing and later sample from that distribution to generate events in the second region.
@@ -79,8 +80,20 @@ a generator which can replicate the patterns of simulated particles in the detec
 
 In this chapter, I will discuss my implementation of a Generative Adversarial Networks-based solution to the problem of fast realistic hit generation in the CDC. This restricted application ultimately strives toward a CyDet-wide event sampling algorithm whose lower computational cost compared to traditional Monte Carlo simulation would enable the production of larger datasets, on a scale approaching that of the measurement to be performed.
 
-\section{Procedure}
+\section{Data selection} % Name?
 % Describe the procedure to go from MC data to fake datasets, can use some math abstraction for the GAN, indicating that it could be something else entirely, e.g. G(z) = fake hits, F(x_i, p_i, PID_i) = real hits, distribution(G(z)) ~ distribution(F(.))
+If our aim is to build a generative model to mimic the patterns of hits in the detector, it is necessary to keep in mind that these hits are physical energy deposits created by simulating energy loss processes of particles inside the active detector volume. The true process of producing hits thus obeys very strict rules stemming from the physical laws in play. The model we consider here is purely data-driven in that we do not enforce any awareness of physics onto it. Although this choice makes the potential speed-up significant, it also means that we lose much of our control over the content of produced data and rely on the accuracy of the model to yield physically realistic hits.
+
+In COMET Phase-I, events of particular interest come in the form of extended tracks in the CDC, whose accurate reconstruction (in both momentum and position) is paramount to the identification of a conversion signal. These tracks typically produce hits in very specific patterns, dictated by the particle's exact trajectory and energy loss in the gas. We expect a data-driven generative model to struggle in replicating the exact signature of such tracks, hence we decided early on to restrict the scope of the model to events that lack any physics-rich features. 
+% ^ OK
+
+
+% Consequences: we have to combine MC and GAN data
+% ---> means we have to find a way to produce MC selectively
+% ---> and then mix hits in realistic proportions to get mock data.
+
+%In addition to the rigid constraints involved in producing tracks, it is preferable from the point of view of the reconstruction algorithms to be able to query their true provenance. A physics-agnostic model is by definition unable to provide that kind of truth information
+
 Not all MC data can be replaced by an alternative algorithm. Monte Carlo simulation has the particularity of providing full truth information about every hit in the detector system, including the type and whereabouts of the particles that produced them.
 Truth information is typically useful when a series of hits is susceptible to be reconstructed into a track, whose true provenance will be compared to the guess from the reconstruction algorithm. % Think about this. Is this true? What's the point of reconstruction? Should we consider a hypothetical scenario where we have a dataset with an unknown number of signal tracks and we ask someone to find the needles in the haystack?
 % Then why isn't our classification simply signal tracks versus all other tracks?
@@ -91,6 +104,8 @@ Thankfully, not all hits in the detector require associated truth information, a
 %To illustrate this idea, Fig.~\ref{fig:noise_vs_recon} showcases hits produced by two types of particles.
 
 To define our problem, let us consider the situation where a large quantity of artificial data must be produced but traditional simulation is simply too inefficient to reach the desired sample size.
+
+% ^^^^ Review up to ^OK
 
 \subsection{Hit categorisation}
 % This is what hits from p>50MeV tracks look like, and this is what hits from p<50MeV tracks look like.
@@ -113,7 +128,7 @@ Fig.~\ref{fig:cdc_rconst_vs_noise} outlines the difference in structure between 
         \centering
         %\includegraphics[width=\textwidth]{example-image}
         \hl{TODO}
-        \caption{$p\leq\SI{50}{\MeV/\clight}$}
+        \caption{$p > \SI{50}{\MeV/\clight}$}
         \label{fig:cdc_rconst_vs_noise:high}
     \end{subfigure}
     \caption{Comparison of hit patterns in the CDC produced by tracks of different momenta.}
@@ -122,12 +137,19 @@ Fig.~\ref{fig:cdc_rconst_vs_noise} outlines the difference in structure between 
 
 This observation allows us to define \emph{reconstructible} events as those that induce one or more such high-momentum tracks, while other events can be seen as merely sources of \emph{noise} in the detector. This noise will be the target of our generative model. In fact, more than 97\% of hit-inducing events will contain only such hits, so offloading the simulation of this noise to an efficient generator is certain to make producing larger datasets possible.
 
+% Official MC5A02 calculation: 
+% Total events: 990678399
+%  Hit classification: 
+%  2036 unique events (rate 2e-6) with reconstructible hits (63648 hits)
+%  49101 unique events (rate 5e-5) with noiselike hits (634266 hits)
+
 
 
 
 \section{Generative Adversarial Networks} % Sampling method
-Generative Adversarial Networks (GAN) are a class of data-driven sampling algorithms through which the underlying distribution of a dataset can be modelled and sampled from to obtain new, original samples. % "sample" count: 3 ...
-Originally proposed in~\cite{goodfellow_generative_2014}, the method consists in simultaneously training two models in an adversarial process [...].
+\hl{rework paragraph}
+Generative Adversarial Networks (GAN) are a class of data-driven sampling algorithms through which the underlying distribution of a dataset can be modelled and sampled from to obtain new, original samples~\cite{goodfellow_generative_2014}. % "sample" count: 3 ...
+The method consists in simultaneously training two models in an adversarial process [...].
 
 % Training framework for original GAN: minmax formulation etc
 Adversarial training of the discriminative and generative models can be described as a zero-sum game where the discriminator must learn to tell the difference between real and fake samples, while the generator aims to fool the discriminator.
@@ -149,22 +171,51 @@ The generator produces fake samples by mapping vectors from a latent space into 
 \end{align*}
 
 Combining these minimisation tasks, we obtain the adversarial training objective which allows the generative model to learn a representation of the underlying data distribution:
-\begin{equation*}
+\begin{equation}\label{eq:GAN}
     \min_G \max_D \quad
     \mathbb{E}_{\mathbf{x} \sim p} [ \log D(\mathbf{x}) ] +
     \mathbb{E}_{\mathbf{z} \sim p_\mathbf{z}} [ \log( 1 - D(G(\mathbf{z}) )].
-\end{equation*}
-Using neural networks allows the task to be tackled with stochastic gradient descent. At every iteration, the derivative of the loss function is computed with respect to each weight and each weight is adjusted to lower the loss.
+\end{equation}
+Using neural networks allows the task to be tackled with backpropagation and stochastic gradient descent. At every iteration, both networks evaluate the derivative of their respective loss function with respect to their internal weights. The weights are then adjusted slightly toward the direction of largest decrease in the loss.
 
+
+\subsection{Wasserstein GAN}
 % WGAN, WGAN with Gradient Penalty
-The original formulation of GAN is notoriously difficult to train due to either non-convergence, instability or mode collapse\footnote{Mode collapse is the situation where $G$ maps every point in the latent space onto the same output, leading to low diversity in the generated samples.}. Training a GAN model is highly sensitive to the choice of hyperparameters (learning rate, optimisation algorithm, network architecture). To address the stability issue,~\cite{arjovsky2017wasserstein} proposes [...]
-\cite{NIPS2017_892c3b1c} % WGAN-GP
+The original formulation of GAN is notoriously difficult to train due to either non-convergence, instability or mode collapse\footnote{Mode collapse is the situation where $G$ maps every point in the latent space onto the same output, leading to low diversity in the generated samples.}. 
+Training a GAN model is highly sensitive to the choice of hyperparameters: learning rate, optimisation algorithm, network architecture. 
+
+The Wasserstein GAN (WGAN) formulation is an attempt to address the stability issues of the original GAN~\cite{arjovsky2017wasserstein}. The authors argue that solving Eq.~\ref{eq:GAN}, which implicitly minimises the Jensen-Shannon divergence between $p$ and $g$, leads to vanishing gradients, and thus to unstable training when the discriminator is too powerful.
+Instead, they propose to minimise the Wasserstein-1 distance between $p$ and $g$ because of its superior continuity and differentiability properties. They go on to show that if the discriminator is Lipschitz continuous, then the adversarial training problem can be formulated as:
+\begin{equation}
+    \min_G \max_D \quad 
+        \mathbb{E}_{\mathbf{x} \sim p} \left[ D(\mathbf{x}) \right] - 
+        \mathbb{E}_{\mathbf{z} \sim p_\mathbf{z}} \left[ D(G(\mathbf{z})) \right].
+\end{equation}
+
+In practice, aside from a change to the loss functions, this method requires that the discriminator be replaced by a ``critic'', so-called because its output is not bounded to $[0, 1]$ and can be better interpreted as a score. In order for $D$ to satisfy the Lipschitz constraint, the authors proposed to restrict the magnitude of its weights to a small range, e.g. $[-0.01, 0.01]$.
+%explicitly stating that this is not an optimal solution. 
+
+In addition to the superior training stability of this Wasserstein GAN (WGAN) method, it was observed empirically that this formulation does not lead to mode collapse and improves the robustness of the GAN to internal changes to the network architectures.
+
+% WGAN-GP
+The same year, another method to enforce the Lipschitz constraint on $D$ was discussed in~\cite{NIPS2017_892c3b1c}, which outlines the shortcomings of weight clipping and instead proposes to constrain to the weights' gradients with an explicit term in the discriminator loss function. 
+By definition, a function is 1-Lipschitz if and only if its gradient has norm at most 1 everywhere. Since this is difficult to achieve in practice, the authors suggest a soft constraint on the gradient norm of $D$:
+\begin{equation}\label{eq:WGAN-GP}
+    \mathcal{L}_D = 
+        -\mathbb{E}_{\mathbf{x} \sim p} \left[ D(\mathbf{x}) \right] +
+        \mathbb{E}_{\mathbf{z} \sim p_\mathbf{z}} \left[ D(G(\mathbf{z})) \right] +
+        \lambda\ \mathbb{E}_{\hat{\mathbf{x}} \sim p_{\hat{\mathbf{x}}}}
+            \left[ \big( \left\Vert \nabla_{\hat{\mathbf{x}}}\ D(\hat{\mathbf{x}}) \right\Vert_2 - 1 \big) ^2 \right],
+\end{equation}
+where the third term is the gradient penalty added to the WGAN loss, and $\lambda$ is the gradient penalty constant, a new hyperparameter. In this term, samples $\hat{\mathbf{x}}$ are drawn from $p_{\hat{\mathbf{x}}}$ by sampling uniformly along straight lines between pairs of points from $p$ and $g$. 
+
+In our experiments, we find that the above WGAN-GP loss provides the most stable training procedure for a variety of network architectures. In addition, it has the significant advantage of making the critic loss more interpretable and overfitting noticeable. As the authors demonstrate, the critic loss should converge to a maximum value over training iterations, while in the case of overfit, the loss evaluated on training samples and test samples starts to diverge over training iterations.
 
 % Examples of usage in HEP (see zotero)
 In high-energy physics, GANs have been proposed in a variety of experiments to supplement traditional Monte Carlo simulation. 
 
 % How do we plan on using this to sample CDC hits? Big brain time
-\subsection{The CDC hit generator}
+\section{The CDC hit generator}
 In our case, we chose to make use of a GAN model to fabricate hits in the CDC.
 % Motivate: we bypass the bottleneck and produce data where it is most needed
 Hits from non-reconstructible events are selected and extracted to form the training dataset. Each hit is defined by four features: energy deposit, distance of closest approach between the track and wire, timing and position. We represent position by an integer wire index, ranging from 0 to 4986, which receives a different treatment to the other three continuous features.
