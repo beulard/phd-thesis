@@ -4,42 +4,42 @@
 \newcommand{\oaEvent}{\texttt{oaEvent}\xspace}
 \newcommand{\Geant}{{\sc Geant4}\xspace}
 
-\begin{markdown}
----
+% \begin{markdown}
+% ---
 
-+ Introduce ICEDUST, the COMET software suite
-    + Describe whole, then individual parts
-    + oaEvent
+% + Introduce ICEDUST, the COMET software suite
+%     + Describe whole, then individual parts
+%     + oaEvent
  
-+ Important part of the software is the set of simulation tools
-    + COMET geometries
-    + Physics, "physics list"?
-    + Show signal event display
-    + SDs, CDC hit representation
-    + RooTracker files
-    + Proton beam input?
-    + Hit merging and bunch simulation
-    + Large-scale production, MC5: Sampling world, example of results?
+% + Important part of the software is the set of simulation tools
+%     + COMET geometries
+%     + Physics, "physics list"?
+%     + Show signal event display
+%     + SDs, CDC hit representation
+%     + RooTracker files
+%     + Proton beam input?
+%     + Hit merging and bunch simulation
+%     + Large-scale production, MC5: Sampling world, example of results?
     
     
-+ Version control
-+ Continuous integration (+ CD, docker containers)
+% + Version control
+% + Continuous integration (+ CD, docker containers)
     
-+ Mention miscellanous contributions:
-    + Beginner's tutorial (installation, simulation, analysis)
-    + Move from CMT to CMake and from ROOT5 to ROOT6
-    + Memory leaks and errors
-    + Backward MC: perhaps just ref chapter
+% + Mention miscellanous contributions:
+%     + Beginner's tutorial (installation, simulation, analysis)
+%     + Move from CMT to CMake and from ROOT5 to ROOT6
+%     + Memory leaks and errors
+%     + Backward MC: perhaps just ref chapter
 
-+ Animated visualisation of CyDet activity
+% + Animated visualisation of CyDet activity
 
----
-\end{markdown}
+% ---
+% \end{markdown}
 
-Experiments in high energy physics are commonly associated with the development of a set of software tools to help in manipulating and analysing experimental data. Design optimisation can also be performed through simulation studies, which also serve as a way to increase overall readiness for the data-collection period while the experiment gets constructed.
+Experiments in high energy physics are commonly accompanied by the development of a set of software tools to help in manipulating and analysing experimental data. Simulations are used intensively to optimise experimental designs and prepare for the collection of real data while the physical instruments --- detectors, magnets, readout electronics and data acquisition systems --- are built and assembled.
 
 \section{The ICEDUST Software Suite}
-The COMET Collaboration develops a suite of software packages named ``ICEDUST'' to satisfy the offline requirements of the experiment. Originally forked in 2013 from the software written for T2K's near detector system ND280, ICEDUST supports the needs of the COMET experiment with regard to simulation, on-disk data format, calibration, reconstruction and analysis.
+The COMET Collaboration develops a suite of software packages named ICEDUST to satisfy the offline requirements of the experiment. Originally forked in 2013 from the software written for T2K's near detector system ND280, ICEDUST supports the needs of the COMET experiment with regard to simulation, on-disk data format, calibration, reconstruction and analysis.
 To fulfil these roles, ICEDUST is divided into specialised packages, as depicted in Fig.~\ref{fig:icedust_schematic}.
 
 \begin{figure}
@@ -51,8 +51,17 @@ To fulfil these roles, ICEDUST is divided into specialised packages, as depicted
 \end{figure}
 
 \subsubsection{Data format}
-At the heart of ICEDUST is the \oaEvent package, which describes the format endorsed by simulation and real experimental data. Based on the ROOT~\cite{BRUN199781} serialisation system, \oaEvent defines a file format where data is laid out as a sequence of events. The term ``event'' here is purposefully abstract, as the information held in each event can vary. In simulations, an event can describe the outcome of a single proton-on-target (POT) collision, or the outcome of a full proton bunch ($16\times10^6$ POT). 
+At the heart of ICEDUST is the \oaEvent package, which describes the format endorsed by simulation and real experimental data. Based on the ROOT~\cite{BRUN199781} serialisation system, \oaEvent defines a file format where data is laid out as a sequence of events, shown in Fig.~\ref{fig:oaEvent}. The term ``event'' here is purposefully abstract, as the information held in each event can vary. In simulations, an event can describe the outcome of a single proton-on-target (POT) collision, or the outcome of a full proton bunch ($16\times10^6$ POT). 
 In data-taking runs, the definition of event will typically be dictated by the data acquisition system.  % So?
+\hl{Mention MIDAS for the online data format here.}
+
+\begin{figure}
+    \centering
+    %\includegraphics{}
+    \hl{TODO}
+    \caption{Layout of the \oaEvent format.}
+    \label{fig:oaEvent}
+\end{figure}
 
 Each event is its own hierarchical ``directory'', where data containers can be stored and retrieved by name. The containers themselves are variable-length arrays of arbitrary data types---defined as C++ classes---where objects of the same type can be aggregated.
 
@@ -104,7 +113,7 @@ Fig.~\ref{fig:comet_geometries} shows renderings of the two COMET setups to be u
     \hfill
     \begin{subfigure}[t]{0.49\textwidth}
         \centering
-        \includegraphics[width=0.95\textwidth]{chapter3/geometries_Phase-II_iso_huesat_human.png}
+        \includegraphics[width=0.95\textwidth]{chapter3/geometries_Phase-II_iso_huesat_nohuman.png}
         \caption{Phase-II.}
     \end{subfigure}
     

@@ -20,7 +20,7 @@
 ---
 \end{markdown}
 
-% Need to wrap this chapter into a compelling narrative:
+% Need to wrap the start of this chapter into a compelling narrative:
 % 1. MC allows us to see possible patterns in detector sys
 %  e.g., in CDC, high-mom tracks produce structured hits whereas low-mom make small 
 %  localised hit clusters --> Draw figures
@@ -146,7 +146,7 @@ This observation allows us to define \emph{reconstructible} events as those that
 
 
 
-\section{Generative Adversarial Networks} % Sampling method
+\section{Generative Adversarial Networks}
 \hl{rework paragraph}
 Generative Adversarial Networks (GAN) are a class of data-driven sampling algorithms through which the underlying distribution of a dataset can be modelled and sampled from to obtain new, original samples~\cite{goodfellow_generative_2014}. % "sample" count: 3 ...
 The method consists in simultaneously training two models in an adversarial process [...].
@@ -184,22 +184,22 @@ Using neural networks allows the task to be tackled with backpropagation and sto
 The original formulation of GAN is notoriously difficult to train due to either non-convergence, instability or mode collapse\footnote{Mode collapse is the situation where $G$ maps every point in the latent space onto the same output, leading to low diversity in the generated samples.}. 
 Training a GAN model is highly sensitive to the choice of hyperparameters: learning rate, optimisation algorithm, network architecture. 
 
-The Wasserstein GAN (WGAN) formulation is an attempt to address the stability issues of the original GAN~\cite{arjovsky2017wasserstein}. The authors argue that solving Eq.~\ref{eq:GAN}, which implicitly minimises the Jensen-Shannon divergence between $p$ and $g$, leads to vanishing gradients, and thus to unstable training when the discriminator is too powerful.
-Instead, they propose to minimise the Wasserstein-1 distance between $p$ and $g$ because of its superior continuity and differentiability properties. They go on to show that if the discriminator is Lipschitz continuous, then the adversarial training problem can be formulated as:
+The Wasserstein GAN (WGAN) formulation is an attempt to address the stability issues of the original GAN~\cite{arjovsky2017wasserstein}. The authors argue that solving Eq.~\ref{eq:GAN}, which implicitly minimises the Jensen-Shannon divergence between $p$ and $g$, leads to vanishing gradients when the discriminator is too powerful, and thus to unstable training.
+Instead, they propose to minimise the Wasserstein-1 distance between $p$ and $g$ because of its superior continuity and differentiability properties. They go on to show that if the discriminator is 1-Lipschitz continuous, then the adversarial training problem can be formulated as:
 \begin{equation}
     \min_G \max_D \quad 
         \mathbb{E}_{\mathbf{x} \sim p} \left[ D(\mathbf{x}) \right] - 
         \mathbb{E}_{\mathbf{z} \sim p_\mathbf{z}} \left[ D(G(\mathbf{z})) \right].
 \end{equation}
 
-In practice, aside from a change to the loss functions, this method requires that the discriminator be replaced by a ``critic'', so-called because its output is not bounded to $[0, 1]$ and can be better interpreted as a score. In order for $D$ to satisfy the Lipschitz constraint, the authors proposed to restrict the magnitude of its weights to a small range, e.g. $[-0.01, 0.01]$.
+In practice, aside from a change to the loss functions, this method requires that the discriminator be replaced by a ``critic'', so-called because its output is not bounded to $[0, 1]$ and can be better interpreted as a score. In order for $D$ to satisfy the Lipschitz constraint, the authors propose to restrict the magnitude of its weights to a small range, e.g. $[-0.01, 0.01]$.
 %explicitly stating that this is not an optimal solution. 
 
 In addition to the superior training stability of this Wasserstein GAN (WGAN) method, it was observed empirically that this formulation does not lead to mode collapse and improves the robustness of the GAN to internal changes to the network architectures.
 
 % WGAN-GP
-The same year, another method to enforce the Lipschitz constraint on $D$ was discussed in~\cite{NIPS2017_892c3b1c}, which outlines the shortcomings of weight clipping and instead proposes to constrain to the weights' gradients with an explicit term in the discriminator loss function. 
-By definition, a function is 1-Lipschitz if and only if its gradient has norm at most 1 everywhere. Since this is difficult to achieve in practice, the authors suggest a soft constraint on the gradient norm of $D$:
+The same year, another method to enforce the Lipschitz constraint on $D$ was discussed in~\cite{NIPS2017_892c3b1c}, which outlines the shortcomings of weight clipping and instead proposes to constrain the discriminator's gradient.
+By definition, a function is 1-Lipschitz if and only if its gradient has norm at most 1 everywhere. Since this is difficult to achieve in practice, the authors suggest a soft constraint on the gradient norm of $D$ using an explicit term in its loss function:
 \begin{equation}\label{eq:WGAN-GP}
     \mathcal{L}_D = 
         -\mathbb{E}_{\mathbf{x} \sim p} \left[ D(\mathbf{x}) \right] +
@@ -209,10 +209,12 @@ By definition, a function is 1-Lipschitz if and only if its gradient has norm at
 \end{equation}
 where the third term is the gradient penalty added to the WGAN loss, and $\lambda$ is the gradient penalty constant, a new hyperparameter. In this term, samples $\hat{\mathbf{x}}$ are drawn from $p_{\hat{\mathbf{x}}}$ by sampling uniformly along straight lines between pairs of points from $p$ and $g$. 
 
-In our experiments, we find that the above WGAN-GP loss provides the most stable training procedure for a variety of network architectures. In addition, it has the significant advantage of making the critic loss more interpretable and overfitting noticeable. As the authors demonstrate, the critic loss should converge to a maximum value over training iterations, while in the case of overfit, the loss evaluated on training samples and test samples starts to diverge over training iterations.
+In our experiments, we find that the above WGAN-GP loss provides the most stable training procedure for a variety of network architectures. In addition, it has the significant advantage of making the critic loss more interpretable and overfitting noticeable. As the authors demonstrate, the critic loss should converge to a maximum value over training iterations, while in the case of overfit, the critic losses evaluated on training samples and test samples diverge during training.
 
 % Examples of usage in HEP (see zotero)
+\subsection{GAN in High Energy Physics}
 In high-energy physics, GANs have been proposed in a variety of experiments to supplement traditional Monte Carlo simulation. 
+\hl{Write}
 
 % How do we plan on using this to sample CDC hits? Big brain time
 \section{The CDC hit generator}
@@ -220,14 +222,71 @@ In our case, we chose to make use of a GAN model to fabricate hits in the CDC.
 % Motivate: we bypass the bottleneck and produce data where it is most needed
 Hits from non-reconstructible events are selected and extracted to form the training dataset. Each hit is defined by four features: energy deposit, distance of closest approach between the track and wire, timing and position. We represent position by an integer wire index, ranging from 0 to 4986, which receives a different treatment to the other three continuous features.
 
-Training the GAN to generate individual hits is sufficient to model the underlying distributions of the four features, but the generated hits lack coherency. In the training dataset, when multiple hits are produced by a single track, there is a clear correlation in their features which the GAN must be able to see and replicate.
+Training the GAN to generate individual hits is sufficient to model the underlying distributions of the four features, but the generated hits lack coherence. In the training dataset, when multiple hits are produced by a single track, they often occur next to each other in time and space. The GAN model must be allowed to see and process the relationship between consecutive hits for the generated hits to resemble simulated ones. Hence instead of having the model process single hits, it makes sense to feed it sequences of consecutive hits such that temporal information can be processed as well. The architecture of $G$ and $D$ should be allowed to accommodate for this extra dimension.
 
-To provide the GAN with this additional level of understanding, hits are arranged into sequences such that hits from the same track are laid out contiguously. In order to process these sequences, it is natural to use convolutional neural networks as $G$ and $D$. 
 
+
+\subsection{Network architectures}
+Both the generator and discriminator are built using one-dimensional convolutional layers.
+The convolution kernels move along the temporal dimension, as illustrated in Fig.~\ref{fig:temporal_conv}. 
+In this context, the convolution operation is defined as follows:
+\begin{equation}
+    y_{i} = \sum_{j=1}^{C_\mathrm{in}} \sum_{k=-(K-1)/2}^{(K-1)/2} w_k\ x_{i+k,j} + b,
+\end{equation}
+where $i$ is the sequence index, $C_\mathrm{in}$ is the number of features\footnote{Also called the number of channels or feature maps.} in the input, $K$ is the kernel size, $w_k$ is the $k$-th element of the kernel, $x$ is the input sequence and $b$ is the bias. The kernel elements $w$ and bias $b$ are learned parameters of the neural network. 
+Convolutional layers typically have multiple output channels, each corresponding to a kernel and bias which extract different features from the input.
+
+The fact that the convolution kernel is moved along the sequence means that the network effectively considers the features of multiple consecutive hits at a time. The effective receptive field of the networks, in terms of consecutive hits, increases with the kernel size of the convolutional layers as well as the total number of layers (i.e.\ depth).
+\begin{figure}
+    \centering
+    %\includegraphics{}
+    \hl{TODO}
+    \caption{Temporal (1D) convolution}
+    \label{fig:temporal_conv}
+\end{figure}
+
+The discriminator takes as input a sequence of hits of length $L$. Each hit is described by four features: energy deposit, time, distance of closest approach and wire index. The first convolutional layer computes feature maps by sliding its kernels over the hit sequence. A non-linear activation function is applied to the feature maps before passing them on to the next layer. 
+In our case, the leaky rectified linear unit, or \texttt{LeakyReLU}~\cite{Maas13rectifiernonlinearities}, is used as the non-linearity.
+% ^ Too much detail?
+
+Optionally, convolution kernels can be applied over the sequence with a stride, by moving the kernel by more than one input element to obtain the next output element. This has the effect of producing an output sequence that is shorter than the input sequence. This is often used to allow the network to see the data over increasingly large scales as well as to reduce the number of operations in deeper layers. 
+
+\begin{figure}
+    \centering
+    %\includegraphics{}
+    \caption{Residual block.}
+    \label{fig:residual_block}
+\end{figure}
+In order to facilitate gradient flow from the discriminator to the generator and thus speed up training, convolutional layers are promoted to residual blocks~\cite{he2016deep} in both networks. A residual block combines two convolutional layers with a residual connection from the input to the output, allowing the gradients to propagate via two paths, as shown in Fig.~\ref{fig:residual_block}. The output $\mathbf{y}$ of the block can be written as
+\begin{equation*}
+    \mathbf{y} = \mathcal{F}(\mathbf{x}) + W_s\mathbf{x},
+\end{equation*}
+where $\mathcal{F}$ represents the convolutions and $W_s$ is a linear dimension-matching operation which brings $\mathbf{x}$ into the same shape as $\mathbf{y}$, if necessary.
+    
+The critic architecture is shown in full in Fig.~\ref{fig:disc_arch}. It uses \hl{N} residual blocks to extract features from the input hit sequence and outputs a single score following a global pooling operation and a fully-connected linear layer.
+
+\begin{figure}
+    \centering
+    %\includegraphics{}
+    \caption{Architecture of the critic network.}
+    \label{fig:disc_arch}
+\end{figure}
+
+The generator architecture is shown in Fig.~\ref{fig:gen_arch}.
+
+\begin{figure}
+    \centering
+    %\includegraphics{}
+    \caption{Architecture of the generator network.}
+    \label{fig:gen_arch}
+\end{figure}
+
+\subsection{Training}
 
 The GAN is trained with the WGAN-GP loss on Nvidia V100 GPUs.
+Optimiser: Adam
 
-% Evaluation
+\subsection{Evaluation}
 
 
 %%Compared to other methods such as variational auto-encoders (VAE), GAN are able to generate completely original samples.
