@@ -53,6 +53,11 @@ In contrast to that, because of the large distance between the pion-production s
 % /sps/mc5a02/count_events_with_cdc_hits.C --> 1173800 / 990678399 ~= 0.1185% in all dataset
     % Watch job 20862516 output for answer
 % ---> 0.12% of all POT events lead to >=1 hits in the CDC
+% CORRECTION: we counted events where there are hits even if none of them have edep>0
+% --> Only count events where at least one edep>0 hit occurs:
+% /sps/mc5a02/count_events_with_cdc_hits_edep.C --> 260 / 4980700 ~= 5.22e-5 in first root file
+% in first 10: 2611 / 49468900 ~= 5.278e-5
+% extrapolate to all = 52289 / 990678399
 
 On average, simulating a single POT event in the upstream region requires \SI{2.73}{\second}. A single proton bunch contains \num{16000000} protons, which if simulated linearly would take 500 days of computation. The MC5 production ran for around two weeks on 2000 concurrent machines in order to fully simulate 62 bunches, around $1\times10^9$ protons. During the data-taking period for COMET Phase-I, $2\times10^{12}$ bunches, or $1.6\times 10^{19}$ protons, are expected to hit the target. Simulating a similar amount of MC data is simply impossible with the same methods and infrastructure used to produce MC5.
 
@@ -251,6 +256,7 @@ In our case, the leaky rectified linear unit, or \texttt{LeakyReLU}~\cite{Maas13
 
 Optionally, convolution kernels can be applied over the sequence with a stride, by moving the kernel by more than one input element to obtain the next output element. This has the effect of producing an output sequence that is shorter than the input sequence. This is often used to allow the network to see the data over increasingly large scales as well as to reduce the number of operations in deeper layers. 
 
+\subsubsection{Residual connections}
 \begin{figure}
     \centering
     %\includegraphics{}
@@ -297,7 +303,7 @@ Optimiser: Adam
 % The hit generation rate is X hits/s, whereas a traditional MC simulation starting from the POT collision creates X hits/s. If re-seeding is used to sample particles at the detector region boundary, X hits/s can be produced, so the efficiency gain is about 1e7.
 % However the worry is not so much whether or not GANs can yield increase in efficiency (they can), but whether their output respects all the physical properties expected from MC data.
 
-
+\subsection{\hl{How GAN-generated hits are merged back into a dataset}}
 
 
 
