@@ -84,16 +84,19 @@ Simulations of the COMET experiment can be split into four steps:
     \item {\bf Detector response simulation} translates the true energy deposits simulated in the particle tracking stage into detector-specific hits. It takes into account the way in which charge or light is collected by the detector, and can apply smearing to the observed energy and timing. This step effectively reverses the calibration process by transforming energy deposits into uncalibrated, digitised hits and waveforms.
 \end{enumerate}
 % ^ OK
-
 Once all four stages of the simulation pipeline are complete, the result should closely resemble real data post-translation from MIDAS to \oaEvent. This implies that it should be able to naturally flow through the calibration, reconstruction and analysis stages. At each stage, the information may be compared with the truth information available from the particle tracking stage in order to refine each process. This exercise should also outline the performance of the offline data-processing pipeline and hence provide an estimate of the computational requirements of the experiment.
 
-\subsubsection{\hl{WHERE} Virtual monitors / oaRooTracker}\label{subsec:RT}
-% RooTracker files
-The simulation software provides utility to record particles that reach certain key points in the geometry, such as the transport solenoid or the detector region. Virtual monitors are volumes that can be placed in the geometry to record the passage of particles, in the form of virtual hits or into a separate file. The file format used to save particle states is called \texttt{RooTracker}. It stores the kinematics of simulated particles and can thus be used as input to another simulation run. % and?
 
+\subsection{Intermediate simulation file format}\label{subsec:RT}
+The \texttt{oaRooTracker} package defines another ROOT-based file format used by the simulation to save and retrieve particle states. The typical use case is for a simulation to record particles that have reached a key geometrical element (e.g.\ the detector region) to build up a sample of interesting events. The saved particle states can then be used as input to subsequent simulations, easing the need for a full simulation run every time a change is made to the geometry or physics models.
+
+In addition, from a large enough sample of particles recorded at some key volume boundary, the flux distribution of inbound particles can be estimated. Events can then be sampled from this distribution to increase the statistics inside the volume of interest. 
+
+% RooTracker files
+%The simulation software provides utility to record particles that reach certain key points in the geometry, such as the transport solenoid or the detector region. Virtual monitors are volumes that can be placed in the geometry to record the passage of particles, in the form of virtual hits or into a separate file. The file format used to save particle states is called \texttt{RooTracker}. It stores the kinematics of simulated particles and can thus be used as input to another simulation run. % and?
 
 \section{Monte Carlo simulation in ICEDUST}\label{sec:mc_sim}
-Monte Carlo (MC) simulation is the process through which hypothetical particles are realistically propagated through an experimental setup, with the aim of evaluating the experiment's performance and to prepare for its realisation. Currently in COMET, MC simulations are heavily used to further optimise the experiment's design and to develop reconstruction and analysis techniques.
+Monte Carlo (MC) simulation is the process through which hypothetical particles are realistically propagated through an experimental setup, with the aim of evaluating the experiment's performance and to prepare for its realisation. Currently in COMET, MC simulations are heavily used to further optimise the experiment's design and to develop reconstruction and analysis algorithms.
 
 Monte Carlo simulation in high energy physics can be described as the stepwise propagation (tracking) of particles through matter and electromagnetic fields. Starting from initial conditions of position and momentum, a particle advances in space and time according to the laws of relativistic kinematics. It can change velocity or direction, and produce secondary particles via interactions with the local medium and field. The tracking of a particle ends when it decays, gets absorbed by some material, or exits the simulation space.
 
@@ -157,7 +160,9 @@ Hence, the \SimG simulation associates standard \Geant hadronic and electromagne
 
 To model hadronic interactions, \SimG uses the \texttt{QGSP\_BERT\_HP} reference physics list as the default. In this model, hadron-nucleus interactions between the \SI{8}{\GeV} proton beam and the pion-production target are handled by the Bertini Cascade model~\cite{WRIGHT2015175}.
 
-Muons at rest receive special treatment in \SimG due to their important contribution toward the background rate. The default energy spectrum of electrons from muon decay-in-orbit is replaced by the numerical evaluation of~\cite{czarnecki}, which includes the effect of nuclear recoil and thus allows electron energies up to \SI{104.973}{\MeV}. In addition, the nuclear muon capture (NMC) model is replaced to adhere to the results of the AlCap experiment~\cite{litchfield2015status}, where the energy spectrum of protons emitted after NMC in aluminium was measured.
+Muons at rest receive special treatment in \SimG due to their important contribution toward the background rate. The default energy spectrum of electrons from muon decay-in-orbit is replaced by the numerical evaluation of~\cite{czarnecki}, which includes the effect of nuclear recoil and thus allows electron energies up to \SI{104.973}{\MeV}. In addition, the nuclear muon capture (NMC) model is replaced to adhere to the results of the AlCap experiment~\cite{litchfield2015status} which measured the energy spectrum of protons emitted after NMC in aluminium.
+
+
 
 
 \subsection{Signal simulation}
@@ -210,7 +215,7 @@ This is shown in Fig.~\ref{fig:sim_cdc_hits}, where the position and granularity
 \end{figure}
 
 
-This new hit class and the associated algorithms were introduced to \SimG in 2019, and I contributed to their testing and refinement. This hit representation is designed toward gaseous detectors, hence it also applies to the Straw-Tube Tracker of Phase-I and Phase-II. 
+This new hit class and the associated algorithms were introduced to \SimG in 2019. This hit representation is designed toward gaseous detectors, hence it also applies to the Straw-Tube Tracker of Phase-I and Phase-II. 
 Because of the relatively low density of hit instances along a trajectory, important details of the true energy deposition pattern may be lost. Hence \SimG implements a run-time option to store \emph{auxiliary points} inside each hit instance, which provide a more fine-grained description of the particle's steps inside the cell.
 
 % The \texttt{IG4HitGas} class was designed to condense and record energy loss information inside gaseous ionisation detectors in \SimG (e.g. the CDC and Straw-Tube Tracker). Every energy deposit made by a particle inside the same CDC cell is accumulated into a single instance of the class, such that only one hit per cell per particle may exist. While this saves memory and disk space, it limits the amount of detail that can be stored. The recorded information allows for basic detector response simulation, but if more detail is required one can tune the \SimG simulation to store finer details inside each \texttt{IG4HitGas} instance.
@@ -218,7 +223,7 @@ Because of the relatively low density of hit instances along a trajectory, impor
 
 
 \section{Large-scale simulation: MC5}\label{sec:mc5}
-In early 2020, I was responsible for running a large-scale production of MC simulation data, called MC5, using computing facilities at the French National Institute of Nuclear and Particle Physics Computing Centre (CC-IN2P3) in Lyon, France.
+The 5th large-scale production of simulation data, MC5, was run in 2020 using computing facilities at the French National Institute of Nuclear and Particle Physics Computing Centre (CC-IN2P3) in Lyon, France.
 Using \num{2000} concurrent machines over the course of a few weeks, the outcomes of 1 billion proton-on-target (POT) collisions were simulated with \SimG in the CyDet configuration of COMET Phase-I.
 
 \subsubsection{Software}
@@ -232,39 +237,28 @@ Leading up to the MC5 production, several aspects of the software were changed o
 \end{itemize}
 
 \subsubsection{Run configuration}
-The simulation was split into two stages by dividing the world along a boundary which effectively separates the pion-production section and transport solenoid (upstream) from the detector region (downstream), as shown in Fig.~\ref{fig:Phase-I Sampling World}. In the upstream run, only particles that enter the detector region are saved to disk, along with their ancestors. Upon doing so, their position and momentum is recorded to a RooTracker file (see~\ref{subsec:RT}) which is used as input for the downstream simulation.
-
-This way to proceed means that the upstream simulation is unaffected by the disposition of the detector region, hence one can perform the upstream run once and use the results in multiple downstream configurations, changing the detector geometry (e.g.\ between CyDet and the StrawECAL) or magnetic field. Since most of the simulation time is spent in the pion-production section, this gives a flexible way to produce high-statistics MC datasets in multiple experimental configurations.
-%Another benefit is that it allows for re-seeding of the downstream run, whereby each event retains the same initial conditions but uses several different seedings of the random number generator, yielding a more diverse dataset at the cost of potentially biasing the sample.
-% ^ Off-topic?
 
 \begin{figure}
     \centering
-    \includegraphics[width=0.6\textwidth]{chapter3/sampling_world_crop_smooth_transparency.png}
-    \caption{Rendering of the Phase-I "Sampling" world, where the detector region is empty and only the upstream part of the simulation is performed. The blue surface, along with the floor and ceiling of the detector region, are the boundaries at which particles recorded for the subsequent downstream simulation.}
-    % Alternatively: show upstream trajectories and downstream continuation...
+    \includegraphics[width=0.6\textwidth]{chapter3/sampling_plane_illu_ink.pdf}
+    \caption{Top-down cutaway view of the running configuration for MC5, showing $1.6\times 10^5$ overlaid events (1\% of a bunch). The orange line shows the sampling boundary where particles crossing into the detector region via the beamline or wall are recorded. Only charged-particle trajectories are shown for clarity.}
     \label{fig:Phase-I Sampling World}
 \end{figure}
 
+
+
+The simulation was split into two stages by dividing the world along a boundary which effectively separates the pion-production section and transport solenoid (upstream) from the detector region (downstream), as shown in Fig.~\ref{fig:Phase-I Sampling World}. The boundary is set up to record the position and momentum of particles which enter the detector region. Most particles will enter via the beamline, but a small fraction (mostly neutrons) also penetrates through the wall, floor and ceiling. 
+In the upstream run, only particles that enter the detector region are saved to disk, along with their ancestors. Upon doing so, their position and momentum is recorded to an \texttt{oaRooTracker} file (see~\ref{subsec:RT}) which is used as input for the downstream simulation.
+
+This way to proceed means that the upstream simulation is unaffected by the disposition of the detector region, hence one can perform the upstream run once and use the results to seed multiple downstream configurations, e.g.\ changing the detector geometry (e.g.\ between CyDet and the StrawECAL) or magnetic field. Since most of the simulation time is spent in the pion-production section, this gives a flexible way to produce high-statistics MC datasets in multiple experimental configurations.
+%Another benefit is that it allows for re-seeding of the downstream run, whereby each event retains the same initial conditions but uses several different seedings of the random number generator, yielding a more diverse dataset at the cost of potentially biasing the sample.
+% ^ Off-topic?
+
 \subsubsection{Outcome}
-The data produced for MC5 has a total disk size of \SI{13}{TB} and is archived on the tape storage system at CC-IN2P3. The sample size of $10^9$ POT events represents 62 unique beam bunches when merged, or the equivalent of $~\SI{0.1}{\ms}$ of data acquisition in Phase-I.
+The data produced with MC5 has a total disk size of \SI{13}{TB} and is archived on the tape storage system at CC-IN2P3. The sample size of $10^9$ POT events represents 62 unique beam bunches when merged, or the equivalent of $~\SI{0.1}{\ms}$ of data acquisition in Phase-I.
 
 \section{Animated CyDet event display}
-In order to visualise events in the CyDet system, I developed a tool to display hit data from MC simulations as animations, similar to a slow-motion online monitor of the detector. Fig.~\ref{fig:animation} shows a series of frames from one such animation involving a $\mu$--$e$ conversion electron.
-
-\subsubsection{Visual features}
-The animation shows the CyDet system under two projections such that particle trajectories can be visualised in all three dimensions, over time. 
-Each animation shows one bunch event unfolding over one cycle, i.e.\ \SI{1170}{\ns} from the collision of one bunch until the arrival of the next one. Time is slowed down by a factor of ${\sim}10^{-7}$ such that the event unfolds over 10 real seconds.
-
-The left-hand side of the display shows the projection in the readout plane, with the CDC on the outside and the CTH counters on the inside. The right-hand side shows the perpendicular projection so that depth is apparent as well.
-In the centre of the x-y projection panel, a histogram shows the rate of hits over the event's duration and a cursor indicates the current time in the simulation.
-
-In the CDC, the true position of every hit is drawn as a circle with a radius proportional to the amount of energy deposited. Colour indicates hits produced by the same particle such that tracks can be disambiguated. 
-
-The CTH counters do not flash for every energy deposit but only in the case of a fourfold coincidence, i.e.\ if four adjacent counters are struck within a \SI{10}{\ns} window. Fourfold coincidences are most often caused accidentally by different particles, but occasionally a single track will hit four counters. In these occurrences, the track is emphasised in the animation and the particle type is displayed, as can be seen in Fig.~\ref{fig:animation:conv}.
-
-Hits in both sub-detectors fade out over time
-
+In order to visualise events in the CyDet system, I developed a tool to display hit data from MC simulations as animations, visually similar to a slow-motion online monitor of the detector. Fig.~\ref{fig:animation} shows a series of frames from one such animation involving a $\mu$--$e$ conversion electron.
 
 \begin{figure}
     \centering
@@ -301,20 +295,32 @@ Hits in both sub-detectors fade out over time
     \label{fig:animation}
 \end{figure}
 
-%The frames shown in Fig.~\ref{fig:animation} outline how the detector system would identify a conversion electron emitted during the trigger window. the animation depicts the appearance of a conversion electron. The electron is shown making two turns in the CDC and hitting the CTH, producing the fourfold coincidence trigger.
-% ^ Repetition
 
-The animation tool is written in Python. It draws individual frames using the \texttt{matplotlib} package and renders the animations into a standard video format with \texttt{ffmpeg}. 
+% Visual features
+The produced animations show the CyDet system under two projections such that particle trajectories can be visualised in all three dimensions, over time. The left-hand side of the display shows the projection in the readout plane, with the CDC on the outside and the CTH counters on the inside, while the right-hand side shows an orthogonal view with the same vertical axis.
+In the centre of the left-hand pane, a histogram shows the rate of hits over the event's duration and a cursor indicates the current time in the simulation.
 
-% --- end of Simulation
+Each animation shows one bunch event unfolding over one cycle, i.e.\ \SI{1170}{\ns} from the collision of one bunch until the arrival of the next one. Time is slowed down by a factor of ${\sim}10^{-7}$ such that the event unfolds over 10 real seconds.
+
+In the CDC, the true position of every hit is drawn as a circle with a radius proportional to the amount of energy deposited. Colour indicates hits produced by the same particle such that tracks can be disambiguated.
+
+The CTH counters flash only in the case of a fourfold coincidence i.e.\ if four adjacent counters are struck within a \SI{10}{\ns} window.
+Fourfold coincidences are most often caused accidentally by multiple particles, but occasionally a single track will hit four counters. In these occurrences, the track is emphasised in the animation and the particle type is displayed, as can be seen in Fig.~\ref{fig:animation:conv}.
+
+Hits in the CDC and CTH fade out over time such that the display does not become cluttered, but the fading rate is not representative of the actual time resolution of the sub-detectors.
+
+% Implementation details
+The animation rendering tool is written in Python. The code includes an algorithm for finding fourfold coincidences among CTH hits. To draw the frames, it relies on the \texttt{matplotlib} package. Once the individual frames have been rendered, a \texttt{bash} script runs \texttt{ffmpeg} to assemble them into a video format, such as \texttt{webm}, \texttt{gif} or \texttt{mp4}.
+
 
 \section{Version control and continuous integration}
 
-The source code of the ICEDUST software project is version-controlled using Git. A shared repository is hosted on the Gitlab instance of the IN2P3, where developers submit new features and bug fixes via merge requests. The repository contains a full history of the code, an issue tracker, and a set of wiki pages thoroughly documenting the software.
+The source code of the ICEDUST software project is version-controlled using Git. A shared repository is hosted on the Gitlab instance of the IN2P3, where developers collaborate on building up and improving the code base. The repository contains a full history of the code, an issue tracker, and a set of wiki pages documenting the software. 
 
-When submitting a merge request, changes to the code will typically be reviewed by another developer or maintainer who will verify that no new bugs are introduced into the main branch. To further reduce the likelihood of an issue occurring, the ICEDUST repository makes use of Gitlab's continuous integration system.
+Additions and changes are submitted to the central repository through merge requests from the developers.
+When submitting a merge request, changes to the code are typically reviewed by another developer or maintainer who verifies that no new bugs are introduced into the main branch. To further reduce the likelihood of an issue occurring, the ICEDUST repository makes use of Gitlab's continuous integration system.
 
-Every time new code enters the main branch, the whole codebase goes through a three-step pipeline. The first step compiles the code and builds a new version of every binary. The second step runs custom unit tests and validations using this new build. Each unit test typically verifies that a single functionality works as intended in an isolated environment, while validations can run multiple pieces of the software and ensure that the results are consistent between one revision of ICEDUST and the next.
+Every time new code enters the main branch, the whole code base goes through a three-step pipeline. The first step compiles the code and builds a new version of every binary. The second step runs custom unit tests and validations using this new build. Each unit test typically verifies that a single functionality works as intended in an isolated environment, while validations can run multiple pieces of the software and ensure that the results are consistent between one revision of ICEDUST and the next.
 
 If the building, unit testing and validation stages all pass, the pipeline moves to the final deployment step where the new binaries are assembled into a Docker image which is published to the repository's container registry. Users who wish to use the compiled software as-is can download this image and run it via Docker or Singularity.
 If any of the pipeline steps reports a failure, the developer submitting the merge request is notified and full logs are provided to identify the issue. A merge request is usually only accepted once the code has been reviewed and if the pipeline finishes successfully.

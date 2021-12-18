@@ -209,12 +209,12 @@ By definition, a function is 1-Lipschitz if and only if its gradient has norm at
     \mathcal{L}_D = 
         -\mathbb{E}_{\mathbf{x} \sim p} \left[ D(\mathbf{x}) \right] +
         \mathbb{E}_{\mathbf{z} \sim p_\mathbf{z}} \left[ D(G(\mathbf{z})) \right] +
-        \lambda\ \mathbb{E}_{\hat{\mathbf{x}} \sim p_{\hat{\mathbf{x}}}}
-            \left[ \big( \left\Vert \nabla_{\hat{\mathbf{x}}}\ D(\hat{\mathbf{x}}) \right\Vert_2 - 1 \big) ^2 \right],
+        \underbrace{\lambda\ \mathbb{E}_{\hat{\mathbf{x}} \sim p_{\hat{\mathbf{x}}}}
+            \left[ \big( \left\Vert \nabla_{\hat{\mathbf{x}}}\ D(\hat{\mathbf{x}}) \right\Vert_2 - 1 \big) ^2 \right]}_\textrm{Gradient penalty},
 \end{equation}
-where the third term is the gradient penalty added to the WGAN loss, and $\lambda$ is the gradient penalty constant, a new hyperparameter. In this term, samples $\hat{\mathbf{x}}$ are drawn from $p_{\hat{\mathbf{x}}}$ by sampling uniformly along straight lines between pairs of points from $p$ and $g$. 
+where the third term is the gradient penalty (GP) added to the WGAN loss, and $\lambda$ is the gradient penalty constant, a new hyperparameter. In this term, samples $\hat{\mathbf{x}}$ are drawn from $p_{\hat{\mathbf{x}}}$ by sampling uniformly along straight lines between pairs of points from $p$ and $g$. 
 
-In our experiments, we find that the above WGAN-GP loss provides the most stable training procedure for a variety of network architectures. In addition, it has the significant advantage of making the critic loss more interpretable and overfitting noticeable. As the authors demonstrate, the critic loss should converge to a maximum value over training iterations, while in the case of overfit, the critic losses evaluated on training samples and test samples diverge during training.
+In our experiments, we find that the above WGAN-GP loss provides the most stable training procedure for a variety of network architectures. In addition, it has the significant advantage of making the critic loss more interpretable and overfitting noticeable: as the authors demonstrate, the critic loss should converge to a maximum value over training iterations, while in the case of overfit, the critic losses evaluated on training samples and test samples diverge during training.
 
 % Examples of usage in HEP (see zotero)
 \subsection{GAN in High Energy Physics}
