@@ -39,14 +39,12 @@
 Experiments in high energy physics are commonly accompanied by the development of a set of software tools to help in manipulating and analysing experimental data. Simulations are used extensively to optimise experimental designs and prepare for the collection of real data while the physical instruments --- detectors, magnets, readout electronics and data acquisition systems --- are being manufactured and assembled.
 
 \section{The ICEDUST Software Suite}
-The COMET Collaboration develops a suite of software packages named ICEDUST (Integrated COMET Experimental Data User Software Toolkit) to satisfy the offline data-processing requirements of the experiment. Originally forked in 2013 from the software written for T2K's near detector system ND280, ICEDUST supports the needs of the COMET experiment with regard to simulation, on-disk data format, calibration, reconstruction and analysis.
-To fulfil these roles, ICEDUST is divided into specialised packages. Fig.~\ref{fig:icedust_schematic} shows the flow of real and simulated data within the ICEDUST framework, and lists the names of the key packages.
+The COMET Collaboration develops a suite of software packages named ICEDUST (Integrated COMET Experimental Data User Software Toolkit) to satisfy the offline data-processing requirements of the experiment. Originally forked in 2013 from the software written for T2K's near detector system ND280, ICEDUST supports the needs of the COMET experiment with regard to simulation, on-disk data format, calibration, reconstruction and analysis. Fig.~\ref{fig:icedust_schematic} shows the flow of real and simulated data within the ICEDUST framework, and lists the names of the key packages for each step.
 
 \begin{figure}
     \centering
-    \hl{TODO}
-    %\includegraphics{}
-    \caption{The ICEDUST package structure.}
+    \includegraphics[width=0.8\textwidth]{chapter3/ICEDUST_vertical.drawio.pdf}
+    \caption{Data flow in the ICEDUST framework. The colour of arrows represents the data format. By design, simulated detector data and real data share a common format such that they can be processed identically by the calibration, reconstruction and analysis stages.}
     \label{fig:icedust_schematic}
 \end{figure}
 
