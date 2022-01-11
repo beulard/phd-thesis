@@ -213,30 +213,39 @@ In our experiments, it was found that the above WGAN-GP loss provides the most s
 
 % Examples of usage in HEP (see zotero)
 \subsection{GANs in High Energy Physics}
-In high-energy physics, GANs have been proposed in a variety of experiments to supplement traditional Monte Carlo simulation. Usage of GANs in HEP typically falls in one of two categories: event generation, and generation of hit data at the detector level.
+In HEP, GANs (both in their original and subsequent formulations) have been proposed in a variety of experiments to supplement traditional Monte Carlo simulation. Their usage typically falls in one of two categories: event generation, and generation of hit data at the detector level.
 
-To speed up event generation for collider experiments, GANs have been used to simulate final-state kinematics for $Z$ and top production and decay~\cite{butter_how_2019, otten_event_2019}. 
+\subsubsection{Event generation}
+Event-generating GANs typically focus on synthesising kinematic properties of outgoing particles in specific processes. In high-energy and hadronic collisions especially, a GAN generator has the potential to greatly reduce the computational cost of generating events only via traditional MC simulations.
 
-In the context of the SHiP experiment, a GAN was used to generate muons produced in the \SI{400}{\GeV/\clight} proton beam collision with a fixed target~\cite{ahdida_fast_2019}.
-
-In experiments where hadronic jets are a common sight in the detector system, such as ATLAS and CMS, deep convolutional GANs were proposed as an alternative to MC simulations to generate \emph{jet images}, a 2D representation of the energy deposition patterns from jets~\cite{deOliveira2017b}. 
-
-Similarly, for generating realistic electromagnetic shower signatures inside a 3D calorimeter, the {\sc CaloGAN} model was developed~\cite{paganini_calogan_2018}. As a means to obtain more physically realistic samples, the generator is conditioned to produce appropriate showers given the energy of the inbound particle, such that conservation of total energy may be implicitly learned by the model along with the distribution of shower patterns.
-
-A GAN model was trained to generate dimuon final states from $Z$ decay, toward the production of large analysis-specific datasets for the High-Luminosity LHC~\cite{hashemi2019lhc}.
-
-WGAN-GP for cosmic ray-induced showers in water Cherenkov \cite{Erdmann2018}.
-
-WGAN-GP for calorimeter~\cite{Erdmann2019}.
+In collider experiments, GANs have been used to simulate final-state kinematics for $Z$- and top-producing events~\cite{butter_how_2019, otten_event_2019}. 
+In prevision for the High-Luminosity LHC, a GAN model was also trained to generate dimuon final states from $Z$ decay, toward the production of large analysis-specific datasets~\cite{hashemi2019lhc}.
+In the context of the SHiP experiment, a GAN model is used to sample the position and momentum of muons produced by the collision of a \SI{400}{\GeV/\clight} proton beam with a fixed target~\cite{ahdida_fast_2019}, thereby reducing the need to simulate every hadronic interaction.
 
 
+\subsubsection{Detector data generation}
+Generation of detector data means building a model of the possible particle signatures inside a specific detector system. The hit patterns depend on the type of detector, detector geometry, particle types and energies, as well as the timescale considered.
 
+In experiments where hadronic jets are commonly observed in the detector system, such as ATLAS and CMS, deep convolutional GANs were proposed as an alternative to MC simulations to generate \emph{jet images}, a 2D representation of the energy deposition patterns from jets~\cite{deOliveira2017b}. 
+
+Subsequently, the {\sc CaloGAN} model~\cite{paganini_calogan_2018} used parts of the jet-image GAN as building blocks in order to generate realistic 3D electromagnetic showers. As a noteworthy addition, the generator was also conditioned to produce appropriate showers given the energy of the inbound particle. This implies that conservation of total energy could be implicitly learned by the model along with the distribution of shower patterns, leading to more physical generated samples.
+
+
+In addition to the original GAN concept, the WGAN-GP formulation is also used in this context to generate simulated detector data. For instance, to produce cosmic ray-induced showers in a water-Cherenkov detector~\cite{Erdmann2018}, or showers caused by an electron beam hitting an electromagnetic calorimeter~\cite{Erdmann2019}.
+
+In the case of COMET, this approach seems especially useful because of the large physical separation between the initial beam collision and the detector volume. Secondary particles are heavily selected based on their charge and momentum before they can reach the detector system. Hence detector hit information is costly to simulate, and a generative model could circumvent this bottleneck by producing data directly at the detector level.
 
 % How do we plan on using this to sample CDC hits? Big brain time
 \section{The CDC hit generator}
-\hl{Intro bad}
-In our case, we chose to make use of a GAN model to synthesise hits in the CDC.
-% Motivate: we bypass the bottleneck and produce data where it is most needed
+Our approach draws inspiration from recent GAN implementations in other high energy physics experiments and in other areas, such as image and audio synthesis. We design a GAN model whose purpose is to efficiently and realistically generate hits in the CDC. 
+
+The training dataset is composed of discrete energy deposits made by simulated particles in the gas of the drift chamber. Because of the specificity of this setup (both in the types of particles simulated and in the detector's topology), the simulated data has a structure that does not resemble other conventional datasets, hence building a new model is more convenient than using pre-existing or pre-trained models.
+
+This section describes how the simulated hits are arranged and the networks consequently built in order to learn a representation of the data. Many aspects of the problem must be considered carefully in order for the GAN to produce a faithful model, such as how to represent and pre-process the hit data and how to emphasise the importance of relationships between consecutive hits to the networks.
+
+
+\subsection{Data selection and pre-processing}
+
 Hits from non-reconstructible events are selected and extracted to form the training dataset. Each hit is defined by four features: energy deposit, distance of closest approach between the track and wire, timing and position. We represent position by an integer wire index, ranging from 0 to 4986, which receives a different treatment to the other three continuous features.
 
 Training the GAN to generate individual hits is sufficient to model the underlying distributions of the four features, but the generated hits lack coherence. In the training dataset, when multiple hits are produced by a single track, they often occur next to each other in time and space. The GAN model must be allowed to see and process the relationship between consecutive hits for the generated hits to resemble simulated ones. Hence instead of having the model process single hits, it makes sense to feed it sequences of consecutive hits such that temporal information can be processed as well. The architecture of $G$ and $D$ should be allowed to accommodate for this extra dimension.
@@ -253,12 +262,11 @@ In this context, the convolution operation is defined as follows:
 where $i$ is the sequence index, $C_\mathrm{in}$ is the number of features\footnote{Also called the number of channels or feature maps.} in the input, $K$ is the kernel size, $w_k$ is the $k$-th element of the kernel, $x$ is the input sequence and $b$ is the bias. The kernel elements $w$ and bias $b$ are learned parameters of the neural network. 
 Convolutional layers typically have multiple output channels, each corresponding to a kernel and bias which extract different features from the input.
 
-The fact that the convolution kernel is moved along the sequence means that the network effectively considers the features of multiple consecutive hits at a time. The effective receptive field of the networks, in terms of consecutive hits, increases with the kernel size of the convolutional layers as well as the total number of layers (i.e.\ depth).
+The fact that the convolution kernel is moved along the sequence means that the network effectively considers the features of multiple consecutive hits at a time. The effective receptive field of the networks, in terms of consecutive hits, increases with the kernel size $K$ as well as the total number of layers (i.e.\ depth of the network).
 \begin{figure}
     \centering
-    %\includegraphics{}
-    \hl{TODO}
-    \caption{Temporal (1D) convolution}
+    \includegraphics[width=0.20\textwidth]{chapter4/1d_convolution.pdf}
+    \caption{Temporal (1D) convolution operation. For clarity, both the input and output sequences have one channel, i.e.\  $C_\mathrm{in} = C_\mathrm{out} = 1$ and the bias is zero, i.e.\ $b = 0$. The arrow shows the direction along which the kernel slides across the input sequence.}
     \label{fig:temporal_conv}
 \end{figure}
 
@@ -271,8 +279,8 @@ Optionally, convolution kernels can be applied over the sequence with a stride, 
 \subsubsection{Residual connections}
 \begin{figure}
     \centering
-    %\includegraphics{}
-    \caption{Residual block.}
+    \includegraphics[width=0.6\textwidth]{chapter4/residual_sel.drawio.pdf}
+    \caption{Residual blocks used in both networks to facilitate gradient flow. Blue arrows indicate an activation layer.}
     \label{fig:residual_block}
 \end{figure}
 In order to facilitate gradient flow from the discriminator to the generator and thus speed up training, convolutional layers are promoted to residual blocks~\cite{he2016deep} in both networks. A residual block combines two convolutional layers with a residual connection from the input to the output, allowing the gradients to propagate via two paths, as shown in Fig.~\ref{fig:residual_block}. The output $\mathbf{y}$ of the block can be written as

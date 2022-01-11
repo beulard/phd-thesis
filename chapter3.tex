@@ -41,15 +41,20 @@ Experiments in high energy physics are commonly accompanied by the development o
 \section{The ICEDUST Software Suite}
 The COMET Collaboration develops a suite of software packages named ICEDUST (Integrated COMET Experimental Data User Software Toolkit) to satisfy the offline data-processing requirements of the experiment. Originally forked in 2013 from the software written for T2K's near detector system ND280, ICEDUST supports the needs of the COMET experiment with regard to simulation, on-disk data format, calibration, reconstruction and analysis. Fig.~\ref{fig:icedust_schematic} shows the flow of real and simulated data within the ICEDUST framework, and lists the names of the key packages for each step.
 
+
 \begin{figure}
     \centering
-    \includegraphics[width=0.8\textwidth]{chapter3/ICEDUST_vertical.drawio.pdf}
+    \includegraphics[width=0.9\textwidth]{chapter3/ICEDUST_vertical.drawio.pdf}
     \caption{Data flow in the ICEDUST framework. The colour of arrows represents the data format. By design, simulated detector data and real data share a common format such that they can be processed identically by the calibration, reconstruction and analysis stages.}
     \label{fig:icedust_schematic}
+    \vspace{1.2cm}
+    \includegraphics[width=0.6\textwidth]{chapter3/oaEvent.drawio.pdf}
+    \caption{Layout of \oaEvent files which contain MC or real data. Blue arrows in Fig.~\ref{fig:icedust_schematic} indicate steps of the data flow where data is stored in this format on disk.}
+    \label{fig:oaEvent}
 \end{figure}
 
 \subsection{Data format}
-A key design principle of ICEDUST is to define a common format endorsed by both real and simulated data, such that the pipeline of calibration, reconstruction and analysis can be thoroughly tested in advance of the data acquisition stage. 
+A key design principle of ICEDUST is to define a common format adopted by both real and simulated data, such that the pipeline of calibration, reconstruction and analysis can be thoroughly tested with only simulation data, in advance of the data acquisition stage. 
 This offline data format is called \oaEvent. Based on the ROOT~\cite{BRUN199781} serialisation system, \oaEvent defines a file format where data is laid out as a sequence of events, shown schematically in Fig.~\ref{fig:oaEvent}. Each event object contains an arborescence of data containers, each of which holds an array of some given data type (e.g.\ detector hits, calibrated energy deposits, reconstructed tracks, etc.).
 
 From Phase-I onward, data will be collected using the MIDAS data acquisition system, hence the online on-disk format is based on MIDAS data banks. ICEDUST provides a direct translation from this format to \oaEvent via the \texttt{oaRawEvent} and \texttt{oaUnpack} packages. Once translated, the data can flow through the calibration, reconstruction and analysis stages.
@@ -59,13 +64,6 @@ From Phase-I onward, data will be collected using the MIDAS data acquisition sys
 %The term ``event'' here is purposefully abstract, as the information held in each event can vary. In simulations, an event can describe the outcome of a single proton-on-target (POT) collision, or the outcome of a full proton bunch ($16\times10^6$ POT). 
 %In data-taking runs, the definition of event will typically be dictated by the data acquisition system.  % So?
 
-\begin{figure}
-    \centering
-    %\includegraphics{}
-    \hl{TODO}
-    \caption{Layout of the \oaEvent format.}
-    \label{fig:oaEvent}
-\end{figure}
 
 
 %Each event is its own hierarchical ``directory'', where data containers can be stored and retrieved by name. The containers themselves are variable-length arrays of arbitrary data types---defined as C++ classes---where objects of the same type can be aggregated.
