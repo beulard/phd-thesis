@@ -190,39 +190,73 @@ The rest of this chapter focuses on hit generation inside the CDC of COMET Phase
 
 % How do we plan on using this to sample CDC hits? Big brain time
 \section{The CDC hit generator}
-Our approach draws inspiration from recent GAN implementations in other high energy physics experiments and in other areas, such as image and audio synthesis. We design a GAN model whose purpose is to efficiently and realistically generate hits in the CDC with the aim of augmenting MC datasets for COMET Phase-I. 
+Our approach draws inspiration from recent GAN implementations in other high energy physics experiments and in other areas, such as image and audio synthesis. We design a GAN model whose purpose is to efficiently and realistically generate hits in the CDC, with the aim of augmenting MC datasets for COMET Phase-I. 
 
-The training dataset is composed of discrete energy deposits made by simulated particles in the gas of the drift chamber. Because of the specificity of this setup (both in the types of particles simulated and in the detector's topology), the simulated data has a structure that does not resemble other conventional datasets, hence building a new model is more convenient than using pre-existing or pre-trained models.
+%The training dataset is composed of discrete energy deposits made by simulated particles in the gas of the drift chamber. Each hit occurs on a specific sense wire, whose layout was described in~\hl{ref{sec:cdc}}.
+In order to build a generative model to mimic the patterns of hits in the detector, it is necessary to keep in mind that these hits are physical energy deposits created by simulating energy loss processes of particles inside the detector gas volume. The true process of simulating hits thus obeys strict rules stemming from the physical models at play. In contrast, our GAN model is not required to be aware of the physics, which implies it can be much faster at producing hits, but it can also lead to uncertainty in the resulting generated data which must be evaluated.
 
-This section describes how the simulated hits are arranged and the networks consequently built in order to learn a representation of the data. Many aspects of the problem must be considered carefully in order for the GAN to produce a faithful model, such as how to represent and pre-process the hit data and how to emphasise the importance of relationships between consecutive hits to the networks.
+This section describes how the simulated hits are selected and arranged, and how the networks are consequently built in order to learn a representation of the data. Multiple aspects of the problem must be considered carefully in order for the GAN to produce a faithful model, such as how to select, lay out and pre-process the hit data, and how to emphasise the importance of relationships between consecutive hits during training.
 
 
-\subsection{Data selection} % Name?
-% Describe the procedure to go from MC data to fake datasets, can use some math abstraction for the GAN, indicating that it could be something else entirely, e.g. G(z) = fake hits, F(x_i, p_i, PID_i) = real hits, distribution(G(z)) ~ distribution(F(.))
-If our aim is to build a generative model to mimic the patterns of hits in the detector, it is necessary to keep in mind that these hits are physical energy deposits created by simulating energy loss processes of particles inside the active detector volume. The true process of producing hits thus obeys very strict rules stemming from the physical laws in play. The model we consider here is purely data-driven in that we do not enforce any awareness of physics onto it. Although this choice makes the potential speed-up significant, it also means that we lose much of our control over the content of produced data and rely on the accuracy of the model to yield physically realistic hits.
+\subsection{Hit data structure}
 
-In COMET Phase-I, events of particular interest come in the form of extended tracks in the CDC, whose accurate reconstruction (in both momentum and position) is paramount to the identification of a conversion signal. These tracks typically produce hits in very specific patterns, dictated by the particle's exact trajectory and energy loss in the gas. We expect a data-driven generative model to struggle in replicating the exact signature of such tracks, hence we decided early on to restrict the scope of the model to events that lack any physics-rich features. 
-% ^ OK
+The {\sc Geant4} simulation tracks particles one by one, and secondaries produced during the tracking of a particle are only propagated once the parent has ended its journey. This implies that simulated hits occur in a specific order (which is not strictly the time order), where hits produced by the same particle are laid out contiguously. During training, data is presented to the GAN in this particular order such that it learns to model entire tracks rather than isolated hits.
 
+Each hit is composed of four variables, each of which is necessary to later simulate the ionisation in the gas and the response of the readout electronics. These variables, or \emph{features}, are: the amount of energy deposited, the absolute time since the start of the event, the distance of closest approach from the track to the wire, and the position. Position of the hit inside the CDC can be represented as the index of the sense wire, from 0 to 4985. These features are summarised in Table~\ref{tab:gan_features}.
+
+\begin{table}[]
+    \setlength{\tabcolsep}{12pt}
+    \centering
+    \begin{tabular}{|c|c|c|c|c|}
+    \hline
+         & Energy deposit & Time & Distance of closest approach & Wire index  \\\hline
+        Units & \SI{}{\MeV} & \SI{}{\ns} & \SI{}{\mm} & N/A \\
+        Label & \texttt{edep} & \texttt{t} & \texttt{doca} & \texttt{wire} \\
+        Data type & \texttt{float} & \texttt{float} & \texttt{float} & \texttt{long}
+        \\\hline
+    \end{tabular}
+    \caption{Features composing each hit in the training dataset, and their properties.}
+    \label{tab:gan_features}
+\end{table}
+
+When a particle passes through the gas, it usually produces one hit in each cell it traverses. The GAN ought to be able to learn how hits in such a track are related, thus it should be able to process more than one hit at a time. Hence the data which is fed to the GAN during training is arranged into sequences, where multiple series of hits produced by multiple individual particles are present. Figure~\ref{fig:hit_data_structure} shows the arrangement of hit data as it is fed to the GAN during training. 
+%If these sequences are of fixed length, the training process can be heavily parallelised and executed on a GPU
+
+\begin{figure}
+    \centering
+    %\includegraphics{}
+    TODO
+    \caption{Structure of the hit data when training the GAN. Hits are arranged into fixed-length sequences in the {\sc Geant4} order, i.e.\ whereby hits from the same track are contiguous.}
+    \label{fig:hit_data_structure}
+\end{figure}
+
+
+%In COMET Phase-I, events of particular interest come in the form of extended tracks in the CDC, whose accurate reconstruction (in both momentum and position) is paramount to the identification of a conversion signal. These tracks typically produce hits in very specific patterns, dictated by the particle's exact trajectory and energy loss in the gas. We expect a data-driven generative model to struggle in replicating the exact signature of such tracks, hence we decided early on to restrict the scope of the model to events that lack any physics-rich features. 
+% ^ not necessarily true. it's not only for that reason, but also because we want fine control over the rates of specific events (e.g. signal-like)
+
+\subsection{Event selection}
 
 % Consequences: we have to combine MC and GAN data
 % ---> means we have to find a way to produce MC selectively
-% ---> and then mix hits in realistic proportions to get mock data.
+% ---> and then mix hits in the right proportions to get mock data.
 
-%In addition to the rigid constraints involved in producing tracks, it is preferable from the point of view of the reconstruction algorithms to be able to query their true provenance. A physics-agnostic model is by definition unable to provide that kind of truth information
-
-Not all MC data can be replaced by an alternative algorithm. Monte Carlo simulation provides full truth information about every hit in the detector system, including the type and whereabouts of the particles that produced them.
+Monte Carlo data and GAN-generated data are inherently different. Monte Carlo simulation provides full truth information about every hit in the detector system, including the type and whereabouts of the particles that produced them.
 Truth information is typically useful when a series of hits is susceptible to be reconstructed into a track, whose true provenance will be compared to the guess from the reconstruction algorithm. % Think about this. Is this true? What's the point of reconstruction? Should we consider a hypothetical scenario where we have a dataset with an unknown number of signal tracks and we ask someone to find the needles in the haystack?
 % Then why isn't our classification simply signal tracks versus all other tracks?
 
 % Characterisation of tracks in the CDC: high-momentum vs low-momentum
-Thankfully, not all hits in the detector require associated truth information, and in fact the majority of hits in the CDC appear like background noise whose origin is irrelevant to any reconstruction procedure. % The question is: DEFINE EXACTLY WHAT KIND OF DATA NEEDS TRUTH
+In contrast, the GAN is not explicitly aware of physics. Without a conditioning mechanism, it is impossible to extract particle type or track momentum from synthetic hits.
+However, not all hits in the detector require associated truth information, and in fact the majority of hits in the CDC appear like background noise whose origin is irrelevant to any reconstruction procedure. % The question is: DEFINE EXACTLY WHAT KIND OF DATA NEEDS TRUTH
 % Illustrate with figure ?
 %To illustrate this idea, Fig.~\ref{fig:noise_vs_recon} showcases hits produced by two types of particles.
 
 To define our problem, let us consider the situation where a large quantity of artificial data must be produced but traditional simulation is simply too inefficient to reach the desired sample size.
 
-% ^^^^ Review up to ^OK
+
+Hits from non-reconstructible events are selected and extracted to form the training dataset. Each hit is defined by four features: energy deposit, distance of closest approach between the track and wire, timing and position. We represent position by an integer wire index, ranging from 0 to 4986, which receives a different treatment to the other three continuous features.
+
+Training the GAN to generate individual hits is sufficient to model the underlying distributions of the four features, but the generated hits lack coherence. In the training dataset, when multiple hits are produced by a single track, they often occur next to each other in time and space. The GAN model must be allowed to see and process the relationship between consecutive hits for the generated hits to resemble simulated ones. Hence instead of having the model process single hits, it makes sense to feed it sequences of consecutive hits such that temporal information can be processed as well. The architecture of $G$ and $D$ should be allowed to accommodate for this extra dimension.
+
 
 \subsection{Hit categorisation}
 % This is what hits from p>50MeV tracks look like, and this is what hits from p<50MeV tracks look like.
@@ -261,16 +295,8 @@ This observation allows us to define \emph{reconstructible} events as those that
 %  49101 unique events (rate 5e-5) with noiselike hits (634266 hits)
 
 
-\subsection{Data selection and pre-processing}
-
-Hits from non-reconstructible events are selected and extracted to form the training dataset. Each hit is defined by four features: energy deposit, distance of closest approach between the track and wire, timing and position. We represent position by an integer wire index, ranging from 0 to 4986, which receives a different treatment to the other three continuous features.
-
-Training the GAN to generate individual hits is sufficient to model the underlying distributions of the four features, but the generated hits lack coherence. In the training dataset, when multiple hits are produced by a single track, they often occur next to each other in time and space. The GAN model must be allowed to see and process the relationship between consecutive hits for the generated hits to resemble simulated ones. Hence instead of having the model process single hits, it makes sense to feed it sequences of consecutive hits such that temporal information can be processed as well. The architecture of $G$ and $D$ should be allowed to accommodate for this extra dimension.
-
+\subsection{Pre-processing}
 \hl{Pre-processing}
-
-
-
 
 \subsection{Network design}
 Both the generator and discriminator are built using one-dimensional convolutional layers as building blocks.
