@@ -1,24 +1,24 @@
-\chapter{Fake Monte Carlo data generation}
-\begin{markdown}
----
+\chapter{Data Augmentation using Generative Adversarial Networks}
+% \begin{markdown}
+% ---
 
-- We are coming from the simulation chapter, so:
-- Problem description: 
- - We would like to produce larger amounts of simulation data, e.g. for a mock dataset in preparation for data-taking
- - But we have limited capability to produce MC data with simulation. The main bottleneck is in the pion-production section's hadronic interactions. Is there a faster way?
-  - The topic of this chapter is to consider the application of machine-learning methods in the fabrication of fake Monte Carlo data.
+% - We are coming from the simulation chapter, so:
+% - Problem description: 
+%  - We would like to produce larger amounts of simulation data, e.g. for a mock dataset in preparation for data-taking
+%  - But we have limited capability to produce MC data with simulation. The main bottleneck is in the pion-production section's hadronic interactions. Is there a faster way?
+%   - The topic of this chapter is to consider the application of machine-learning methods in the fabrication of fake Monte Carlo data.
 
 
-- Creation of dataset from Monte Carlo simulation
-  - Hit pattern characterisation
-  - Reconstructible vs noise-like classification
-- GAN theory [Goodfellow, WGAN, WGAN-GP]
- - Pre-processing
-- GAN design, basic architecture, softmax for classes [WGAN-GP]
-- GAN extensions, embedding? analogy with text?
+% - Creation of dataset from Monte Carlo simulation
+%   - Hit pattern characterisation
+%   - Reconstructible vs noise-like classification
+% - GAN theory [Goodfellow, WGAN, WGAN-GP]
+%  - Pre-processing
+% - GAN design, basic architecture, softmax for classes [WGAN-GP]
+% - GAN extensions, embedding? analogy with text?
 
----
-\end{markdown}
+% ---
+% \end{markdown}
 
 % Need to wrap the start of this chapter into a compelling narrative:
 % 1. MC allows us to see possible patterns in detector sys
@@ -37,13 +37,16 @@
 %  + Consider alternatives
 %  + Introduce GAN for detector-level data fabrication.
 
-As discussed in the previous chapter, Monte Carlo simulation allows us to draw a realistic picture of what will happen in our experimental setup once it is running. Most importantly, it provides an estimate of the kinds of patterns we can expect to observe in the detector system. 
 
-When performing a full simulation of COMET Phase-I, most of the activity takes place in the initial collision between the proton beam and the graphite target. The many hadronic interactions caused by the high-energy protons represent \SI{99.7}{\percent} of the computational cost of the Monte Carlo simulation.
-In contrast to that, because of the large distance between the pion-production section and the detector area, only one muon will come at rest in the stopping target for around every \num{2000} proton-on-target (POT) collisions. Hence, producing Monte Carlo data in the detector system by simulating POT events one by one is a very inefficient process. 
-Statistically, any one POT collision only has a \SI{0.12}{\percent} probability of producing observable information in the detector system (i.e.\ hits), such that the entirety of the computing time spent in the simulating the other \SI{99.88}{\percent} of collisions is physically irrelevant.
+% v -- This intro is plain useless I think.
+%As discussed in the previous chapter, Monte Carlo simulation allows us to draw a realistic picture of what will happen in our experimental setup once it is running. Most importantly, it provides an estimate of the kinds of patterns we can expect to observe in the detector system. 
 
-% Calculation of above number on MC5
+When performing a full simulation of COMET Phase-I, most of the activity takes place in the initial collision between the proton beam and the graphite target. The many hadronic interactions caused by the relatively high energy proton beam represent \SI{99.7}{\percent} of the computational cost of the Monte Carlo simulation.
+
+In addition, because of the large distance between the pion production section and the detector area, only about one POT collision in a thousand will produce observable hits in the detector system. Hence despite being the most physically accurate means to synthesise data in the detector, simulating each proton individually is also very computationally inefficient. Using this brute-force method with the infrastructure used for MC5, it is only possible to produce the equivalent of 100 to 1000 beam bunches, which is to be compared with the $2\times 10^{12}$ expected bunch collisions of COMET Phase-I.
+
+
+% Calculation of MC5 simulation "efficiency"
 % We can RooTrackerTree->Draw("StdHepN", "StdHepN>0") to get the number of events with a downstream track, but to get the number of events with a hit, it's a bit more involved...
 % We need to use the downstream root files
 % MC5A01: StdHepN>0 --> 27267993 / 990678400 ~= 2.75% in all RT files
@@ -61,7 +64,8 @@ Statistically, any one POT collision only has a \SI{0.12}{\percent} probability 
 % in first 10: 2611 / 49468900 ~= 5.278e-5
 % extrapolate to all = 52289 / 990678399
 
-On average, simulating a single POT event in the upstream region requires \SI{2.73}{\second}. A single proton bunch contains \num{16000000} protons, which, if simulated linearly would take 500 days of computation. The MC5 production ran for around two weeks on 2000 concurrent machines in order to fully simulate 62 bunches, around $1\times10^9$ protons. During the data-taking period for COMET Phase-I, $2\times10^{12}$ bunches, or $1.6\times 10^{19}$ protons, are expected to hit the target. Simulating a similar amount of MC data is simply impossible with the same methods and infrastructure used to produce MC5.
+% v -- If we need detail on how long one POT/bunch/Phase-I takes to simulate:
+%On average, simulating a single POT event in the upstream region requires \SI{2.73}{\second}. A single proton bunch contains \num{16000000} protons, which, if simulated linearly would take 500 days of computation. The MC5 production ran for around two weeks on 2000 concurrent machines in order to fully simulate 62 bunches, around $1\times10^9$ protons. During the data-taking period for COMET Phase-I, $2\times10^{12}$ bunches, or $1.6\times 10^{19}$ protons, are expected to hit the target. Simulating a similar amount of MC data is simply impossible with the same methods and infrastructure used to produce MC5.
 
 % Why would we want to do that though? Does anyone else do it? Asked Joe
  % Joe says: they only really care about signal MC, MC of just background seems pointless to them...
@@ -74,17 +78,126 @@ On average, simulating a single POT event in the upstream region requires \SI{2.
 % Because of the beam transport, it is hard to estimate the kinds background that can enter the detector system.
 % -> MC is heavily used to constrain or estimate the rates of various background processes
 
-In order to alleviate this issue, multiple solutions can be considered. One that is currently used in \texttt{SimG4} is to split the simulation into spatial regions, as was described in section~\ref{sec:mc5}. At the boundary between the two regions, particle kinematics (position and momentum) are recorded to a \texttt{oaRooTracker} file, to be later tracked inside the region of interest which contains the detector. Because of the stochastic nature of MC simulations, it is possible to modify the random seed used to simulate any given event. Hence from the same set of recorded particle kinematics, a multitude of outcomes can potentially be realised by re-seeding the simulation, thus artificially increasing the MC statistics.
 
-Another possibility is to estimate the position and momentum distribution of particles at the boundary to later sample more events. In ICEDUST, the \texttt{RooTrackerHistogram} functionality allows \texttt{oaRooTracker} files, which contain saved particle kinematics, to be turned into histograms from which events can later be generated.
+\subsubsection{Alternative sampling methods}
+In order to produce detector-level data more efficiently, the outcomes of a full MC simulation can be re-used to generate events. Generally, any sampling mechanism which generates events after the proton collision has occurred should increase the efficiency of the simulation (at the cost of potential bias).
 
-Alternatively, particles produced in the hadronic interactions which have a small probability of resulting in observable detector hits could also be aggressively culled, at the risk of potentially suppressing important events. To eliminate particles, a straightforward algorithm cutting on position, momentum and particle type might suffice, but a more intelligent classifying algorithm (e.g.\ a decision tree) which uses these features and others could improve the selection efficiency. 
+In the MC5 simulation, and as was described in Section~\ref{sec:mc5}, particles entering the detector region (either via the beam pipe or through the walls) are frozen and saved to disk to be processed later. These saved states can be recycled by propagating them with multiple random seeds, thus affecting every outcome and effectively increasing the amount of detector data that can be produced out of the same simulated collisions. %This re-seeding process 
 
-The option considered in this chapter to increase the amount of MC data that can be produced is to partially replace the Monte Carlo simulation by a faster generator of hit data at the detector level. This generator should replicate the micro and macro hit patterns produced by simulated particles in the detector, without relying on a full Monte Carlo approach (i.e.\ particle-by-particle tracking).
+A similar way of generating events closer to our region of interest is to estimate the kinematic distributions of particles at a given boundary and then sample from them. The \texttt{oaRooTracker} format used to store particle states can be converted into histograms, which are then used as input by the simulation.
 
-In this chapter, I will discuss my implementation of a Generative Adversarial Networks-based solution to the problem of fast realistic hit generation in the CDC. This restricted application ultimately strives toward a CyDet-wide event sampling algorithm whose lower computational cost compared to traditional Monte Carlo simulation would enable the production of larger datasets, on a scale approaching that of the Phase-I data-taking run.
+% v Cool idea for further studies
+%Alternatively, particles produced in the hadronic interactions which have a small probability of resulting in observable detector hits could also be aggressively culled, at the risk of potentially suppressing important events. To eliminate particles, a straightforward algorithm cutting on position, momentum and particle type might suffice, but a more intelligent classifying algorithm (e.g.\ a decision tree) which uses these features and others could improve the selection efficiency. 
 
-\section{Data selection} % Name?
+
+To further increase the efficiency of the simulation (i.e.\ the likelihood for any event to induce detector hits), one could find a way to sample hits directly.
+In this chapter, we consider a fast generator of hit data to supplement the Monte Carlo simulation. This generator should replicate hit patterns produced by simulated particles in the detector, without relying on a full particle-by-particle tracking approach.
+
+% v Can remove?
+%In this chapter, I will discuss my implementation of a Generative Adversarial Networks-based solution to the problem of augmenting CDC hit datasets. This restricted application ultimately strives toward a CyDet-wide event sampling algorithm whose lower computational cost compared to traditional Monte Carlo simulation would enable the production of larger datasets, on a scale approaching that of the Phase-I data-taking run.
+
+
+\section{Generative Adversarial Networks}
+Generative Adversarial Networks (GANs) are a class of generative models which can learn the underlying distribution of a dataset in order to synthesise new samples~\cite{goodfellow_generative_2014}. Training a GAN requires two neural networks to compete in a zero-sum game where one network (the \emph{generator}) generates samples and the other (the \emph{discriminator}) tries to discriminate between real and generated data.
+
+As the conventional example, let us consider the case where both the discriminator and the generator are implemented as multi-layer perceptrons, denoted as $D$ and $G$ respectively. $D$ is designed as a binary classifier whose goal is to tell real samples (from the \emph{training} dataset) apart from fake (generated) ones. Given a sample $\mathbf{x}$, it outputs a score between 0 and 1, i.e.\ $D(\mathbf{x}) \in [0, 1]$. Similar to a classification task, we define the loss function of $D$ as the cross entropy between its prediction and the true label (conventionally, 0 for a fake sample and 1 for a real sample):
+\begin{equation}\label{eq:D_loss}
+    \mathcal{L}_D = 
+    -\mathbb{E}_{\mathbf{x} \sim p} [ \log D(\mathbf{x}) ] -
+    \mathbb{E}_{\tilde{\mathbf{x}} \sim g} [ \log( 1 - D(\tilde{\mathbf{x}}) )],
+\end{equation}
+where $\mathbb{E}$ denotes the expected value or mean, $p$ is the distribution of real samples and $g$ is the distribution of samples generated by $G$.
+Minimising this function with respect to $D$ implies that the discriminator will tend to assign a high score to samples drawn from the training dataset and a low score to generated samples.
+
+
+The generator produces fake samples by mapping vectors from a latent space into data space. Latent-space vectors $\mathbf{z}$ are sampled according to a prior $p_\mathbf{z}(\mathbf{z})$, typically a multivariate normal distribution for simplicity and speed. The objective of $G$ is to generate samples $\tilde{\mathbf{x}} = G(\mathbf{z} \sim p_\mathbf{z})$ such that $D(\tilde{\mathbf{x}}) \rightarrow 1$. In other words, the generator aims to maximise the second term in Eq.~\ref{eq:D_loss}, and its loss function is
+\begin{align*}
+    \mathcal{L}_G &=     
+    \mathbb{E}_{\tilde{\mathbf{x}} \sim g} [ \log( 1 - D(\tilde{\mathbf{x}}) )]\\
+    &= \mathbb{E}_{\mathbf{z} \sim p_\mathbf{z}} [ \log( 1 - D(G(\mathbf{z}) )].
+\end{align*}
+
+Combining these minimisation tasks, we obtain the mathematical formulation of the adversarial training objective:
+\begin{equation}\label{eq:GAN}
+    \min_G \max_D \quad
+    \mathbb{E}_{\mathbf{x} \sim p} [ \log D(\mathbf{x}) ] +
+    \mathbb{E}_{\mathbf{z} \sim p_\mathbf{z}} [ \log( 1 - D(G(\mathbf{z}) )].
+\end{equation}
+Although it is not a formal requirement, using neural networks for $D$ and $G$ allows the above minimax solution to be approximated via backpropagation and stochastic gradient descent. At every iteration, both networks evaluate the gradient of their respective loss function with respect to their internal weights. Every weight is then adjusted toward the direction of largest decrease in the loss.
+
+
+\subsection{Wasserstein GAN}
+% WGAN, WGAN with Gradient Penalty
+The original formulation of GANs is notoriously difficult to train due to either non-convergence, instability or mode collapse\footnote{Mode collapse is the situation where $G$ maps every point in the latent space onto the same output, leading to low diversity in the generated samples.}. 
+Training a GAN model is highly sensitive to the choice of hyperparameters: learning rate, optimisation algorithm, network architecture. 
+
+The Wasserstein GAN (WGAN) formulation is an attempt to address the stability issues of the original GAN~\cite{arjovsky2017wasserstein}. The authors argue that solving Eq.~\ref{eq:GAN}, which implicitly minimises the Jensen-Shannon divergence between $p$ and $g$, leads to vanishing gradients when the discriminator is too powerful, and thus to unstable training.
+Instead, they propose to minimise the Wasserstein-1 distance between $p$ and $g$ because of its superior continuity and differentiability properties. They go on to show that if the discriminator is 1-Lipschitz continuous, then the adversarial training problem can be formulated as:
+\begin{equation}
+    \min_G \max_D \quad 
+        \mathbb{E}_{\mathbf{x} \sim p} \left[ D(\mathbf{x}) \right] - 
+        \mathbb{E}_{\mathbf{z} \sim p_\mathbf{z}} \left[ D(G(\mathbf{z})) \right].
+\end{equation}
+
+In practice, aside from a change to the loss functions, this method requires that the discriminator be replaced by a ``critic'', so-called because its output is not bounded to $[0, 1]$ and can be better interpreted as a score. In order for $D$ to satisfy the Lipschitz continuity constraint, the authors propose to restrict the magnitude of its weights to a small range, e.g. $[-0.01, 0.01]$.
+%explicitly stating that this is not an optimal solution. 
+
+In addition to demonstrating the superior training stability of this WGAN method, it was observed empirically that this formulation does not lead to mode collapse and improves the robustness of the GAN with respect to changes in the network architectures.
+
+% WGAN-GP
+The same year, another method to enforce the Lipschitz constraint on $D$ was discussed in~\cite{NIPS2017_892c3b1c}, which outlines the shortcomings of weight clipping and instead proposes to constrain the discriminator's gradient.
+By definition, a function is 1-Lipschitz if and only if its gradient has norm at most 1 everywhere. Since this is difficult to achieve in practice, the authors suggest a soft constraint on the gradient norm of $D$ using an explicit term in its loss function:
+\begin{equation}\label{eq:WGAN-GP}
+    \mathcal{L}_D = 
+        -\mathbb{E}_{\mathbf{x} \sim p} \left[ D(\mathbf{x}) \right] +
+        \mathbb{E}_{\mathbf{z} \sim p_\mathbf{z}} \left[ D(G(\mathbf{z})) \right] +
+        \underbrace{\lambda\ \mathbb{E}_{\hat{\mathbf{x}} \sim p_{\hat{\mathbf{x}}}}
+            \left[ \big( \left\Vert \nabla_{\hat{\mathbf{x}}}\ D(\hat{\mathbf{x}}) \right\Vert_2 - 1 \big) ^2 \right]}_\textrm{Gradient penalty},
+\end{equation}
+where the third term is the gradient penalty (GP) added to the WGAN loss, and $\lambda$ is the gradient penalty constant, a new hyperparameter. In this term, samples $\hat{\mathbf{x}}$ are drawn from $p_{\hat{\mathbf{x}}}$ by sampling uniformly along straight lines between pairs of points from $p$ and $g$. 
+
+In our experiments, it was found that the above WGAN-GP loss provides the most stable training procedure for a variety of network architectures. In addition, it has the significant advantage of making the critic loss more interpretable and overfitting noticeable: as the authors demonstrate, the critic loss tends to converge to a maximum value over training iterations, however in the case of overfit, the critic losses evaluated on training samples and test samples diverge during training.
+
+% Examples of usage in HEP (see zotero)
+\subsection{GANs in High Energy Physics}
+In HEP, GANs (both in their original and subsequent formulations) have been proposed in a variety of experiments to supplement traditional Monte Carlo simulation. Their usage typically falls in one of two categories: event generation, and generation of hit data at the detector level.
+
+\subsubsection{Event generation}
+Event-generating GANs typically focus on synthesising kinematic properties of outgoing particles in specific processes. In high-energy and hadronic collisions especially, a GAN generator has the potential to greatly reduce the computational cost of generating events via traditional MC simulations only.
+
+In collider experiments, GANs have been used to simulate final-state kinematics for $Z$- and top-producing events~\cite{butter_how_2019, otten_event_2019}. 
+In prevision for the High-Luminosity LHC, a GAN model was also trained to generate dimuon final states from $Z$ decay, toward the production of large analysis-specific datasets~\cite{hashemi2019lhc}.
+In the context of the SHiP experiment, a GAN model is used to sample the position and momentum of muons produced by the collision of a \SI{400}{\GeV/\clight} proton beam with a fixed target~\cite{ahdida_fast_2019}, thereby reducing the need to simulate every hadronic interaction.
+
+
+\subsubsection{Detector data generation}
+Generation of detector data means building a model of the possible particle signatures inside a specific detector system. The hit patterns depend on the type of detector, detector geometry, particle types and energies, as well as the timescales considered.
+
+In experiments where hadronic jets are commonly observed in the detector system, such as ATLAS and CMS, deep convolutional GANs were proposed as an alternative to MC simulations to generate \emph{jet images}, a 2D representation of the energy deposition patterns from jets~\cite{deOliveira2017b}. 
+
+Subsequently, the {\sc CaloGAN} model~\cite{paganini_calogan_2018} used parts of the jet-image GAN as building blocks in order to generate realistic 3D electromagnetic showers. As a noteworthy addition, the generator was also conditioned to produce appropriate showers given the energy of the inbound particle. This implies that conservation of total energy could be implicitly learned by the model along with the distribution of shower patterns, leading to more physically consistent samples.
+
+
+In addition to the original GAN concept, the WGAN-GP formulation is also used in the HEP domain to generate simulated detector data. For instance, to produce cosmic ray-induced showers in a water-Cherenkov detector~\cite{Erdmann2018}, or showers caused by an electron beam hitting an electromagnetic calorimeter~\cite{Erdmann2019}.
+
+In the case of COMET, both event generation and detector hit generation could be applied, as the main computational bottleneck occurs in simulating the proton beam collision. An event-generating GAN could for instance be trained to sample backward-going particles from the collisions. However, because of the large separation between the proton target and the detector, generating hits directly appears as the more efficient approach.
+The rest of this chapter focuses on hit generation inside the CDC of COMET Phase-I.
+%this approach seems especially useful because of the large physical separation between the initial beam collision and the detector volume. Secondary particles are heavily selected based on their charge and momentum before they can reach the detector system. Hence detector hit information is costly to simulate, and a generative model could circumvent this bottleneck by producing data directly at the detector level.
+
+
+
+
+
+% How do we plan on using this to sample CDC hits? Big brain time
+\section{The CDC hit generator}
+Our approach draws inspiration from recent GAN implementations in other high energy physics experiments and in other areas, such as image and audio synthesis. We design a GAN model whose purpose is to efficiently and realistically generate hits in the CDC with the aim of augmenting MC datasets for COMET Phase-I. 
+
+The training dataset is composed of discrete energy deposits made by simulated particles in the gas of the drift chamber. Because of the specificity of this setup (both in the types of particles simulated and in the detector's topology), the simulated data has a structure that does not resemble other conventional datasets, hence building a new model is more convenient than using pre-existing or pre-trained models.
+
+This section describes how the simulated hits are arranged and the networks consequently built in order to learn a representation of the data. Many aspects of the problem must be considered carefully in order for the GAN to produce a faithful model, such as how to represent and pre-process the hit data and how to emphasise the importance of relationships between consecutive hits to the networks.
+
+
+\subsection{Data selection} % Name?
 % Describe the procedure to go from MC data to fake datasets, can use some math abstraction for the GAN, indicating that it could be something else entirely, e.g. G(z) = fake hits, F(x_i, p_i, PID_i) = real hits, distribution(G(z)) ~ distribution(F(.))
 If our aim is to build a generative model to mimic the patterns of hits in the detector, it is necessary to keep in mind that these hits are physical energy deposits created by simulating energy loss processes of particles inside the active detector volume. The true process of producing hits thus obeys very strict rules stemming from the physical laws in play. The model we consider here is purely data-driven in that we do not enforce any awareness of physics onto it. Although this choice makes the potential speed-up significant, it also means that we lose much of our control over the content of produced data and rely on the accuracy of the model to yield physically realistic hits.
 
@@ -98,7 +211,7 @@ In COMET Phase-I, events of particular interest come in the form of extended tra
 
 %In addition to the rigid constraints involved in producing tracks, it is preferable from the point of view of the reconstruction algorithms to be able to query their true provenance. A physics-agnostic model is by definition unable to provide that kind of truth information
 
-Not all MC data can be replaced by an alternative algorithm. Monte Carlo simulation has the particularity of providing full truth information about every hit in the detector system, including the type and whereabouts of the particles that produced them.
+Not all MC data can be replaced by an alternative algorithm. Monte Carlo simulation provides full truth information about every hit in the detector system, including the type and whereabouts of the particles that produced them.
 Truth information is typically useful when a series of hits is susceptible to be reconstructed into a track, whose true provenance will be compared to the guess from the reconstruction algorithm. % Think about this. Is this true? What's the point of reconstruction? Should we consider a hypothetical scenario where we have a dataset with an unknown number of signal tracks and we ask someone to find the needles in the haystack?
 % Then why isn't our classification simply signal tracks versus all other tracks?
 
@@ -148,112 +261,19 @@ This observation allows us to define \emph{reconstructible} events as those that
 %  49101 unique events (rate 5e-5) with noiselike hits (634266 hits)
 
 
-
-
-\section{Generative Adversarial Networks}
-Generative Adversarial Networks (GANs) are a class of generative models which can learn the underlying distribution of a dataset in order to synthesise new samples~\cite{goodfellow_generative_2014}. Training a GAN requires two neural networks to compete in a zero-sum game where one network generates samples and the other tries to discriminate between real and generated data.
-
-As the classical example, let us consider the case where both the discriminator and the generator are multi-layer perceptrons denoted as $D$ and $G$, respectively. $D$ is built as a binary classifier whose goal is to tell apart real samples (from a \emph{training} dataset) from fake (generated) ones. Given a sample $\mathbf{x}$, it outputs a score between 0 and 1, i.e.\ $D(\mathbf{x}) \in [0, 1]$. Similar to a classification task, we define the loss function of $D$ as the cross entropy between its prediction and the true label (conventionally, 0 for a fake sample and 1 for a real sample):
-\begin{equation}\label{eq:D_loss}
-    \mathcal{L}_D = 
-    -\mathbb{E}_{\mathbf{x} \sim p} [ \log D(\mathbf{x}) ] -
-    \mathbb{E}_{\tilde{\mathbf{x}} \sim g} [ \log( 1 - D(\tilde{\mathbf{x}}) )],
-\end{equation}
-where $\mathbb{E}$ denotes the expected value or mean, $p$ is the distribution of real samples and $g$ is the distribution of samples generated by $G$.
-Intuitively, minimising this function means that the discriminator will assign a high score to samples drawn from the training dataset and a low score to generated samples.
-
-
-The generator produces fake samples by mapping vectors from a latent space into data space. Latent-space vectors $\mathbf{z}$ are sampled according to a prior $p_\mathbf{z}(\mathbf{z})$, typically a multivariate normal distribution for simplicity and speed. The objective of $G$ is to generate samples $\tilde{\mathbf{x}} = G(\mathbf{z} \sim p_\mathbf{z})$ such that $D(\tilde{\mathbf{x}}) \rightarrow 1$. In other words, the generator aims to maximise the second term in Eq.~\ref{eq:D_loss}, and its loss function is
-\begin{align*}
-    \mathcal{L}_G &=     
-    \mathbb{E}_{\tilde{\mathbf{x}} \sim g} [ \log( 1 - D(\tilde{\mathbf{x}}) )]\\
-    &= \mathbb{E}_{\mathbf{z} \sim p_\mathbf{z}} [ \log( 1 - D(G(\mathbf{z}) )].
-\end{align*}
-
-Combining these minimisation tasks, we obtain the mathematical formulation of the adversarial training objective:
-\begin{equation}\label{eq:GAN}
-    \min_G \max_D \quad
-    \mathbb{E}_{\mathbf{x} \sim p} [ \log D(\mathbf{x}) ] +
-    \mathbb{E}_{\mathbf{z} \sim p_\mathbf{z}} [ \log( 1 - D(G(\mathbf{z}) )].
-\end{equation}
-Using neural networks for $D$ and $G$ allows the above minimax solution to be approximated via backpropagation and stochastic gradient descent. At every iteration, both networks evaluate the gradient of their respective loss function with respect to their internal weights. Every weight is then adjusted toward the direction of largest decrease in the loss.
-
-
-\subsection{Wasserstein GAN}
-% WGAN, WGAN with Gradient Penalty
-The original formulation of GAN is notoriously difficult to train due to either non-convergence, instability or mode collapse\footnote{Mode collapse is the situation where $G$ maps every point in the latent space onto the same output, leading to low diversity in the generated samples.}. 
-Training a GAN model is highly sensitive to the choice of hyperparameters: learning rate, optimisation algorithm, network architecture. 
-
-The Wasserstein GAN (WGAN) formulation is an attempt to address the stability issues of the original GAN~\cite{arjovsky2017wasserstein}. The authors argue that solving Eq.~\ref{eq:GAN}, which implicitly minimises the Jensen-Shannon divergence between $p$ and $g$, leads to vanishing gradients when the discriminator is too powerful, and thus to unstable training.
-Instead, they propose to minimise the Wasserstein-1 distance between $p$ and $g$ because of its superior continuity and differentiability properties. They go on to show that if the discriminator is 1-Lipschitz continuous, then the adversarial training problem can be formulated as:
-\begin{equation}
-    \min_G \max_D \quad 
-        \mathbb{E}_{\mathbf{x} \sim p} \left[ D(\mathbf{x}) \right] - 
-        \mathbb{E}_{\mathbf{z} \sim p_\mathbf{z}} \left[ D(G(\mathbf{z})) \right].
-\end{equation}
-
-In practice, aside from a change to the loss functions, this method requires that the discriminator be replaced by a ``critic'', so-called because its output is not bounded to $[0, 1]$ and can be better interpreted as a score. In order for $D$ to satisfy the Lipschitz constraint, the authors propose to restrict the magnitude of its weights to a small range, e.g. $[-0.01, 0.01]$.
-%explicitly stating that this is not an optimal solution. 
-
-In addition to demonstrating the superior training stability of this WGAN method, it was observed empirically that this formulation does not lead to mode collapse and improves the robustness of the GAN with respect to changes in the network architectures.
-
-% WGAN-GP
-The same year, another method to enforce the Lipschitz constraint on $D$ was discussed in~\cite{NIPS2017_892c3b1c}, which outlines the shortcomings of weight clipping and instead proposes to constrain the discriminator's gradient.
-By definition, a function is 1-Lipschitz if and only if its gradient has norm at most 1 everywhere. Since this is difficult to achieve in practice, the authors suggest a soft constraint on the gradient norm of $D$ using an explicit term in its loss function:
-\begin{equation}\label{eq:WGAN-GP}
-    \mathcal{L}_D = 
-        -\mathbb{E}_{\mathbf{x} \sim p} \left[ D(\mathbf{x}) \right] +
-        \mathbb{E}_{\mathbf{z} \sim p_\mathbf{z}} \left[ D(G(\mathbf{z})) \right] +
-        \underbrace{\lambda\ \mathbb{E}_{\hat{\mathbf{x}} \sim p_{\hat{\mathbf{x}}}}
-            \left[ \big( \left\Vert \nabla_{\hat{\mathbf{x}}}\ D(\hat{\mathbf{x}}) \right\Vert_2 - 1 \big) ^2 \right]}_\textrm{Gradient penalty},
-\end{equation}
-where the third term is the gradient penalty (GP) added to the WGAN loss, and $\lambda$ is the gradient penalty constant, a new hyperparameter. In this term, samples $\hat{\mathbf{x}}$ are drawn from $p_{\hat{\mathbf{x}}}$ by sampling uniformly along straight lines between pairs of points from $p$ and $g$. 
-
-In our experiments, it was found that the above WGAN-GP loss provides the most stable training procedure for a variety of network architectures. In addition, it has the significant advantage of making the critic loss more interpretable and overfitting noticeable: as the authors demonstrate, the critic loss should converge to a maximum value over training iterations, while in the case of overfit, the critic losses evaluated on training samples and test samples diverge during training.
-
-% Examples of usage in HEP (see zotero)
-\subsection{GANs in High Energy Physics}
-In HEP, GANs (both in their original and subsequent formulations) have been proposed in a variety of experiments to supplement traditional Monte Carlo simulation. Their usage typically falls in one of two categories: event generation, and generation of hit data at the detector level.
-
-\subsubsection{Event generation}
-Event-generating GANs typically focus on synthesising kinematic properties of outgoing particles in specific processes. In high-energy and hadronic collisions especially, a GAN generator has the potential to greatly reduce the computational cost of generating events only via traditional MC simulations.
-
-In collider experiments, GANs have been used to simulate final-state kinematics for $Z$- and top-producing events~\cite{butter_how_2019, otten_event_2019}. 
-In prevision for the High-Luminosity LHC, a GAN model was also trained to generate dimuon final states from $Z$ decay, toward the production of large analysis-specific datasets~\cite{hashemi2019lhc}.
-In the context of the SHiP experiment, a GAN model is used to sample the position and momentum of muons produced by the collision of a \SI{400}{\GeV/\clight} proton beam with a fixed target~\cite{ahdida_fast_2019}, thereby reducing the need to simulate every hadronic interaction.
-
-
-\subsubsection{Detector data generation}
-Generation of detector data means building a model of the possible particle signatures inside a specific detector system. The hit patterns depend on the type of detector, detector geometry, particle types and energies, as well as the timescale considered.
-
-In experiments where hadronic jets are commonly observed in the detector system, such as ATLAS and CMS, deep convolutional GANs were proposed as an alternative to MC simulations to generate \emph{jet images}, a 2D representation of the energy deposition patterns from jets~\cite{deOliveira2017b}. 
-
-Subsequently, the {\sc CaloGAN} model~\cite{paganini_calogan_2018} used parts of the jet-image GAN as building blocks in order to generate realistic 3D electromagnetic showers. As a noteworthy addition, the generator was also conditioned to produce appropriate showers given the energy of the inbound particle. This implies that conservation of total energy could be implicitly learned by the model along with the distribution of shower patterns, leading to more physical generated samples.
-
-
-In addition to the original GAN concept, the WGAN-GP formulation is also used in this context to generate simulated detector data. For instance, to produce cosmic ray-induced showers in a water-Cherenkov detector~\cite{Erdmann2018}, or showers caused by an electron beam hitting an electromagnetic calorimeter~\cite{Erdmann2019}.
-
-In the case of COMET, this approach seems especially useful because of the large physical separation between the initial beam collision and the detector volume. Secondary particles are heavily selected based on their charge and momentum before they can reach the detector system. Hence detector hit information is costly to simulate, and a generative model could circumvent this bottleneck by producing data directly at the detector level.
-
-% How do we plan on using this to sample CDC hits? Big brain time
-\section{The CDC hit generator}
-Our approach draws inspiration from recent GAN implementations in other high energy physics experiments and in other areas, such as image and audio synthesis. We design a GAN model whose purpose is to efficiently and realistically generate hits in the CDC. 
-
-The training dataset is composed of discrete energy deposits made by simulated particles in the gas of the drift chamber. Because of the specificity of this setup (both in the types of particles simulated and in the detector's topology), the simulated data has a structure that does not resemble other conventional datasets, hence building a new model is more convenient than using pre-existing or pre-trained models.
-
-This section describes how the simulated hits are arranged and the networks consequently built in order to learn a representation of the data. Many aspects of the problem must be considered carefully in order for the GAN to produce a faithful model, such as how to represent and pre-process the hit data and how to emphasise the importance of relationships between consecutive hits to the networks.
-
-
 \subsection{Data selection and pre-processing}
 
 Hits from non-reconstructible events are selected and extracted to form the training dataset. Each hit is defined by four features: energy deposit, distance of closest approach between the track and wire, timing and position. We represent position by an integer wire index, ranging from 0 to 4986, which receives a different treatment to the other three continuous features.
 
 Training the GAN to generate individual hits is sufficient to model the underlying distributions of the four features, but the generated hits lack coherence. In the training dataset, when multiple hits are produced by a single track, they often occur next to each other in time and space. The GAN model must be allowed to see and process the relationship between consecutive hits for the generated hits to resemble simulated ones. Hence instead of having the model process single hits, it makes sense to feed it sequences of consecutive hits such that temporal information can be processed as well. The architecture of $G$ and $D$ should be allowed to accommodate for this extra dimension.
 
+\hl{Pre-processing}
 
 
-\subsection{Network architectures}
-Both the generator and discriminator are built using one-dimensional convolutional layers.
+
+
+\subsection{Network design}
+Both the generator and discriminator are built using one-dimensional convolutional layers as building blocks.
 The convolution kernels move along the temporal dimension, as illustrated in Fig.~\ref{fig:temporal_conv}. 
 In this context, the convolution operation is defined as follows:
 \begin{equation}
@@ -285,10 +305,14 @@ Optionally, convolution kernels can be applied over the sequence with a stride, 
 \end{figure}
 In order to facilitate gradient flow from the discriminator to the generator and thus speed up training, convolutional layers are promoted to residual blocks~\cite{he2016deep} in both networks. A residual block combines two convolutional layers with a residual connection from the input to the output, allowing the gradients to propagate via two paths, as shown in Fig.~\ref{fig:residual_block}. The output $\mathbf{y}$ of the block can be written as
 \begin{equation*}
-    \mathbf{y} = \mathcal{F}(\mathbf{x}) + W_s\mathbf{x},
+    \mathbf{y} = \mathcal{F}(\mathbf{x}) + \mathbf{x},
+    %\mathbf{y} = \mathcal{F}(\mathbf{x}) + W_s \mathbf{x},
 \end{equation*}
-where $\mathcal{F}$ represents the convolutions and $W_s$ is a linear dimension-matching operation which brings $\mathbf{x}$ into the same shape as $\mathbf{y}$, if necessary.
+where $\mathcal{F}$ represents the convolutions. %and $W_s$ is a linear dimension-matching operation which brings $\mathbf{x}$ into the same shape as $\mathbf{y}$, if necessary.
     
+    
+\subsubsection{Network architectures}
+
 The critic architecture is shown in full in Fig.~\ref{fig:disc_arch}. It uses \hl{N} residual blocks to extract features from the input hit sequence and outputs a single score following a global pooling operation and a fully-connected linear layer.
 
 \begin{figure}
@@ -323,7 +347,7 @@ Optimiser: Adam
 % The hit generation rate is X hits/s, whereas a traditional MC simulation starting from the POT collision creates X hits/s. If re-seeding is used to sample particles at the detector region boundary, X hits/s can be produced, so the efficiency gain is about 1e7.
 % However the worry is not so much whether or not GANs can yield increase in efficiency (they can), but whether their output respects all the physical properties expected from MC data.
 
-\subsection{\hl{How GAN-generated hits are merged back into a dataset}}
+%\subsection{\hl{How GAN-generated hits are merged back into a dataset}}
 
 
 
