@@ -242,7 +242,7 @@ When a particle passes through the gas, it usually produces one hit in each cell
 % ---> means we have to find a way to produce MC selectively
 % ---> and then mix hits in the right proportions to get mock data.
 
-Not all MC events are fed to the GAN for training. In particular, potential background sources, i.e.\ particles with a momentum around \SI{MeV/\clight}, produce characteristic tracks in the CDC which are likely to be reconstructed by a track fitting algorithm. By not training the GAN on these \emph{reconstructible} events, we avoid 
+Not all MC events are fed to the GAN for training. In particular, potential background sources, i.e.\ particles with a momentum around \SI{150}{MeV/\clight}, produce characteristic tracks in the CDC which are likely to be reconstructed by a track fitting algorithm. 
 
 Some of the events that occur in the CDC are critical for the $\mu$--$e$ conversion measurement. Potential sources of background, i.e.\ tracks with a momentum around \SI{105}{\MeV/\clight}, produce characteristic hit patterns which are likely to be reconstructed by a track fitting algorithm. On the other hand, lower-momentum particles tend to produce clustered, \emph{noise-like} hits which can easily be classified as uninteresting.
 
