@@ -199,11 +199,11 @@ This section describes how the simulated hits are selected and arranged, and how
 % and how to emphasise the importance of relationships between consecutive hits during training.
 
 
-\subsection{Hit data structure}
+\subsection{Hit data structure}\label{sec:hit_data_structure}
 
 The {\sc Geant4} simulation tracks particles one by one, and secondaries produced during the tracking of a particle are only propagated once the parent has ended its journey. This implies that simulated hits occur in a specific order (which is not strictly the time order), where hits produced by the same particle are laid out contiguously. During training, data is presented to the GAN in this particular order such that it learns to model entire tracks rather than isolated hits.
 
-Each hit is composed of four variables, each of which is necessary to later simulate the ionisation in the gas and the response of the readout electronics. These variables, or \emph{features}, are: the amount of energy deposited, the absolute time since the start of the event, the distance of closest approach from the track to the wire, and the position of the hit inside the CDC. This position is represented as the unique index of the cell, from 0 to 4985, in which the energy loss occurred. These features are summarised in Table~\ref{tab:gan_features}.
+Each hit is composed of four variables, each of which is necessary to later simulate the ionisation in the gas and the response of the readout electronics. These variables, or \emph{features}, are: the amount of energy deposited, the absolute time since the start of the event, the distance of closest approach (DCA) from the track to the wire, and the position of the hit inside the CDC. This position is represented as the unique index of the cell, from 0 to 4985, in which the energy loss occurred. These features are summarised in Table~\ref{tab:gan_features}.
 
 \begin{table}[]
     \setlength{\tabcolsep}{12pt}
@@ -221,8 +221,7 @@ Each hit is composed of four variables, each of which is necessary to later simu
     \label{tab:gan_features}
 \end{table}
 
-When a particle passes through the gas, it usually produces one hit in each cell it traverses. The GAN ought to be able to learn how hits in such a track are related, thus it should be able to process more than one hit at a time. Hence the data which is fed to the GAN during training is arranged into sequences, where multiple series of hits produced by multiple individual particles are present. Figure~\ref{fig:hit_data_structure} illustrates the arrangement of hit data as it is fed to the GAN during training. 
-%If these sequences are of fixed length, the training process can be heavily parallelised and executed on a GPU
+When a particle passes through the gas, it usually produces one hit in each cell it traverses. The GAN ought to be able to learn how hits in such a track are related, thus it should be able to process more than one hit at a time. Hence the data which is fed to the GAN during training is arranged into sequences, where multiple series of hits produced by multiple individual particles are present. Figure~\ref{fig:hit_data_structure} illustrates the arrangement of hit data as it is fed to the discriminator. 
 
 \begin{figure}
     \centering
@@ -242,46 +241,37 @@ When a particle passes through the gas, it usually produces one hit in each cell
 % ---> means we have to find a way to produce MC selectively
 % ---> and then mix hits in the right proportions to get mock data.
 
-Not all MC events are fed to the GAN for training. In particular, potential background sources, i.e.\ particles with a momentum around \SI{150}{MeV/\clight}, produce characteristic tracks in the CDC which are likely to be reconstructed by a track fitting algorithm. 
+Not all MC events are fed to the GAN for training. In particular, potential background sources, i.e.\ particles with a momentum around \SI{105}{MeV/\clight}, produce characteristic series of hits in the CDC which are likely to be reconstructed by a track fitting algorithm. Such a particle's trajectory is firmly dictated by the Lorentz force, which is a constraint difficult to impose on a GAN model. In addition, a GAN might generate too large or too small a proportion of reconstructible events, leading to more uncertainty in the background rates estimated from samples containing synthetic hits. Unlike MC data, fake tracks can yield no information concerning their origin, as the GAN-generated hits come completely unlabelled.
 
-Some of the events that occur in the CDC are critical for the $\mu$--$e$ conversion measurement. Potential sources of background, i.e.\ tracks with a momentum around \SI{105}{\MeV/\clight}, produce characteristic hit patterns which are likely to be reconstructed by a track fitting algorithm. On the other hand, lower-momentum particles tend to produce clustered, \emph{noise-like} hits which can easily be classified as uninteresting.
+These reasons motivate a splitting of the dataset into \emph{reconstructible} events, which only the MC simulation may simulate, and \emph{noise-like} events, where no reconstructible track occurs and the data is deemed ``uninteresting'' enough that it can be augmented by the GAN without biasing the physical results. 
 
-In order to preserve the information present in events where signal-like tracks occur,  MC events are split into two categories, depending on whether or not at least one \emph{reconstructible} track appeared in the CDC during the event. The GAN is only trained on noise-like hits, while simulating reconstructible events is reserved to the Monte Carlo simulation, such that all reconstructed tracks have a history which can be retraced all the way to the proton collision. This effectively prevents the GAN from producing fake signal-like tracks unconstrained, which could cause excessive uncertainties in the estimated background rates. However, the two categories of events must now be produced separately and later recombined in the right proportions, which adds some complexity to the task.
+% EVENT RECOMBINATION
+%Once the GAN model is trained, it should be able to efficiently generate noise-like hits which must then be mixed back into MC-simulated reconstructible events in the right proportions. Because the generative neural network can leverage parallel processing and GPUs, noise-like data is expected to be cheap to produce, hence the bottleneck remains with the MC simulation. However the yield of reconstructible events may be increased with selective event sampling. 
 
-
-Noise-like hits, from events without a reconstructible track, are selected and extracted to form the training dataset. 
-
-%Training the GAN to generate individual hits is sufficient to model the underlying distributions of the four features, but the generated hits lack coherence. In the training dataset, when multiple hits are produced by a single track, they often occur next to each other in time and space. The GAN model must be allowed to see and process the relationship between consecutive hits for the generated hits to resemble simulated ones. Hence instead of having the model process single hits, it makes sense to feed it sequences of consecutive hits such that temporal information can be processed as well. The architecture of $G$ and $D$ should be allowed to accommodate for this extra dimension.
-
-
-% This is what hits from p>50MeV tracks look like, and this is what hits from p<50MeV tracks look like.
-% From the observation that the former tends to have reconstructible hit patterns while the latter contains single hits and localised patterns, we categorise MC events according to whether they contain a p>50MeV track or not.
-% We then use hits from non-reconstructible events as the training data for our generative model whose goal is to learn the patterns and generate original samples of hits that we can use as a background onto which we will overlay reconstructible MC-simulated events.
-% The result is the offloading of 99% of the simulation to the generative model which is highly efficient. Since the information generated is 
-Fig.~\ref{fig:cdc_rconst_vs_noise} outlines the difference in structure between hits produced by $p\leq\SI{50}{\MeV/\clight}$ tracks and hits produced by $p>\SI{50}{\MeV/\clight}$ tracks in the CDC. Generally, this arbitrary momentum threshold separates what the detector recognises as prolonged circular tracks from more localised clusters of hits.
+In each MC event (corresponding to the outcomes of one proton-on-target collision), we determine if at least one particle with $p > \SI{50}{\MeV/\clight}$ has entered the CDC and produced at least 4 hits. In this case, all hits from the event are given the ``reconstructible'' label and will not be used to train the GAN. If no reconstructible track has occurred during the event, all hits are considered noise-like and are added to the training dataset. Fig.~\ref{fig:cdc_rconst_vs_noise} compares noise-like and reconstructible hits and outlines the difference in structure between the two categories. 
 
 \begin{figure}
     \centering
-    \begin{subfigure}{0.4\textwidth}
+    \captionsetup[subfigure]{justification=centering}
+    \begin{subfigure}[t]{0.45\textwidth}
         \centering
-        %\includegraphics[width=\textwidth]{example-image}
-        \hl{TODO}
-        \caption{$p\leq\SI{50}{\MeV/\clight}$}
+        \hspace{-1cm} % To align graphics with caption
+        \includegraphics[width=\textwidth]{chapter4/only_noiselike_events.pdf}
+        \caption{Noise-like hits from 100 MC events.}
         \label{fig:cdc_rconst_vs_noise:low}
     \end{subfigure}
-    \hfill
-    \begin{subfigure}{0.4\textwidth}
+    \begin{subfigure}[t]{0.45\textwidth}
         \centering
-        %\includegraphics[width=\textwidth]{example-image}
-        \hl{TODO}
-        \caption{$p > \SI{50}{\MeV/\clight}$}
+        \hspace{-1cm} % To align graphics with caption
+        \includegraphics[width=\textwidth]{chapter4/only_reconstructible_events.pdf}
+        \caption{Reconstructible hits from 10 MC events.}
         \label{fig:cdc_rconst_vs_noise:high}
     \end{subfigure}
-    \caption{Comparison of hit patterns in the CDC produced by tracks of different momenta.}
+    \caption{Comparison of hit patterns in the CDC depending on whether or not a reconstructible track occurred. The area of each hit is proportional to the amount of energy deposited, and the colour denotes particle type.}
     \label{fig:cdc_rconst_vs_noise}
 \end{figure}
 
-%This observation allows us to define \emph{reconstructible} events as those that induce one or more such high-momentum tracks, while other events can be seen as merely sources of \emph{noise} in the detector. This noise will be the target of our generative model. Statistically, more than 97\% of hit-inducing events contain only such hits, so offloading that part of the simulation to an efficient generator could greatly improve the total amount of data that can be produced.
+The MC5 dataset contains $10^{9}$ events of which \numprint{51137} have hits in the CDC. Of those, \numprint{2036} have at least one reconstructible track, and \numprint{49101} do not. In the latter, \numprint{634266} hits are present which compose the GAN's training dataset.
 
 % MC5A02 calculation of noise-like vs reconstructible events/hits: 
 % Total events: 990678399
@@ -290,8 +280,39 @@ Fig.~\ref{fig:cdc_rconst_vs_noise} outlines the difference in structure between 
 %  49101 unique events (rate 5e-5) with noiselike hits (634266 hits)
 
 
+
+%In order to preserve the information present in events where signal-like tracks occur,  MC events are split into two categories, depending on whether or not at least one \emph{reconstructible} track appeared in the CDC during the event. The GAN is only trained on noise-like hits, while simulating reconstructible events is reserved to the Monte Carlo simulation, such that all reconstructed tracks have a history which can be retraced all the way to the proton collision. This effectively prevents the GAN from producing fake signal-like tracks unconstrained, which could cause excessive uncertainties in the estimated background rates. However, the two categories of events must now be produced separately and later recombined in the right proportions, which adds some complexity to the task.
+
+%Training the GAN to generate individual hits is sufficient to model the underlying distributions of the four features, but the generated hits lack coherence. In the training dataset, when multiple hits are produced by a single track, they often occur next to each other in time and space. The GAN model must be allowed to see and process the relationship between consecutive hits for the generated hits to resemble simulated ones. Hence instead of having the model process single hits, it makes sense to feed it sequences of consecutive hits such that temporal information can be processed as well. The architecture of $G$ and $D$ should be allowed to accommodate for this extra dimension.
+
+
+% This is what hits from p>50MeV tracks look like, and this is what hits from p<50MeV tracks look like.
+% From the observation that the former tends to have reconstructible hit patterns while the latter contains single hits and localised patterns, we categorise MC events according to whether they contain a p>50MeV track or not.
+% We then use hits from non-reconstructible events as the training data for our generative model whose goal is to learn the patterns and generate original samples of hits that we can use as a background onto which we will overlay reconstructible MC-simulated events.
+% The result is the offloading of 99% of the simulation to the generative model which is highly efficient. 
+
+
+
 \subsection{Pre-processing}
-\hl{Pre-processing}
+Before training, the three continuous hit features (energy deposit, time and DCA) undergo a non-linear \emph{quantile transformation}. Each feature's cumulative distribution function is estimated to map the values to a uniform distribution. Then, the new values are mapped to a normal distribution using the quantile function. 
+
+Transforming our data such that it is normally distributed helps the GAN learn the distributions of each feature and the correlations between them, as is shown in Section~\ref{sec:gan_eval}. In addition, since it is common for the final activation layer of the generator to be a hyperbolic tangent function, each feature is also re-scaled independently such that their values lie in the same range as $\tanh$, i.e.\ $[-1, 1]$.
+
+%We use the standard classes \texttt{preprocessing.QuantileTransformer} and \texttt{preprocessing.MinMaxScaler} from the Scikit-learn~\cite{sklearn} package to apply these pre-processing steps.
+
+The fourth feature, wire index, is not modified. However, it receives a special treatment during training because it encodes the hit positions, which is an important feature that both the generator and discriminator must process appropriately.
+
+\subsection{Hit sequence sampling and data augmentation}
+At each step of the training, an entire sequence of $L$ hits\footnote{More accurately, an entire mini-batch of $N$ sequences of $L$ hits.} is sampled and passed through the discriminator to calculate its output and loss function. As discussed in Section~\ref{sec:hit_data_structure}, the order in which hits are laid out matters, because the hits produced by a given particle occur consecutively in the simulation (hence they are interrelated). 
+
+For the GAN model to be efficient, $L$ is preferably fixed such that fast tensor operations can be applied to the hit sequence.
+Hence, $L$ becomes a hyperparameter of the training, and may be smaller or greater than the typical number of hits in one MC event. In the latter case, hits from multiple events are concatenated to form a sequence, and some hits from the last event may be deferred to the next sequence if the total number of hits exceeds $L$. 
+
+Hits belonging to different events are completely unrelated. This provides freedom to swap events and concatenate their hits in a new order. The order of hits within the same event is preserved, but the boundaries are modified. % as in: last hit of event X leads to a different hit in event Z than in event Y
+If the sequence length $L$ is significantly greater than the typical number of hits per event, then this event recombination can greatly enhance the diversity of the training dataset.
+
+The training dataset obtained from MC5 contains \numprint{49101} unique, independent events. On average, one event contains 13 hits. Assuming a sequence length of $L=512$, 40 events are required to compose one sequence. Hence the number of possible combinations is ${49101 \choose 40} \approx 10^{139}$. Such a large number of samples is unnecessary to train the GAN, thus we select a subset of \numprint{500000} sequences as our training dataset.
+
 
 \subsection{Network design}
 Both the generator and discriminator are built using one-dimensional convolutional layers as building blocks.
@@ -357,7 +378,7 @@ The generator architecture is shown in Fig.~\ref{fig:gen_arch}.
 The GAN is trained with the WGAN-GP loss on Nvidia V100 GPUs.
 Optimiser: Adam
 
-\subsection{Evaluation}
+\subsection{Evaluation}\label{sec:gan_eval}
 
 
 %%Compared to other methods such as variational auto-encoders (VAE), GAN are able to generate completely original samples.
