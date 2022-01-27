@@ -111,11 +111,11 @@ Minimising this function with respect to $D$ implies that the discriminator will
 
 
 The generator produces fake samples by mapping vectors from a latent space into data space. Latent-space vectors $\mathbf{z}$ are sampled according to a prior $p_\mathbf{z}(\mathbf{z})$, typically a multivariate normal distribution for simplicity and speed. The objective of $G$ is to generate samples $\tilde{\mathbf{x}} = G(\mathbf{z} \sim p_\mathbf{z})$ such that $D(\tilde{\mathbf{x}}) \rightarrow 1$. In other words, the generator aims to maximise the second term in Eq.~\ref{eq:D_loss}, and its loss function is
-\begin{align*}
+\begin{align}\label{eq:GAN_gen}
     \mathcal{L}_G &=     
-    \mathbb{E}_{\tilde{\mathbf{x}} \sim g} [ \log( 1 - D(\tilde{\mathbf{x}}) )]\\
+    \mathbb{E}_{\tilde{\mathbf{x}} \sim g} [ \log( 1 - D(\tilde{\mathbf{x}}) )]\nonumber\\
     &= \mathbb{E}_{\mathbf{z} \sim p_\mathbf{z}} [ \log( 1 - D(G(\mathbf{z}) )].
-\end{align*}
+\end{align}
 
 Combining these minimisation tasks, we obtain the mathematical formulation of the adversarial training objective:
 \begin{equation}\label{eq:GAN}
@@ -156,7 +156,14 @@ By definition, a function is 1-Lipschitz if and only if its gradient has norm at
 \end{equation}
 where the third term is the gradient penalty (GP) added to the WGAN loss, and $\lambda$ is the gradient penalty constant, a new hyperparameter. In this term, samples $\hat{\mathbf{x}}$ are drawn from $p_{\hat{\mathbf{x}}}$ by sampling uniformly along straight lines between pairs of points from $p$ and $g$. 
 
-In our experiments, it was found that the above WGAN-GP loss provides the most stable training procedure for a variety of network architectures. In addition, it has the significant advantage of making the critic loss more interpretable and overfitting noticeable: as the authors demonstrate, the critic loss tends to converge to a maximum value over training iterations, however in the case of overfit, the critic losses evaluated on training samples and test samples diverge during training.
+The generator loss is, again, defined so as to increase the likelihood that a fake sample will fool the discriminator:
+\begin{equation}\label{eq:WGAN-GP_gen}
+    \mathcal{L}_G = 
+    -\mathbb{E}_{\mathbf{z} \sim p_\mathbf{z}} \left[ D(G(\mathbf{z})) \right],
+\end{equation}
+which is the second term of Eq.~\ref{eq:WGAN-GP} with a minus sign, similarly to the relationship between Eqs.~\ref{eq:GAN} and~\ref{eq:GAN_gen}. Note that more generally, the generator loss should be defined as $\mathcal{L}_G \equiv -\mathcal{L}_D$ to achieve adversarial training. However in the case of neural networks trained by gradient descent, only the derivative of $\mathcal{L}_G$ with respect to $G$'s weights is relevant. Since the other terms in $\mathcal{L}_D$ do not depend on $G$'s weights, we can discard them in $\mathcal{L}_G$ to achieve the same result.
+
+In our experiments, it was found that the above WGAN-GP formulation provides the most stable training procedure for a variety of network architectures. In addition, it has the significant advantage of making the critic loss more interpretable and overfitting noticeable: as the authors demonstrate, the critic loss tends to converge to a maximum value over training iterations, however in the case of overfit, the critic losses evaluated on training samples and test samples diverge during training.
 
 % Examples of usage in HEP (see zotero)
 \subsection{GANs in High Energy Physics}
@@ -205,7 +212,7 @@ The {\sc Geant4} simulation tracks particles one by one, and secondaries produce
 
 Each hit is composed of four variables, each of which is necessary to later simulate the ionisation in the gas and the response of the readout electronics. These variables, or \emph{features}, are: the amount of energy deposited, the absolute time since the start of the event, the distance of closest approach (DCA) from the track to the wire, and the position of the hit inside the CDC. This position is represented as the unique index of the cell, from 0 to 4985, in which the energy loss occurred. These features are summarised in Table~\ref{tab:gan_features}.
 
-\begin{table}[]
+\begin{table}
     \setlength{\tabcolsep}{12pt}
     \centering
     \begin{tabular}{l|cccc}
@@ -225,9 +232,8 @@ When a particle passes through the gas, it usually produces one hit in each cell
 
 \begin{figure}
     \centering
-    %\includegraphics{}
-    TODO
-    \caption{Structure of the hit data when training the GAN. Hits are arranged into fixed-length sequences in the {\sc Geant4} order, i.e.\ whereby hits from the same track are contiguous.}
+    \includegraphics[width=0.5\textwidth]{chapter4/hit_sequence.drawio.pdf}
+    \caption{Structure of one training sample. Hits are arranged into fixed-length sequences in the {\sc Geant4} order, i.e.\ whereby hits from the same track are contiguous.}
     \label{fig:hit_data_structure}
 \end{figure}
 
@@ -294,43 +300,74 @@ The MC5 dataset contains $10^{9}$ events of which \numprint{51137} have hits in 
 
 
 \subsection{Pre-processing}
-Before training, the three continuous hit features (energy deposit, time and DCA) undergo a non-linear \emph{quantile transformation}. Each feature's cumulative distribution function is estimated to map the values to a uniform distribution. Then, the new values are mapped to a normal distribution using the quantile function. 
+The three continuous hit features (energy deposit, time and DCA) are physical quantities with different units and scales. Their distributions are shown in Fig.~\ref{fig:original_feature_distributions}. In order to maximise gradient flow in the discriminator, it is common practice for all features to be re-scaled into a fixed range, e.g.\ $[0, 1]$. However, in the case of highly uneven and/or discontinuous distributions, the generator can struggle to model the data which results in a distribution of generated data which does not match the distribution of training data.
 
-Transforming our data such that it is normally distributed helps the GAN learn the distributions of each feature and the correlations between them, as is shown in Section~\ref{sec:gan_eval}. In addition, since it is common for the final activation layer of the generator to be a hyperbolic tangent function, each feature is also re-scaled independently such that their values lie in the same range as $\tanh$, i.e.\ $[-1, 1]$.
+\begin{figure}
+    \centering
+    \noindent\makebox[\linewidth][c]{
+    \begin{subfigure}[t]{0.35\textwidth}
+        \centering
+        \hspace{-0.5cm}
+        \includegraphics[width=\textwidth]{chapter4/real_edep.pdf}
+        %\caption{}
+    \end{subfigure}
+    \begin{subfigure}[t]{0.35\textwidth}
+        \centering
+        \hspace{-0.5cm}
+        \includegraphics[width=\textwidth]{chapter4/real_t.pdf}
+        %\caption{}
+    \end{subfigure}
+    \begin{subfigure}[t]{0.35\textwidth}
+        \centering
+        \hspace{-0.5cm}
+        \includegraphics[width=\textwidth]{chapter4/real_doca.pdf}
+        %\caption{}
+    \end{subfigure}}
+    \caption{Distributions of the three continuous features used to train the GAN.}
+    \label{fig:original_feature_distributions}
+\end{figure}
+
+To alleviate this issue and define a common scale for all continuous features, each feature undergoes a non-linear \emph{quantile transformation}, which corresponds to a mapping from each value $x_i$ to $y_i = \Phi^{-1}(F(x_i))$, where $F$ is the empirical cumulative distribution function (CDF) of the feature, and $\Phi$ is the Gaussian CDF. This transformation effectively yields normally distributed features, which the generator can more easily reproduce. Its task is not however made trivial, as the correlations between features remain, which it must learn to model.
+
+In addition to the quantile transformation, the values of each feature are re-scaled independently to lie within the $[-1, 1]$ range. To prevent the generator from producing values out of this range, which would give the discriminator a clear indication of a sample being fake, the hyperbolic tangent function is used as the generator's final layer.
 
 %We use the standard classes \texttt{preprocessing.QuantileTransformer} and \texttt{preprocessing.MinMaxScaler} from the Scikit-learn~\cite{sklearn} package to apply these pre-processing steps.
 
-The fourth feature, wire index, is not modified. However, it receives a special treatment during training because it encodes the hit positions, which is an important feature that both the generator and discriminator must process appropriately.
+%The fourth feature, wire index, is not modified prior to training. However, as the only discrete quantity, it receives a special treatment by the networks during training.
+% More? Less?
 
 \subsection{Hit sequence sampling and data augmentation}
-At each step of the training, an entire sequence of $L$ hits\footnote{More accurately, an entire mini-batch of $N$ sequences of $L$ hits.} is sampled and passed through the discriminator to calculate its output and loss function. As discussed in Section~\ref{sec:hit_data_structure}, the order in which hits are laid out matters, because the hits produced by a given particle occur consecutively in the simulation (hence they are interrelated). 
+At each step of the training, the discriminator receives two mini-batches of hit sequences: one from the training data and one synthesised by the generator. The discriminator's output is then used to compute the loss for $G$ and $D$, according to Eqs.~\ref{eq:WGAN-GP} and~\ref{eq:WGAN-GP_gen}.
 
-For the GAN model to be efficient, $L$ is preferably fixed such that fast tensor operations can be applied to the hit sequence.
-Hence, $L$ becomes a hyperparameter of the training, and may be smaller or greater than the typical number of hits in one MC event. In the latter case, hits from multiple events are concatenated to form a sequence, and some hits from the last event may be deferred to the next sequence if the total number of hits exceeds $L$. 
+To allow parallel processing of the hit sequences by the networks, a fixed sequence length $L$ is defined prior to training. This allows hits to be packed into dense tensors upon which vectorised operations can be applied. Typically, a sequence will contain concatenated sets of hits from multiple tracks and from multiple events.
 
-Hits belonging to different events are completely unrelated. This provides freedom to swap events and concatenate their hits in a new order. The order of hits within the same event is preserved, but the boundaries are modified. % as in: last hit of event X leads to a different hit in event Z than in event Y
-If the sequence length $L$ is significantly greater than the typical number of hits per event, then this event recombination can greatly enhance the diversity of the training dataset.
-
-The training dataset obtained from MC5 contains \numprint{49101} unique, independent events. On average, one event contains 13 hits. Assuming a sequence length of $L=512$, 40 events are required to compose one sequence. Hence the number of possible combinations is ${49101 \choose 40} \approx 10^{139}$. Such a large number of samples is unnecessary to train the GAN, thus we select a subset of \numprint{500000} sequences as our training dataset.
+Hits belonging to different events are completely unrelated, as they are not the product of the same POT collision. This provides freedom to swap events and concatenate their hits in any order. The order of hits within the same event should however be preserved. % as in: last hit of event X leads to a different hit in event Z than in event Y
+Combining events in many different ways enhances the diversity and size of the training dataset, which alleviates the possibility of overfit or mode collapse.
+Concatenating the \numprint{634266} hits linearly into sequences of length $L=512$ would yield only 1239 samples. By rearranging the events, we produce \numprint{500000} unique samples which the GAN learns from. Although it is not the maximum number of event re-combinations, this number of samples was found to be large enough to prevent overfit of our GAN model.
 
 
 \subsection{Network design}
-Both the generator and discriminator are built using one-dimensional convolutional layers as building blocks.
-The convolution kernels move along the temporal dimension, as illustrated in Fig.~\ref{fig:temporal_conv}. 
-In this context, the convolution operation is defined as follows:
-\begin{equation}
-    y_{i} = \sum_{j=1}^{C_\mathrm{in}} \sum_{k=-(K-1)/2}^{(K-1)/2} w_k\ x_{i+k,j} + b,
+In order to process sequences of hits efficiently, both networks use a series of convolutional layers which --- unintuitively --- apply cross-correlation operations between the input $x$ and the trainable kernel $w$:
+\begin{equation}\label{eq:conv1d}
+    %y_{i} = (x \ast w)_{i} + b = \sum_{j=1}^{C_\mathrm{in}} \sum_{k=-(K-1)/2}^{(K-1)/2} w_k\ x_{i+k,j} + b,
+    y_{i} = (w \ast x)_{i} = \sum_{k} w_k \cdot x_{i+k},
 \end{equation}
-where $i$ is the sequence index, $C_\mathrm{in}$ is the number of features\footnote{Also called the number of channels or feature maps.} in the input, $K$ is the kernel size, $w_k$ is the $k$-th element of the kernel, $x$ is the input sequence and $b$ is the bias. The kernel elements $w$ and bias $b$ are learned parameters of the neural network. 
-Convolutional layers typically have multiple output channels, each corresponding to a kernel and bias which extract different features from the input.
+where $i$ is the position along the output sequence $y$, and $k$ runs over the kernel weights. This operation is illustrated in Fig.~\ref{fig:temporal_conv}.
 
-The fact that the convolution kernel is moved along the sequence means that the network effectively considers the features of multiple consecutive hits at a time. The effective receptive field of the networks, in terms of consecutive hits, increases with the kernel size $K$ as well as the total number of layers (i.e.\ depth of the network).
 \begin{figure}
     \centering
     \includegraphics[width=0.20\textwidth]{chapter4/1d_convolution.pdf}
-    \caption{Temporal (1D) convolution operation. For clarity, both the input and output sequences have one channel, i.e.\  $C_\mathrm{in} = C_\mathrm{out} = 1$ and the bias is zero, i.e.\ $b = 0$. The arrow shows the direction along which the kernel slides across the input sequence.}
+    \caption{Temporal (1D) convolution operation with kernel size 3. For clarity, both the input and output sequences have one channel, i.e.\  $C_\mathrm{in} = C_\mathrm{out} = 1$. The arrow shows the direction along which the kernel slides across the input sequence.}
     \label{fig:temporal_conv}
 \end{figure}
+
+
+Unlike raster images, the input to the discriminator is not a two-dimensional array of pixels, but a one-dimensional sequence of hits, hence the kernels are also one dimensional. The ``channels'' of the input sequence correspond to features of the hits. Within a convolutional layer, Eq.~\ref{eq:conv1d} is applied as many times as there are channels in the input sequence, and the result is the sum over channels. 
+The operation can also be applied in parallel with many different kernels, in which case each kernel will produce one channel in the output sequence.
+
+
+The fact that the kernel acts on adjacent elements implies that the network effectively considers the features of multiple consecutive hits in order to compute the output. This gives the networks the receptive field they need to model how consecutive hits are related.
+%The effective receptive field of the networks, in terms of hits, increases with the kernel size as well as the total number of layers (i.e.\ depth of the network).
 
 The discriminator takes as input a sequence of hits of length $L$. Each hit is described by four features: energy deposit, time, distance of closest approach and wire index. The first convolutional layer computes feature maps by sliding its kernels over the hit sequence. A non-linear activation function is applied to the feature maps before passing them on to the next layer. 
 In our case, the leaky rectified linear unit, or \texttt{LeakyReLU}~\cite{Maas13rectifiernonlinearities}, is used as the non-linearity.
