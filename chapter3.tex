@@ -1,4 +1,5 @@
-\chapter{Software and Simulation}\label{chapter3}
+\chapter{Software and Simulation}
+\label{chapter3}
 
 \newcommand{\SimG}{\texttt{SimG4}\xspace}
 \newcommand{\oaEvent}{\texttt{oaEvent}\xspace}
@@ -83,7 +84,8 @@ Simulations of the COMET experiment can be split into four steps:
 Once all four stages of the simulation pipeline are complete, the result should closely resemble real data post-translation from MIDAS to \oaEvent. This implies that it should be able to naturally flow through the calibration, reconstruction and analysis stages. At each stage, the information may be compared with the truth information available from the particle tracking stage in order to refine each process. This exercise should also outline the performance of the offline data-processing pipeline and hence provide an estimate of the computational requirements of the experiment.
 
 
-\subsection{Intermediate simulation file format}\label{subsec:RT}
+\subsection{Intermediate simulation file format}
+\label{subsec:RT}
 The \texttt{oaRooTracker} package defines another ROOT-based file format used by the simulation to save and retrieve particle states. The typical use case is for a simulation to record particles that have reached a key geometrical element (e.g.\ the detector region) to build up a sample of interesting events. The saved particle states can then be used as input to subsequent simulations, easing the need for a full simulation run every time a change is made to the geometry or physics models.
 
 In addition, from a large enough sample of particles recorded at some key volume boundary, the flux distribution of inbound particles can be estimated. Events can then be sampled from this distribution to increase the statistics inside the volume of interest. 
@@ -187,7 +189,8 @@ From the normal beam simulation, one can estimate the spatial distribution of mu
 
 Fig.~\ref{fig:signal_event} shows a simulated conversion electron emerging from the stopping target, depositing energy inside the CDC gas, to eventually trigger the CTH by hitting four adjacent counters. 
 
-\subsection{Representation of simulated CDC hits}\label{subsec:SD}
+\subsection{Representation of simulated CDC hits}
+\label{subsec:SD}
 % Sensitive detectors, truth-hit representation
 As a particle passes through a material, it tends to lose energy to the medium, e.g. through inelastic scattering or ionisation. 
 In MC simulations, simulated energy deposits must be recorded inside active detector elements in order for us to determine the response of the detector and readout systems to the passage of the particle.
@@ -218,7 +221,8 @@ Because of the relatively low density of hit instances along a trajectory, impor
 
 
 
-\section{Large-scale simulation: MC5}\label{sec:mc5}
+\section{Large-scale simulation: MC5}
+\label{sec:mc5}
 The 5th large-scale production of simulation data, MC5, was run in 2020 using computing facilities at the French National Institute of Nuclear and Particle Physics Computing Centre (CC-IN2P3) in Lyon, France.
 Using \numprint{2000} concurrent machines over the course of a few weeks, the outcomes of 1 billion proton-on-target (POT) collisions were simulated with \SimG in the CyDet configuration of COMET Phase-I.
 

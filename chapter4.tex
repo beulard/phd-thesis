@@ -206,7 +206,8 @@ This section describes how the simulated hits are selected and arranged, and how
 % and how to emphasise the importance of relationships between consecutive hits during training.
 
 
-\subsection{Hit data structure}\label{sec:hit_data_structure}
+\subsection{Hit data structure}
+\label{sec:hit_data_structure}
 
 The {\sc Geant4} simulation tracks particles one by one, and secondaries produced during the tracking of a particle are only propagated once the parent has ended its journey. This implies that simulated hits occur in a specific order (which is not strictly the time order), where hits produced by the same particle are laid out contiguously. During training, data is presented to the GAN in this particular order such that it learns to model entire tracks rather than isolated hits.
 
@@ -443,7 +444,8 @@ The GAN is trained with the WGAN-GP loss on Nvidia V100 GPUs.
     \label{tab:training_hyperparameters}
 \end{table}
 
-\subsection{Evaluation}\label{sec:gan_eval}
+\subsection{Evaluation}
+\label{sec:gan_eval}
 
 
 %%Compared to other methods such as variational auto-encoders (VAE), GAN are able to generate completely original samples.
