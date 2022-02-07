@@ -403,13 +403,28 @@ Having introduced the building blocks, we can now assemble them into our discrim
 
 \begin{figure}
     \centering
-    %\includegraphics{}
-    \caption{Network architectures.}
+    \begin{subfigure}[t]{0.49\textwidth}
+        \centering
+        \caption{Generator.}
+        \vspace{0.3cm}
+        \includegraphics[width=\textwidth]{chapter4/network_architectures_gen.drawio.pdf}
+        \hspace{-1cm} % To align graphics with caption
+    \end{subfigure}
+    \\
+    \vspace{0.5cm}
+    \begin{subfigure}[t]{0.49\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{chapter4/network_architectures_disc.drawio.pdf}
+        \hspace{-1cm} % To align graphics with caption
+        \caption{Discriminator.}
+    \end{subfigure}
+    \caption{Network architectures. The layer types are: \texttt{FC} for fully-connected, \texttt{Conv} for a standard convolution and \texttt{ConvT}
+    for a transposed (fractionally-strided) convolution. In convolutional layers, kernel size and stride are denoted by \texttt{k} and \texttt{s}, respectively.}
     \label{fig:architectures}
 \end{figure}
 
 \subsubsection{Data flow}
-In the generator, the input vector, sampled from latent space, is first passed through a fully-connected layer, after which it is reshaped to have a length of 4. The proto-sequence is then upsampled by fractionally-strided convolutional layers, adding finer and finer detail to the sample. As the length increases, the number of channels is decreased to limit the total number of operations and the network's complexity. Once the sample has reached a length of $L$, the information is projected to data space: to obtain the continuous features, a convolutional layer with three output channels is applied and its output passed through a $\tanh$ function, yielding values in the range $[-1, 1]$; while for the discrete wire index, we use a layer with 4986 output channels\footnote{As many as there are wires.} followed by a softmax\footnote{Defined as $\mathrm{Softmax}(\mathbf{x})_i = \frac{\exp(-x_i)}{\sum_j \exp(-x_j)}.$} function to determine the network's preferred choice of wire for each hit.
+In the generator, the input vector, sampled from latent space, is first passed through a fully-connected layer, after which it is reshaped to have a length of 4. The proto-sequence is then up-sampled by fractionally-strided convolutional layers, adding finer and finer detail to the sample. As the length increases, the number of channels is decreased to limit the total number of operations and the network's complexity. Once the sample has reached a length of $L$, the information is projected to data space: to obtain the continuous features, a convolutional layer with three output channels is applied and its output passed through a $\tanh$ function, yielding values in the range $[-1, 1]$; while for the discrete wire index, we use a layer with 4986 output channels\footnote{As many as there are wires.} followed by a softmax\footnote{Defined as $\mathrm{Softmax}(\mathbf{x})_i = \frac{\exp(-x_i)}{\sum_j \exp(-x_j)}.$} function to determine the network's preferred choice of wire for each hit.
 
 The discriminator extracts information from the input hits through its convolutional layers which progressively down-sample the sequence while increasing the number of channels. After 7 residual blocks, a global average pooling is performed, i.e.\ for each channel, the result is the average value over the sequence. The resulting tensor is passed through a final fully-connected layer, combining the features into a single scalar which is the score for that sequence.
 
