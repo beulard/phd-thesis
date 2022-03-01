@@ -369,11 +369,11 @@ Unlike in the common case of raster images, the input to the discriminator is no
 The operation can also be applied in parallel with many different kernels, in which case each kernel will produce one channel in the output sequence.
 
 
-The fact that the kernel acts on adjacent elements implies that the network effectively processes multiple consecutive hits at a time. This allows the generator to synthesise coherent sequences or the discriminator to perceive whether a generated sequence has the same overarching structure as real sequences.
+The fact that the kernel acts on adjacent elements implies that the network effectively processes multiple consecutive hits at a time. This allows the generator to synthesise coherent sequences and the discriminator to perceive whether a generated sequence has the same overarching structure as real sequences.
 
 %\subsubsection{Strided convolutions for up- and down-sampling}
 Optionally, convolution kernels can be applied over the sequence with a stride, meaning that the kernel moves down by more than one element between two cross-correlation operations.
-This has the effect of producing an output sequence that is shorter than the input sequence. This is often used to allow the network to see the data over increasingly large scales as well as to keep the total number of operations reasonable in layers where the input has many channels.
+This has the effect of producing an output sequence that is shorter than the input sequence. This is often used to allow the network to see the data over increasingly large scales and to keep the total number of operations reasonable in layers where the input has many channels.
 
 %In the generator, fractionally-strided convolutions are used in order for the sequence length to increase
 
@@ -426,42 +426,86 @@ Having introduced the building blocks, we can now assemble them into our discrim
 \subsubsection{Data flow}
 In the generator, the input vector, sampled from latent space, is first passed through a fully-connected layer, after which it is reshaped to have a length of 4. The proto-sequence is then up-sampled by fractionally-strided convolutional layers, adding finer and finer detail to the sample. As the length increases, the number of channels is decreased to limit the total number of operations and the network's complexity. Once the sample has reached a length of $L$, the information is projected to data space: to obtain the continuous features, a convolutional layer with three output channels is applied and its output passed through a $\tanh$ function, yielding values in the range $[-1, 1]$; while for the discrete wire index, we use a layer with 4986 output channels\footnote{As many as there are wires.} followed by a softmax\footnote{Defined as $\mathrm{Softmax}(\mathbf{x})_i = \frac{\exp(-x_i)}{\sum_j \exp(-x_j)}.$} function to determine the network's preferred choice of wire for each hit.
 
-The discriminator extracts information from the input hits through its convolutional layers which progressively down-sample the sequence while increasing the number of channels. After 7 residual blocks, a global average pooling is performed, i.e.\ for each channel, the result is the average value over the sequence. The resulting tensor is passed through a final fully-connected layer, combining the features into a single scalar which is the score for that sequence.
+The discriminator extracts information from the input hits through its convolutional layers, progressively down-sampling the sequence while increasing the number of channels. After 7 residual blocks, a global average pooling is performed, i.e.\ for each channel, the result is the average value over the sequence. The resulting tensor is passed through a final fully-connected layer, combining the features into a single scalar which is the score for that sample.
 
 \subsubsection{Gradient flow for discrete features}
 In processing all features, it is important that the two networks perform only operations which are differentiable, otherwise the gradients cannot be propagated from the score back to the generator weights. However, this requires precautions when processing discrete features; for instance, indexing an array using the wire index is prohibited.
 
 Despite this, we require that the discriminator have some knowledge of where, in the detector, hits are located, so that it can use this knowledge as a criterion in its judgement. A straightforward way to give this information to the discriminator would be to use the wire index to query a lookup table of wire positions, but this does not allow gradient flow. 
 
-Instead, we represent the wire index as a one-hot encoded vector, whose size is the total number of wires, and where only the entry corresponding to the index is 1, and the others are 0. This vector representation can be used in differentiable operations to query a particular entry in a table: if we represent the table of wire positions as a matrix $W$ with dimensions $2 \times 4986$, and the one-hot encoded wire vector as a 4986-dimensional vector $\mathbf{v}$, the product $W \cdot \mathbf{v}$ is a differentiable operation and its output is the wire's position since the one-hot vector picks out the correct entry from the position matrix.
+Instead, we represent the wire index as a \emph{one-hot encoded} vector, whose size is the total number of wires, and where only the entry corresponding to the index is 1, and the others are 0. This vector representation can be used in differentiable operations to query a particular entry in a table: if we represent the table of wire positions as a matrix $W$ with dimensions $2 \times 4986$, and the one-hot encoded wire vector as a 4986-dimensional vector $\mathbf{v}$, the product $W \cdot \mathbf{v}$ is a differentiable operation and its output is the wire's position since the one-hot vector picks out the correct entry from the position matrix.
 
 In the case of generated hits, the wire vector is not exactly one-hot: instead, the output of the softmax operation is a vector of real-valued probabilities for each wire. The multiplication of the above wire position matrix with such a vector can be interpreted as a weighted sum of all wire positions with the weight corresponding to the softmax probability. Hence the result is not an exact wire location but an approximate region of the detector in which the generator envisions the hit to be.
 
-
-% How does discriminator process wire?
-    % One-hot encoding, softmax probabilities, differentiability
+As discussed in~\cite{NIPS2017_892c3b1c}, we might suspect that the discriminator can learn to reject the output of the generator because it does not look like a one-hot vector. However the W1 distance between the real and generated data is well-defined and continuous even in this particular case of a discrete variable, hence the Wasserstein GAN approach allows the networks to learn.
 
 
 \subsection{Training}
-
-The GAN is trained with the WGAN-GP loss on Nvidia V100 GPUs.
+The networks are trained via gradient descent of the WGAN-GP loss, using the Adam~\cite{Kingma2015AdamAM} algorithm. The PyTorch framework upon which the GAN is implemented allows all tensor operations to be performed on a Nvidia Graphics Processing Unit (GPU) via CUDA, which speeds up training iterations roughly tenfold. Hyperparameters, such as learning rate and $\lambda_{GP}$, are initially set to a default value from common practice guidelines and then adjusted if needed to ensure stable loss curves. Table~\ref{tab:training_hyperparameters} summarises the values of various hyperparameters.
 
 \begin{table}[]
     \centering
-    \begin{tabular}{cccccc}
+    \begin{tabular}{lcccccc}
     \toprule
-        Sequence length & Parameters & Loss &    Optimiser & Learning rate & $\lambda_\mathrm{GP}$ \\
-         & \begin{tabular}{cc} $D$ & $G$ \end{tabular} & & & & \\\midrule
-        512 & \begin{tabular}{c|c} \numprint{687601} & \numprint{699213}\end{tabular} &
-        WGAN-GP & Adam & $10^{-4}$ & 10 \\\bottomrule
+        Network & Sequence length & $N_\mathrm{parameters}$ & Loss &    Optimiser & Learning rate & $\lambda_\mathrm{GP}$ \\\midrule
+        Critic & 512 & \numprint{687601} &
+        WGAN-GP & Adam & $10^{-4}$ & 10 \\
+        Generator & 512 & \numprint{699213} & WGAN-GP & Adam & $10^{-4}$ & N/A\\\bottomrule
     \end{tabular}
-    \caption{Hyperparameter values.}
+    % TODO add Adam betas?
+    \caption{Hyperparameter values. \hl{Rearrange so it looks natural.}}
     \label{tab:training_hyperparameters}
 \end{table}
 
+The loss functions for $D$ and $G$ evaluated at each training step are recorded to show the progression and ensure that the networks are learning. In addition, every 100 iterations, the critic loss is evaluated on test samples which aren't present in the training dataset. This allows us to determine whether $D$ is overfitting to the training data, in which case the loss calculated using training and test samples would diverge, as illustrated in~\cite{NIPS2017_892c3b1c}.
+
+Figure~\ref{fig:gan_losses} shows the loss curves for $G$ and $D$ after X epochs.
+
+\begin{figure}
+    \centering
+    \begin{subfigure}{0.45\textwidth}
+        \centering
+        %\includegraphics{}
+        \caption{Generator and critic loss curves.}
+    \end{subfigure}
+    \begin{subfigure}{0.45\textwidth}
+        \centering
+        \hl{TODO it's not hard}
+        %\includegraphics{}
+        \caption{Critic loss calculated on training and test samples.}
+    \end{subfigure}
+    \caption{Loss curves over X training epochs.}
+    \label{fig:gan_losses}
+\end{figure}
+
+% Weight initialisation
+% def weight_init_gen(m):
+%     classname = m.__class__.__name__
+%     if classname.find('Conv') != -1: 
+%         nn.init.normal_(m.weight, 0.0, 0.02)
+%         if m.bias is not None:
+%             nn.init.zeros_(m.bias)
+
+% def weight_init_disc(m):
+%     classname = m.__class__.__name__
+%     if classname.find('Conv') != -1: 
+%         nn.init.normal_(m.weight, 0.0, 0.02)
+%         if m.bias is not None:
+%             nn.init.zeros_(m.bias)
+%     if classname.find('Linear') != -1: 
+%         nn.init.normal_(m.weight, 0.0, 0.02)
+%         if m.bias is not None:
+%             nn.init.zeros_(m.bias)
+
+
+
 \subsection{Evaluation}
 \label{sec:gan_eval}
+\subsubsection{Visual comparisons} % Single-sample, uncurated sample grid
 
+\subsubsection{Numerical comparisons} % Histograms (1d, 2d)
+
+\subsubsection{Distance metrics} % FID, custom CNN
 
 %%Compared to other methods such as variational auto-encoders (VAE), GAN are able to generate completely original samples.
 
