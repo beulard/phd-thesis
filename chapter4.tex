@@ -1,4 +1,6 @@
-\chapter{Data Augmentation using Generative Adversarial Networks}
+\chapter[Data Augmentation with Generative Adversarial
+Networks]{Data Augmentation with \\ Generative Adversarial
+Networks}
 % \begin{markdown}
 % ---
 
@@ -42,26 +44,27 @@
 %  + Introduce GAN for detector-level data fabrication.
 
 
-% v -- This intro is plain useless I think. As discussed in the previous
-%chapter, Monte Carlo simulation allows us to draw a realistic picture of what
-%will happen in our experimental setup once it is running. Most importantly, it
-%provides an estimate of the kinds of patterns we can expect to observe in the
-%detector system. 
+% v -- This intro is plain useless I think. 
+%As discussed in the previous chapter, Monte Carlo simulation allows us to draw
+%a realistic picture of what will happen in our experimental setup once it is
+%running. Most importantly, it provides an estimate of the kinds of patterns we
+%can expect to observe in the detector system. 
 
 When performing a full simulation of COMET Phase-I, most of the activity takes
 place in the initial collision between the proton beam and the graphite target.
-The many hadronic interactions caused by the relatively high energy proton beam
+The many hadronic interactions caused by the proton beam collision
 represent \SI{99.7}{\percent} of the computational cost of the Monte Carlo
 simulation.
-
 In addition, because of the large distance between the pion production section
 and the detector area, only about one POT collision in a thousand will produce
-observable hits in the detector system. Hence despite being the most physically
+observable hits in the detector system. 
+
+Hence despite being the most physically
 accurate means to synthesise data in the detector, simulating each proton
 individually is also very computationally inefficient. Using this brute-force
 method with the infrastructure used for MC5, it is only possible to produce the
-equivalent of 100 to 1000 beam bunches, which is to be compared with the
-$2\times 10^{12}$ expected bunch collisions of COMET Phase-I.
+equivalent of 100 to \numprint{1000} beam bunches, which is far from the $2\times 10^{12}$
+expected bunch collisions of COMET Phase-I.
 
 
 % Calculation of MC5 simulation "efficiency" We can
@@ -106,24 +109,23 @@ $2\times 10^{12}$ expected bunch collisions of COMET Phase-I.
 % constrain or estimate the rates of various background processes
 
 
-\subsubsection{Alternative sampling methods}
+\subsubsection{Efficient sampling methods}
 In order to produce detector-level data more efficiently, the outcomes of a full
 MC simulation can be re-used to generate events. Generally, any sampling
-mechanism which generates events after the proton collision has occurred should
-increase the efficiency of the simulation (at the cost of potential bias).
+mechanism which enables us to forego the proton collision will make the
+simulation more efficient at the cost of more uncertainty in the outcomes.
 
-In the MC5 simulation, and as was described in Section~\ref{sec:mc5}, particles
+In the MC5 simulation described in Section~\ref{sec:mc5}, particles
 entering the detector region (either via the beam pipe or through the walls) are
-frozen and saved to disk to be processed later. These saved states can be
-recycled by propagating them with multiple random seeds, thus affecting every
-outcome and effectively increasing the amount of detector data that can be
-produced out of the same simulated collisions. %This re-seeding process 
+frozen and saved to disk to be processed later. These saved states can be reused
+by propagating them with many different random seeds, thus affecting the outcome
+of every interaction and augmenting our sample.
 
-A similar way of generating events closer to our region of interest is to
-estimate the kinematic distributions of particles at a given boundary and then
-sample from them. The \texttt{oaRooTracker} format used to store particle states
-can be converted into histograms, which are then used as input by the
-simulation.
+Another way of generating events closer to our region of interest is to
+histogram the kinematics of particles at a given boundary and then sample events
+from the estimated distribution. In ICEDUST, the \texttt{oaRooTracker} format
+used to store particle states (see Section~\ref{subsec:RT}) can be aggregated
+into histograms, which are then used as input by the simulation.
 
 % v Cool idea for further studies Alternatively, particles produced in the
 %hadronic interactions which have a small probability of resulting in observable
@@ -134,12 +136,12 @@ simulation.
 %features and others could improve the selection efficiency. 
 
 
-To further increase the efficiency of the simulation (i.e.\ the likelihood for
-any event to induce detector hits), one could find a way to sample hits
-directly. In this chapter, we consider a fast generator of hit data to
-supplement the Monte Carlo simulation. This generator should replicate hit
-patterns produced by simulated particles in the detector, without relying on a
-full particle-by-particle tracking approach.
+To optimise the efficiency of the simulation even further,
+%(i.e.\ the likelihood for any event to induce detector hits)
+one could sample hits directly inside the detector system. In this chapter, we
+consider a fast generator of hit data to supplement Monte Carlo simulation.
+This generator should replicate hit patterns produced by simulated particles in
+the detector, without relying on a full particle-by-particle tracking approach.
 
 % v Can remove? In this chapter, I will discuss my implementation of a
 %Generative Adversarial Networks-based solution to the problem of augmenting CDC
@@ -161,14 +163,14 @@ As the conventional example, let us consider the case where both the
 discriminator and the generator are implemented as multi-layer perceptrons,
 denoted as $D$ and $G$ respectively. $D$ is designed as a binary classifier
 whose goal is to tell real samples (from the \emph{training} dataset) apart from
-fake (generated) ones. Given a sample $\mathbf{x}$, it outputs a score between 0
-and 1, i.e.\ $D(\mathbf{x}) \in [0, 1]$. Similar to a classification task, we
+fake (generated) ones. Given a sample $\bm{x}$, it outputs a score between 0
+and 1, i.e.\ $D(\bm{x}) \in [0, 1]$. Similar to a classification task, we
 define the loss function of $D$ as the cross entropy between its prediction and
 the true label (conventionally, 0 for a fake sample and 1 for a real sample):
 \begin{equation}\label{eq:D_loss}
     \mathcal{L}_D =
-    -\mathbb{E}_{\mathbf{x} \sim p} [ \log D(\mathbf{x}) ] -
-    \mathbb{E}_{\tilde{\mathbf{x}} \sim g} [ \log( 1 - D(\tilde{\mathbf{x}}) )],
+    -\mathbb{E}_{\bm{x} \sim p} [ \log D(\bm{x}) ] -
+    \mathbb{E}_{\tilde{\bm{x}} \sim g} [ \log( 1 - D(\tilde{\bm{x}}) )],
 \end{equation}
 where $\mathbb{E}$ denotes the expected value or mean, $p$ is the distribution
 of real samples and $g$ is the distribution of samples generated by $G$.
@@ -178,31 +180,30 @@ score to generated samples.
 
 
 The generator produces fake samples by mapping vectors from a latent space into
-data space. Latent-space vectors $\mathbf{z}$ are sampled according to a prior
-$p_\mathbf{z}(\mathbf{z})$, typically a multivariate normal distribution for
+data space. Latent-space vectors $\bm{z}$ are sampled according to a prior
+$p_{\bm{z}}(\bm{z})$, typically a multivariate normal distribution for
 simplicity and speed. The objective of $G$ is to generate samples
-$\tilde{\mathbf{x}} = G(\mathbf{z} \sim p_\mathbf{z})$ such that
-$D(\tilde{\mathbf{x}}) \rightarrow 1$. In other words, the generator aims to
+$\tilde{\bm{x}} = G(\bm{z} \sim p_{\bm{z}})$ such that
+$D(\tilde{\bm{x}}) \rightarrow 1$. In other words, the generator aims to
 maximise the second term in Eq.~\ref{eq:D_loss}, and its loss function is
 \begin{align}\label{eq:GAN_gen}
     \mathcal{L}_G & =
-    \mathbb{E}_{\tilde{\mathbf{x}} \sim g} [ \log( 1 - D(\tilde{\mathbf{x}}) )]\nonumber        \\
-                  & = \mathbb{E}_{\mathbf{z} \sim p_\mathbf{z}} [ \log( 1 - D(G(\mathbf{z}) )].
+    \mathbb{E}_{\tilde{\bm{x}} \sim g} [ \log( 1 - D(\tilde{\bm{x}}) )]\nonumber        \\
+                  & = \mathbb{E}_{\bm{z} \sim p_{\bm{z}}} [ \log( 1 - D(G(\bm{z}) )].
 \end{align}
 
 Combining these minimisation tasks, we obtain the mathematical formulation of
 the adversarial training objective:
 \begin{equation}\label{eq:GAN}
     \min_G \max_D \quad
-    \mathbb{E}_{\mathbf{x} \sim p} [ \log D(\mathbf{x}) ] +
-    \mathbb{E}_{\mathbf{z} \sim p_\mathbf{z}} [ \log( 1 - D(G(\mathbf{z}) )].
+    \mathbb{E}_{\bm{x} \sim p} [ \log D(\bm{x}) ] +
+    \mathbb{E}_{\bm{z} \sim p_{\bm{z}}} [ \log( 1 - D(G(\bm{z}) )].
 \end{equation}
 Although it is not a formal requirement, using neural networks for $D$ and $G$
 allows the above minimax solution to be approximated via backpropagation and
-stochastic gradient descent. At every iteration, both networks evaluate the
-gradient of their respective loss function with respect to their internal
-weights. Every weight is then adjusted toward the direction of largest decrease
-in the loss.
+stochastic gradient descent. At every iteration, we evaluate the gradient of
+each loss with respect to the internal weights of its respective network. Every
+weight is then adjusted toward the direction of largest decrease in the loss.
 
 
 \subsection{Wasserstein GAN}
@@ -220,13 +221,13 @@ that solving Eq.~\ref{eq:GAN}, which implicitly minimises the Jensen-Shannon
 divergence between $p$ and $g$, leads to vanishing gradients when the
 discriminator is too powerful, and thus to unstable training. Instead, they
 propose to minimise the Wasserstein-1 distance between $p$ and $g$ because of
-its superior continuity and differentiability properties. They go on to show
+the superior continuity and differentiability properties of that metric. They go on to show
 that if the discriminator is 1-Lipschitz continuous, then the adversarial
 training problem can be formulated as:
 \begin{equation}
     \min_G \max_D \quad
-    \mathbb{E}_{\mathbf{x} \sim p} \left[ D(\mathbf{x}) \right] -
-    \mathbb{E}_{\mathbf{z} \sim p_\mathbf{z}} \left[ D(G(\mathbf{z})) \right].
+    \mathbb{E}_{\bm{x} \sim p} \left[ D(\bm{x}) \right] -
+    \mathbb{E}_{\bm{z} \sim p_{\bm{z}}} \left[ D(G(\bm{z})) \right].
 \end{equation}
 
 In practice, aside from a change to the loss functions, this method requires
@@ -242,6 +243,7 @@ collapse and improves the robustness of the GAN with respect to changes in the
 network architectures.
 
 % WGAN-GP
+\subsubsection{Gradient penalty}
 The same year, another method to enforce the Lipschitz constraint on $D$ was
 discussed in~\cite{NIPS2017_892c3b1c}, which outlines the shortcomings of weight
 clipping and instead proposes to constrain the discriminator's gradient. By
@@ -251,14 +253,14 @@ suggest a soft constraint on the gradient norm of $D$ using an explicit term in
 its loss function:
 \begin{equation}\label{eq:WGAN-GP}
     \mathcal{L}_D =
-    -\mathbb{E}_{\mathbf{x} \sim p} \left[ D(\mathbf{x}) \right] +
-    \mathbb{E}_{\mathbf{z} \sim p_\mathbf{z}} \left[ D(G(\mathbf{z})) \right] +
-    \underbrace{\lambda_\mathrm{GP}\ \mathbb{E}_{\hat{\mathbf{x}} \sim p_{\hat{\mathbf{x}}}}
-    \left[ \big( \left\Vert \nabla_{\hat{\mathbf{x}}}\ D(\hat{\mathbf{x}}) \right\Vert_2 - 1 \big) ^2 \right]}_\textrm{Gradient penalty},
+    -\mathbb{E}_{\bm{x} \sim p} \left[ D(\bm{x}) \right] +
+    \mathbb{E}_{\bm{z} \sim p_{\bm{z}}} \left[ D(G(\bm{z})) \right] +
+    \underbrace{\lambda_\mathrm{GP}\ \mathbb{E}_{\hat{\bm{x}} \sim p_{\hat{\bm{x}}}}
+    \left[ \big( \left\Vert \nabla_{\hat{\bm{x}}}\ D(\hat{\bm{x}}) \right\Vert_2 - 1 \big) ^2 \right]}_\textrm{Gradient penalty},
 \end{equation}
 where the third term is the gradient penalty (GP) added to the WGAN loss, and
 $\lambda_\mathrm{GP}$ is the gradient penalty constant, a new hyperparameter. In
-this term, samples $\hat{\mathbf{x}}$ are drawn from $p_{\hat{\mathbf{x}}}$ by
+this term, samples $\hat{\bm{x}}$ are drawn from $p_{\hat{\bm{x}}}$ by
 sampling uniformly along straight lines between pairs of points from $p$ and
 $g$.
 
@@ -266,7 +268,7 @@ The generator loss is, again, defined so as to increase the likelihood that a
 fake sample will fool the discriminator:
 \begin{equation}\label{eq:WGAN-GP_gen}
     \mathcal{L}_G =
-    -\mathbb{E}_{\mathbf{z} \sim p_\mathbf{z}} \left[ D(G(\mathbf{z})) \right],
+    -\mathbb{E}_{\bm{z} \sim p_{\bm{z}}} \left[ D(G(\bm{z})) \right],
 \end{equation}
 which is the second term of Eq.~\ref{eq:WGAN-GP} with a minus sign, similarly to
 the relationship between Eqs.~\ref{eq:GAN} and~\ref{eq:GAN_gen}. Note that more
@@ -277,22 +279,22 @@ with respect to $G$'s weights is relevant. Since the other terms in
 $\mathcal{L}_D$ do not depend on $G$'s weights, we can discard them in
 $\mathcal{L}_G$ to achieve the same result.
 
-In our experiments, it was found that the above WGAN-GP formulation provides the
+In our experiments, we found that the above WGAN-GP formulation provides the
 most stable training procedure for a variety of network architectures. In
 addition, it has the significant advantage of making the critic loss more
 interpretable and overfitting noticeable: as the authors demonstrate, the critic
-loss tends to converge to a maximum value over training iterations, however in
-the case of overfit, the critic losses evaluated on training samples and test
-samples diverge during training.
+loss tends to converge to a maximum value over training iterations, and in the
+case of overfit the critic losses evaluated on training and test samples
+diverge during training.
 
 % Examples of usage in HEP (see zotero)
-\subsection{GANs in High Energy Physics}
+\section{GANs in High Energy Physics}
 In HEP, GANs (both in their original and subsequent formulations) have been
 proposed in a variety of experiments to supplement traditional Monte Carlo
 simulation. Their usage typically falls in one of two categories: event
 generation, and generation of hit data at the detector level.
 
-\subsubsection{Event generation}
+\subsection{Event generation}
 Event-generating GANs typically focus on synthesising kinematic properties of
 outgoing particles in specific processes. In high-energy and hadronic collisions
 especially, a GAN generator has the potential to greatly reduce the
@@ -309,7 +311,7 @@ target~\cite{ahdida_fast_2019}, thereby reducing the need to simulate every
 hadronic interaction.
 
 
-\subsubsection{Detector data generation}
+\subsection{Detector data generation}
 Generation of detector data means building a model of the possible particle
 signatures inside a specific detector system. The hit patterns depend on the
 type of detector, detector geometry, particle types and energies, as well as the
@@ -318,7 +320,7 @@ timescales considered.
 In experiments where hadronic jets are commonly observed in the detector system,
 such as ATLAS and CMS, deep convolutional GANs were proposed as an alternative
 to MC simulations to generate \emph{jet images}, a 2D representation of the
-energy deposition patterns from jets~\cite{deOliveira2017b}.
+energy deposition patterns from jets~\cite{deOliveira2017a}.
 
 Subsequently, the {\sc CaloGAN} model~\cite{paganini_calogan_2018} used parts of
 the jet-image GAN as building blocks in order to generate realistic 3D
@@ -340,7 +342,7 @@ applied, as the main computational bottleneck occurs in simulating the proton
 beam collision. An event-generating GAN could for instance be trained to sample
 backward-going particles from the collisions. However, because of the large
 separation between the proton target and the detector, generating hits directly
-appears as the more efficient approach. The rest of this chapter focuses on hit
+is a more efficient approach. The rest of this chapter focuses on hit
 generation inside the CDC of COMET Phase-I.
 %this approach seems especially useful because of the large physical separation
 %between the initial beam collision and the detector volume. Secondary particles
@@ -353,10 +355,9 @@ generation inside the CDC of COMET Phase-I.
 
 
 
-% How do we plan on using this to sample CDC hits? Big brain time
 \section{The CDC hit generator}
 Our approach draws inspiration from recent GAN implementations in other high
-energy physics experiments and in other areas, such as image and audio
+energy physics experiments and in other areas, such as image and text
 synthesis. We design a GAN model whose purpose is to efficiently and
 realistically generate hits in the CDC, with the aim of augmenting MC datasets
 for COMET Phase-I.
@@ -365,12 +366,12 @@ for COMET Phase-I.
 %particles in the gas of the drift chamber. Each hit occurs on a specific sense
 %wire, whose layout was described in~\hl{ref{sec:cdc}}.
 In order to build a generative model to mimic the patterns of hits in the
-detector, it is necessary to keep in mind that these hits are physical energy
+detector, it is necessary to consider these hits as physical energy
 deposits created by simulating energy loss processes of particles inside the
 detector gas volume. The true process of simulating hits thus obeys strict rules
-stemming from the physical models at play. In contrast, our GAN model is not
+which stem from the physical models at play. In contrast, our GAN model is not
 required to be aware of the physics, which implies it can be much faster at
-producing hits, but it can also lead to uncertainty in the resulting generated
+producing hits, but it can also lead to inaccuracies in the resulting generated
 data which must be evaluated.
 
 This section describes how the simulated hits are selected and arranged, and how
@@ -385,7 +386,7 @@ pre-process the hit data.
 \subsection{Hit data structure}
 \label{sec:hit_data_structure}
 
-The {\sc Geant4} simulation tracks particles one by one, and secondaries
+The {\sc Geant4} simulation tracks particles one by one. Secondaries
 produced during the tracking of a particle are only propagated once the parent
 has ended its journey. This implies that simulated hits occur in a specific
 order (which is not strictly the time order), where hits produced by the same
@@ -398,8 +399,7 @@ simulate the ionisation in the gas and the response of the readout electronics.
 These variables, or \emph{features}, are: the amount of energy deposited, the
 absolute time since the start of the event, the distance of closest approach
 (DCA) from the track to the wire, and the position of the hit inside the CDC.
-This position is represented as the unique index of the cell, from 0 to 4985, in
-which the energy loss occurred. These features are summarised in
+This position is represented as the unique index of the cell, from 0 to 4985, where the energy loss occurred. These features are summarised in
 Table~\ref{tab:gan_features}.
 
 \begin{table}
@@ -408,7 +408,7 @@ Table~\ref{tab:gan_features}.
     \begin{tabular}{l|cccc}
         \toprule
                   & \bfseries Energy deposit & \bfseries Time & \bfseries
-                  Distance of closest approach & \bfseries Wire index \\
+                  Dist. of closest approach & \bfseries Wire index \\
         \midrule
         Unit      & \SI{}{\MeV}              & \SI{}{\ns}     & \SI{}{\mm}
         & N/A                  \\
@@ -417,17 +417,17 @@ Table~\ref{tab:gan_features}.
         Data type & \texttt{float}           & \texttt{float} & \texttt{float}
         & \texttt{integer} \\\bottomrule
     \end{tabular}
-    \caption{Features composing each hit in the training dataset, and their properties.}
+    \caption{Physical features which make up each hit in the training dataset.}
     \label{tab:gan_features}
 \end{table}
 
-When a particle passes through the gas, it usually produces one hit in each cell
-it traverses. The GAN ought to be able to learn how hits in such a track are
-related, thus it should be able to process more than one hit at a time. Hence
-the data which is fed to the GAN during training is arranged into sequences,
-where multiple series of hits produced by multiple individual particles are
-present. Figure~\ref{fig:hit_data_structure} illustrates the arrangement of hit
-data as it is fed to the discriminator.
+The CDC gas simulation dictates that each particle should produce one hit in
+every cell it traverses. The GAN ought to be able to learn how hits are related
+within a track, thus it should be able to process more than one hit at a time.
+The hit data is arranged into sequences, where series of hits produced by
+multiple particles are present. Figure~\ref{fig:hit_data_structure} illustrates
+the arrangement of hit data as it is generated by the generator and fed to the
+discriminator.
 
 \begin{figure}
     \centering
@@ -486,7 +486,7 @@ collision), we determine if at least one particle with $p >
 case, all hits from the event are given the ``reconstructible'' label and will
 not be used to train the GAN. If no reconstructible track has occurred during
 the event, all hits are considered noise-like and are added to the training
-dataset. Fig.~\ref{fig:cdc_rconst_vs_noise} compares noise-like and
+dataset. Figure~\ref{fig:cdc_rconst_vs_noise} compares noise-like and
 reconstructible hits and outlines the difference in structure between the two
 categories.
 
@@ -512,9 +512,9 @@ categories.
 \end{figure}
 
 The MC5 dataset contains $10^{9}$ events of which \numprint{51137} have hits in
-the CDC. Of those, \numprint{2036} have at least one reconstructible track, and
-\numprint{49101} do not. In the latter, \numprint{634266} hits are present which
-compose the GAN's training dataset.
+the CDC. Of those, \numprint{2036} events have at least one reconstructible track, and
+\numprint{49101} events do not. Inside this latter category, \numprint{634266} hits are
+present, and these make up the GAN training dataset.
 
 % MC5A02 calculation of noise-like vs reconstructible events/hits: Total events:
 % 990678399 Hit classification: 2036 unique events (rate 2e-6) with
@@ -562,7 +562,7 @@ compose the GAN's training dataset.
 \subsection{Pre-processing}
 The three continuous hit features (energy deposit, time and DCA) are physical
 quantities with different units and scales. Their distributions are shown in
-Fig.~\ref{fig:original_feature_distributions}. In order to maximise gradient
+Figure~\ref{fig:original_feature_distributions}. In order to maximise gradient
 flow in the discriminator, it is common practice for all features to be
 re-scaled into a fixed range, e.g.\ $[0, 1]$. However, in the case of highly
 uneven and/or discontinuous distributions, the generator can struggle to model
@@ -624,7 +624,7 @@ discriminator's output is then used to compute the loss for $G$ and $D$,
 according to Eqs.~\ref{eq:WGAN-GP} and~\ref{eq:WGAN-GP_gen}.
 
 To allow parallel processing of the hit sequences by the networks, a fixed
-sequence length $L$ is defined prior to training. This allows hits to be packed
+sequence length $L$ is defined prior to training. Hence hits can be packed
 into dense tensors upon which vectorised operations can be applied. Typically, a
 sequence will contain concatenated sets of hits from multiple tracks and from
 multiple events.
@@ -632,8 +632,7 @@ multiple events.
 Hits belonging to different events are completely unrelated, as they are not the
 product of the same POT collision. This provides freedom to swap events and
 concatenate their hits in any order. The order of hits within the same event
-should however be preserved. % as in: last hit of event X leads to a different
-hit in event Z than in event Y
+should however be preserved. 
 Combining events in many different ways enhances the diversity and size of the
 training dataset, which alleviates the possibility of overfit or mode collapse.
 Concatenating the \numprint{634266} hits linearly into sequences of length
@@ -654,22 +653,22 @@ operations between the input $x$ and the learned kernel $w$:
     y_{i} = (w \ast x)_{i} = \sum_{k} w_k \cdot x_{i+k},
 \end{equation}
 where $i$ is the position along the output sequence $y$, and $k$ runs over the
-kernel weights. This operation is illustrated in Fig.~\ref{fig:temporal_conv}.
+kernel weights. This operation is illustrated in Figure~\ref{fig:temporal_conv}.
 
 \begin{figure}
     \centering
     \includegraphics[width=0.20\textwidth]{chapter4/1d_convolution.pdf}
     \caption{Temporal (1D) convolution operation with kernel size 3. For
     clarity, both the input and output sequences have one channel, i.e.\
-    $C_\mathrm{in} = C_\mathrm{out} = 1$. The arrow shows the direction along
+    $C_\mathrm{in} = C_\mathrm{out} = 1$. The blue arrow shows the direction along
     which the kernel slides across the input sequence.}
     \label{fig:temporal_conv}
 \end{figure}
 
 
 Unlike in the common case of raster images, the input to the discriminator is
-not a two-dimensional array of pixels, but a one-dimensional sequence of hits,
-hence the kernels are also one dimensional. The ``channels'' of the input
+not a two-dimensional array of pixels, but a one-dimensional sequence of hits.
+Hence the kernels are also one dimensional. The ``channels'' of the input
 sequence correspond to features of the hits. Within a convolutional layer,
 Eq.~\ref{eq:conv1d} is applied as many times as there are channels in the input
 sequence, and the result is the sum over channels. The operation can also be
@@ -709,7 +708,8 @@ number of operations reasonable in layers where the input has many channels.
 \begin{figure}
     \centering
     \includegraphics[width=0.6\textwidth]{chapter4/residual_sel.drawio.pdf}
-    \caption{Residual blocks used in both networks to facilitate gradient flow. Blue arrows indicate an activation layer.}
+    \caption{Residual blocks used in both networks to facilitate gradient flow.
+    Blue arrows indicate an activation function.}
     \label{fig:residual_block}
 \end{figure}
 In order to facilitate gradient flow from the discriminator to the generator and
@@ -717,22 +717,24 @@ thus speed up training, convolutional layers can be replaced by residual
 blocks~\cite{he2016deep} in both networks. A residual block combines two
 convolutional layers with a residual connection from the input to the output,
 allowing the gradients to propagate via two paths, as shown in
-Fig.~\ref{fig:residual_block}. The output $\mathbf{y}$ of the block can be
+Figure~\ref{fig:residual_block}. The output $\bm{y}$ of the block can be
 written as
-\begin{equation*}
-    \mathbf{y} = \mathcal{F}(\mathbf{x}) + \mathbf{x},
-    %\mathbf{y} = \mathcal{F}(\mathbf{x}) + W_s \mathbf{x},
-\end{equation*}
+%\begin{equation*}
+    $\bm{y} = \mathcal{F}(\bm{x}) + \bm{x},$
+    %\bm{y} = \mathcal{F}(\bm{x}) + W_s \bm{x},
+%\end{equation*}
 where $\mathcal{F}$ represents the operation of the two convolutional layers and
-$\mathbf{x}$ is the input tensor. %and $W_s$ is a linear dimension-matching
-operation which brings $\mathbf{x}$ into the same shape as $\mathbf{y}$, if
-necessary.
+$\bm{x}$ is the input tensor. 
+When $\mathcal{F}(\bm{x})$ and $\bm{x}$ have different shapes, a
+dimension-matching linear transformation can be applied to $\bm{x}$. In this
+case, the result is $\bm{y} = \mathcal{F}(\bm{x}) + W \bm{x}$, where the
+weights of the $W$ tensor are adjusted during training.
 
 
 \subsection{Network architectures}
 Having introduced the building blocks, we can now assemble them into our
 discriminator and generator. The two networks, shown schematically in
-Fig.~\ref{fig:architectures}, are composed of stacked residual blocks, which
+Figure~\ref{fig:architectures}, are composed of stacked residual blocks, which
 progressively increase the size of the sequence in the generator, or decrease it
 in the discriminator.
 
@@ -765,7 +767,7 @@ in the discriminator.
 In the generator, the input vector, sampled from latent space, is first passed
 through a fully-connected layer, after which it is reshaped to have a length of
 4. The proto-sequence is then up-sampled by fractionally-strided convolutional
-layers, adding finer and finer detail to the sample. As the length increases,
+layers, adding finer and finer details to the sample. As the length increases,
 the number of channels is decreased to limit the total number of operations and
 the network's complexity. Once the sample has reached a length of $L$, the
 information is projected to data space: to obtain the continuous features, a
@@ -773,7 +775,7 @@ convolutional layer with three output channels is applied and its output passed
 through a $\tanh$ function, yielding values in the range $[-1, 1]$; while for
 the discrete wire index, we use a layer with 4986 output channels\footnote{As
 many as there are wires.} followed by a softmax\footnote{Defined as
-$\mathrm{Softmax}(\mathbf{x})_i = \frac{\exp(-x_i)}{\sum_j \exp(-x_j)}.$}
+$\mathrm{Softmax}(\bm{x})_i = \frac{\exp(-x_i)}{\sum_j \exp(-x_j)}.$}
 function to determine the network's preferred choice of wire for each hit.
 
 The discriminator extracts information from the input hits through its
@@ -784,27 +786,24 @@ sequence. The resulting tensor is passed through a final fully-connected layer,
 combining the features into a single scalar which is the score for that sample.
 
 \subsubsection{Gradient flow for discrete features}
-In processing all features, it is important that the two networks perform only
-operations which are differentiable, otherwise the gradients cannot be
-propagated from the score back to the generator weights. However, this requires
-precautions when processing discrete features; for instance, indexing an array
-using the wire index is prohibited.
-
-Despite this, we require that the discriminator have some knowledge of where, in
-the detector, hits are located, so that it can use this knowledge as a criterion
-in its judgement. A straightforward way to give this information to the
+We would like for the discriminator to have some knowledge of where, in the
+detector, hits are located, so that it can use this knowledge as a criterion in
+its judgement. A straightforward way to give this information to the
 discriminator would be to use the wire index to query a lookup table of wire
-positions, but this does not allow gradient flow.
+positions. However, indexing an array is not a differentiable operation, hence
+it does not allow gradients to flow from the output score to the generator
+weights, and this prevents the generator from learning to accurately position
+hits.
 
-Instead, we represent the wire index as a \emph{one-hot encoded} vector, whose
-size is the total number of wires, and where only the entry corresponding to the
-index is 1, and the others are 0. This vector representation can be used in
-differentiable operations to query a particular entry in a table: if we
-represent the table of wire positions as a matrix $W$ with dimensions $2 \times
-4986$, and the one-hot encoded wire vector as a 4986-dimensional vector
-$\mathbf{v}$, the product $W \cdot \mathbf{v}$ is a differentiable operation and
-its output is the wire's position since the one-hot vector picks out the correct
-entry from the position matrix.
+To allow gradient flow, we can represent the wire index as a \emph{one-hot
+encoded} vector, whose size is the total number of wires, and where only the
+entry corresponding to the index is 1, and the others are 0. This vector
+representation can be used in differentiable operations to query a particular
+entry in a table: if we represent the table of wire positions as a matrix $W$
+with dimensions $2 \times 4986$, and the one-hot encoded wire vector as a
+4986-dimensional vector $\bm{v}$, the product $W \cdot \bm{v}$ is a
+differentiable operation and its output is the wire's position since the one-hot
+vector picks out the correct entry from the position matrix.
 
 In the case of generated hits, the wire vector is not exactly one-hot: instead,
 the output of the softmax operation is a vector of real-valued probabilities for
@@ -814,65 +813,66 @@ weight corresponding to the softmax probability. Hence the result is not an
 exact wire location but an approximate region of the detector in which the
 generator envisions the hit to be.
 
-As discussed in~\cite{NIPS2017_892c3b1c}, we might suspect that the
+As discussed in~\cite{NIPS2017_892c3b1c}, one might suspect that the
 discriminator can learn to reject the output of the generator because it does
-not look like a one-hot vector. However the W1 distance between the real and
-generated data is well-defined and continuous even in this particular case of a
-discrete variable, hence the Wasserstein GAN approach allows the networks to
-learn.
+not look like a one-hot vector. However the Wasserstein distance between the
+real and generated data remains well-defined and continuous even in this
+particular case of a discrete variable, hence using the WGAN loss does allow the
+networks to learn.
 
 
 \subsection{Training}
 The networks are trained via gradient descent of the WGAN-GP loss, using the
-Adam~\cite{Kingma2015AdamAM} algorithm. The PyTorch framework upon which the GAN
+Adam~\cite{Kingma2015AdamAM} algorithm. The PyTorch framework with which the GAN
 is implemented allows all tensor operations to be performed on a Nvidia Graphics
 Processing Unit (GPU) via CUDA, which speeds up training iterations roughly
-tenfold. Hyperparameters, such as learning rate and $\lambda_{GP}$, are
+tenfold. Hyperparameters, such as learning rate and $\lambda_{GP}$, were
 initially set to a default value from common practice guidelines and then
 adjusted if needed to ensure stable loss curves.
 Table~\ref{tab:training_hyperparameters} summarises the values of various
-hyperparameters.
+hyperparameters, and Figure~\ref{fig:gan_losses} shows the loss curves for $G$
+and $D$ over 200 training epochs.
 
 \begin{table}[]
     \centering
-    \begin{tabular}{lcccccc}
+    \begin{tabular}{cccccc}
         \toprule
-Network   & Sequence length & $N_\mathrm{parameters}$ & Loss & Optimiser & Learning rate & $\lambda_\mathrm{GP}$ \\\midrule Critic    &
-512 & \numprint{687601} & WGAN-GP & Adam & $10^{-4}$ & 10
-\\
-Generator & 512 & \numprint{699213} & WGAN-GP & Adam
-    & $10^{-4}$ & N/A \\\bottomrule
+        Optimiser & Learning rate & $(\beta_1, \beta_2)$ & Sequence length & Loss &
+        $\lambda_\mathrm{GP}$
+        \\\midrule 
+        Adam & $10^{-4}$ & $(0.9, 0.999)$ & 512 & WGAN-GP & 10
+        \\\bottomrule
     \end{tabular}
-    % TODO add Adam betas?
-    \caption{Hyperparameter values. \hl{Rearrange so it looks natural.}}
+    \caption{Training hyperparameters.}
     \label{tab:training_hyperparameters}
 \end{table}
 
 The loss functions for $D$ and $G$ evaluated at each training step are recorded
 to show the progression and ensure that the networks are learning. In addition,
-every 100 iterations, the critic loss is evaluated on test samples which aren't
-present in the training dataset. This allows us to determine whether $D$ is
-overfitting to the training data, in which case the loss calculated using
-training and test samples would diverge, as illustrated
-in~\cite{NIPS2017_892c3b1c}.
+every 100 mini-batch iterations, the critic loss is evaluated on test samples
+which are absent from the training dataset. This allows us to determine whether
+$D$ is overfitting to the training data, in which case the loss calculated using
+training and test samples (Figure~\ref{fig:gan_losses:test}) would diverge, as
+demonstrated in~\cite{NIPS2017_892c3b1c}.
 
-Figure~\ref{fig:gan_losses} shows the loss curves for $G$ and $D$ after X
-epochs.
 
 \begin{figure}
     \centering
-    \begin{subfigure}{0.45\textwidth}
+    \begin{subfigure}{0.49\textwidth}
         \centering
-        %\includegraphics{}
-        \caption{Generator and critic loss curves.}
+        \hspace{-1cm} % alignment
+        \includegraphics[width=0.95\textwidth]{chapter4/losses.pdf}
+        \caption{Critic and generator losses.}
     \end{subfigure}
-    \begin{subfigure}{0.45\textwidth}
+    \hfill
+    \begin{subfigure}{0.49\textwidth}
         \centering
-        \hl{TODO it's not hard}
-        %\includegraphics{}
-        \caption{Critic loss calculated on training and test samples.}
+        \hspace{-1cm} % alignment
+        \includegraphics[width=0.95\textwidth]{chapter4/val_loss.pdf}
+        \caption{Critic loss for training and test samples.}
+        \label{fig:gan_losses:test}
     \end{subfigure}
-    \caption{Loss curves over X training epochs.}
+    \caption{Loss curves as a function of training epochs.}
     \label{fig:gan_losses}
 \end{figure}
 
@@ -895,16 +895,15 @@ because of the lack of a well-defined, unique metric for quality\footnote{Unlike
 in supervised learning, where an obvious quality metric is usually the loss
 function itself.}. The score
 returned by the discriminator network is dependent upon its exact architecture,
-the dataset and all hyperparameters, hence it cannot be used as a metric. 
+the dataset and all hyperparameters, hence it cannot be used as a reliable metric. 
 
 Unlike natural images which can be examined visually to determine whether or not
 they depict something real, sequences of hits in a detector are difficult to
-evaluate perceptually.
-
-Figure~\ref{fig:comp_uncurated} shows a comparison between uncurated
-individual samples, four from the training dataset and four generated by $G$. In
-this type of evaluation, we try to exacerbate any differences in the features
-and sequence structure through colours and visual hints such as lines connecting
+evaluate perceptually. 
+Figure~\ref{fig:comp_uncurated} shows a comparison between uncurated individual
+samples, four from the training dataset and four generated by $G$. In this type
+of evaluation, we try to exacerbate any differences in the features and
+sequence structure through colours and visual hints such as lines connecting
 consecutive hits.
 
 On a larger scale, we also compare the distributions of hit features across many
@@ -932,9 +931,10 @@ correlations are faithfully modelled by $G$.
     \caption{
         Comparison of individual samples, comprised of 512 hits. Hits are
         represented by a circle whose area is proportional to the energy deposit
-        and whose colour shows distance of closest approach. Only three features
-        out of four can be examined and compared using these plots unless we add
-        an extra dimension.
+        and whose colour shows distance of closest approach. 
+        Lines connect consecutive hits in the sequence.
+        %Only three features out of four can be examined and compared using
+        %these plots unless we add an extra dimension.
     }
     \label{fig:comp_uncurated}
 \end{figure}
@@ -957,12 +957,12 @@ correlations are faithfully modelled by $G$.
     \end{subfigure}
     \caption{
         Comparison of feature distributions and correlations when generating a
-        dataset on the same scale as the training dataset.
+        dataset of the same size as the training dataset.
     }
     \label{fig:comp_feature_distributions}
 \end{figure}
 
-
+% For KL div (P || Q) notation
 \DeclarePairedDelimiterX{\infdivx}[2]{(}{)}{%
   #1\;\delimsize\|\;#2%
 }
@@ -976,28 +976,31 @@ KL divergence is defined on a probability space $\mathcal{X}$ as
 \begin{equation}\label{eq:kl_div}
 D_\mathrm{KL} \infdivx{P}{Q} = \sum_{x \in \mathcal{X}} P(x) \log \frac{P(x)}{Q(x)},
 \end{equation}
-where in our case $P$ denotes the distribution of real hits and $Q$ that of generated hits.
-To compute $D_\mathrm{KL}$, the three continuous features of
+where in our case $P$ denotes the distribution of real hits and $Q$ that of
+generated hits. To compute $D_\mathrm{KL}$, the three continuous features of
 every hit are binned into a 3D histogram to approximate the probability density
-functions $P$ and $Q$ and the sum in Eq.~\ref{eq:kl_div} is a sum over bins. The
-\texttt{edep} and \texttt{t} features are log-transformed such that the
-resulting histogram is smoother. Figure~\ref{fig:kl_div} shows the
+functions $P$ and $Q$ and the sum in Eq.~\ref{eq:kl_div} is a sum over all
+(non-zero) bins. The \texttt{edep} and \texttt{t} features are log-transformed
+such that the resulting histogram is smoother. Figure~\ref{fig:kl_div} shows the
 Kullback-Leibler divergence between the continuous distributions of real and
-generated hits over training iterations. 
+generated hits over training iterations. For this specific model, the KL
+divergence converges around 100 epochs.
 
 
 \begin{figure}
     \centering
-    \includegraphics[width=0.5\textwidth]{untracked_figures/job_21175015_kldiv.pdf}
+    \includegraphics[width=0.5\textwidth]{chapter4/job_21175015_kldiv.pdf}
     \caption{Kullback-Leibler divergence between the distributions of real and generated hits as a function of training epochs.}
     \label{fig:kl_div}
 \end{figure}
 
 In addition to comparing the features that are given as input to the GAN for
 training, we also examine quantities which are only present implicitly in the
-training samples. For instance, Figure~\ref{fig:comp_nonlearned} shows a
+training samples. Figure~\ref{fig:comp_nonlearned} shows a
 comparison of the relative amounts of hits in each CDC layer and of the
 ``occupancy'' per sample, i.e.\ the fraction of wires on which a hit occurs.
+This allows us to determine whether or not the model sees beyond the features
+provided explicitly for training.
 
 \begin{figure}
     \centering
@@ -1022,18 +1025,18 @@ comparison of the relative amounts of hits in each CDC layer and of the
 \end{figure}
 
 
-\subsubsection{Quality metrics} % FID, custom CNN, transfer learning w/ Inception-v3
+\subsection{Quality metrics}\label{sec:quality_metrics} % FID, custom CNN, transfer learning w/ Inception-v3
 %In comparing images generated by different GAN models, 
-In image generation tasks, the \emph{Inception score} was proposed
-in~\cite{salimans_improved_2016} as a quality metric to compare images generated
-by different GAN models. An Inception model~\cite{7298594}, trained
-independently on the ImageNet dataset to classify images, is applied to
-GAN-generated images to obtain label proabilities for each sample. The
-distribution of labels is then used to formulate the metric to favour images
-which depict a specific object, rather than some some average of classes, while
-disfavouring a generator whose images all belong to the same class.
-% not great...
-% :
+In image generation tasks, the \emph{Inception score} was proposed as a quality
+metric to compare images generated by different GAN
+models~\cite{salimans_improved_2016}. 
+An Inception model~\cite{7298594}, trained independently on the ImageNet dataset
+to classify images, is applied to GAN-generated images to obtain label
+probabilities for each sample. The metric is then formulated in terms of the label
+distribution to favour generated images which depict a specific object rather than
+some average of classes, while disfavouring a generator whose images all resemble
+the same class.
+
 % $$
 % \mathrm{Inception\ score} = \exp \mathrm{KL}(p(y|x)\ ||\ p(y)),
 % $$
@@ -1041,15 +1044,96 @@ disfavouring a generator whose images all belong to the same class.
 % distribution of label probabilities assigned by the Inception network, and
 % $p(y)$ is the marginal $p(y) = \int p(y|x = G(z)) \mathrm{d}z$.
 
-The Fréchet Inception Distance~\cite{10.5555/3295222.3295408} metric is an
-evolution of the Inception score which uses statistics extracted from the real
-dataset to estimate a distance between real and generated samples.
-By convention, a pretrained Inception v3 model~\cite{7780677} is applied to real
-and generated samples, but instead of using the output label probabilities, the
-activations from an intermediate layer are used.
+The Fréchet Inception Distance (FID) is an evolution of the Inception score
+which additionally uses statistics extracted from the training dataset to
+estimate a distance between real and generated
+samples~\cite{10.5555/3295222.3295408}. Conventionally, a pretrained Inception
+v3 model~\cite{7780677} is applied to real and generated samples. Activations
+from an intermediate layer are extracted and their mean $\bm{\mu}$ and
+covariance $\bm{\Sigma}$ are estimated, from which the Fréchet (or
+Wasserstein-2) distance is calculated as
+$$
+d^2 = | \bm{\mu}_G - \bm{\mu}_R |^2 + 
+    \mathrm{Tr}(\bm{\Sigma}_G + \bm{\Sigma}_R - 
+    2(\bm{\Sigma}_G \bm{\Sigma}_R)^{1/2})
+$$
+where the $G$ and $R$ subscripts respectively denote generated and real statistics.
+
+Applying these methods to domains other than image generation is not
+straightforward because the Inception network used to compute the metric is
+specific to raster images with three colour channels. This has prompted the
+development of domain-specific metrics such as Fréchet Audio
+Distance~\cite{kilgour19_interspeech} and Fréchet Video
+Distance~\cite{Unterthiner2018TowardsAG}, as well as the Graph Fréchet Distance
+used to evaluate particle jets generated by a graph-based GAN for LHC
+experiments~\cite{kansal2020graph}.
+
+\begin{figure}
+    \centering
+    \begin{subfigure}[t]{0.29\textwidth}
+        \centering
+        %\includegraphics[width=\textwidth]{chapter4/occupancy.pdf}
+        \hl{FIG}
+        \caption{}
+    \end{subfigure}
+    \begin{subfigure}[t]{0.29\textwidth}
+        \centering
+        %\includegraphics[width=\textwidth]{chapter4/occupancy.pdf}
+        \hl{FIG}
+        \caption{}
+    \end{subfigure}
+    \begin{subfigure}[t]{0.29\textwidth}
+        \centering
+        %\includegraphics[width=\textwidth]{chapter4/occupancy.pdf}
+        \hl{FIG}
+        \caption{}
+    \end{subfigure}
+    \caption{Fréchet Inception Distance applied to generated CDC hits over training epochs.}
+    \label{fig:FID_vs_epochs}
+\end{figure}
+
+The task of developing an independent quality metric for the CDC hit-generating
+GAN was tackled by a pair of MSci students during a 6-month project. 
+
+As a baseline, the Inception~v3 model trained on the ImageNet dataset was used
+to compute FID between generated and real samples. The network expects tensors
+with two spatial dimensions and three channels as input. Hit positions are
+discretised into a $150 \times 150$ grid and the three continuous features are
+used as channels. 
+
+The ordering of hits contains important information hence our distance metric
+ought to use it, but this would require the network to process an additional
+temporal dimension. 
+With Inception, we are forced to project out one of the dimensions in order
+to compute FID. Figure~\ref{fig:FID_vs_epochs} shows FID computed for each
+projection as a function of training iterations.
+
+A custom neural network is consequently developed to allow feature extraction
+from entire unprojected hit sequences and provide a new distance metric specific
+to the hit-generating GAN. In analogy with FID, the network is trained
+independently from the GAN to classify hit samples. The categories are chosen to
+be the same reconstructible and noise-like classes which we used to define what
+data the GAN learns to generate. We expect such a classifier to rely on the
+positioning and clustering of hit patterns to discriminate samples. Hence the
+intermediate activations which will be used to compute the Fréchet distance
+ought to be a representation of that information and hence help to define a
+sensible distance metric.
+Figure~\ref{fig:custom_distance_vs_epochs} shows \hl{...}.
+
+\begin{figure}
+    \centering
+    \hl{FIG}
+    %\includegraphics[width=0.6\textwidth]{}
+    \caption{Custom distance metric applied to generated CDC hits over training epochs.}
+    \label{fig:custom_distance_vs_epochs}
+\end{figure}
 
 
-% Use new MC5 downstream data from MSci to compare GAN-generated and real hits.
+\hl{t-SNE, examples of what GAN is modelling / not modelling?}
+
+\hl{Transfer learning model?}
+
+
 
 
 % The hit generation rate is X hits/s, whereas a traditional MC simulation

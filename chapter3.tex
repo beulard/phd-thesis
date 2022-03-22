@@ -40,7 +40,7 @@
 Experiments in high energy physics are commonly accompanied by the development of a set of software tools to help in manipulating and analysing experimental data. Simulations are used extensively to optimise experimental designs and prepare for the collection of real data while the physical instruments --- detectors, magnets, readout electronics and data acquisition systems --- are being manufactured and assembled.
 
 \section{The ICEDUST Software Suite}
-The COMET Collaboration develops a suite of software packages named ICEDUST (Integrated COMET Experimental Data User Software Toolkit) to satisfy the offline data-processing requirements of the experiment. Originally forked in 2013 from the software written for T2K's near detector system ND280, ICEDUST supports the needs of the COMET experiment with regard to simulation, on-disk data format, calibration, reconstruction and analysis. Fig.~\ref{fig:icedust_schematic} shows the flow of real and simulated data within the ICEDUST framework, and lists the names of the key packages for each step.
+The COMET Collaboration develops a suite of software packages named ICEDUST (Integrated COMET Experimental Data User Software Toolkit) to satisfy the offline data-processing requirements of the experiment. Originally forked in 2013 from the software written for T2K's near detector system ND280, ICEDUST supports the needs of the COMET experiment with regard to simulation, on-disk data format, calibration, reconstruction and analysis. Figure~\ref{fig:icedust_schematic} shows the flow of real and simulated data within the ICEDUST framework, and lists the names of the key packages for each step.
 
 
 \begin{figure}
@@ -50,13 +50,13 @@ The COMET Collaboration develops a suite of software packages named ICEDUST (Int
     \label{fig:icedust_schematic}
     \vspace{1.2cm}
     \includegraphics[width=0.6\textwidth]{chapter3/oaEvent.drawio.pdf}
-    \caption{Layout of \oaEvent files which contain MC or real data. Blue arrows in Fig.~\ref{fig:icedust_schematic} indicate steps of the data flow where data is stored in this format on disk.}
+    \caption{Layout of \oaEvent files which contain MC or real data. Blue arrows in Figure~\ref{fig:icedust_schematic} indicate steps of the data flow where data is stored in this format on disk.}
     \label{fig:oaEvent}
 \end{figure}
 
 \subsection{Data format}
 A key design principle of ICEDUST is to define a common format adopted by both real and simulated data, such that the pipeline of calibration, reconstruction and analysis can be thoroughly tested with only simulation data, in advance of the data acquisition stage. 
-This offline data format is called \oaEvent. Based on the ROOT~\cite{BRUN199781} serialisation system, \oaEvent defines a file format where data is laid out as a sequence of events, shown schematically in Fig.~\ref{fig:oaEvent}. Each event object contains an arborescence of data containers, each of which holds an array of some given data type (e.g.\ detector hits, calibrated energy deposits, reconstructed tracks, etc.).
+This offline data format is called \oaEvent. Based on the ROOT~\cite{BRUN199781} serialisation system, \oaEvent defines a file format where data is laid out as a sequence of events, shown schematically in Figure~\ref{fig:oaEvent}. Each event object contains an arborescence of data containers, each of which holds an array of some given data type (e.g.\ detector hits, calibrated energy deposits, reconstructed tracks, etc.).
 
 From Phase-I onward, data will be collected using the MIDAS data acquisition system, hence the online on-disk format is based on MIDAS data banks. ICEDUST provides a direct translation from this format to \oaEvent via the \texttt{oaRawEvent} and \texttt{oaUnpack} packages. Once translated, the data can flow through the calibration, reconstruction and analysis stages.
 
@@ -116,7 +116,7 @@ Once the simulation geometry is assembled, it is also translated into the ROOT \
 
 
 The \SimG package includes geometries for the Phase-$\alpha$, Phase-I (CyDet and StrawECAL configurations), and Phase-II setups. Over time, these simulation worlds are refined by developers to better reflect the exact configuration of the experiment. 
-Fig.~\ref{fig:comet_geometries} shows the simulation geometries for the two conversion-searching COMET designs.
+Figure~\ref{fig:comet_geometries} shows the simulation geometries for the two conversion-searching COMET designs.
 
 \begin{figure}
     \centering
@@ -188,7 +188,7 @@ From the normal beam simulation, one can estimate the spatial distribution of mu
     \label{fig:signal_event}
 \end{figure}
 
-Fig.~\ref{fig:signal_event} shows a simulated conversion electron emerging from the stopping target, depositing energy inside the CDC gas, to eventually trigger the CTH by hitting four adjacent counters. 
+Figure~\ref{fig:signal_event} shows a simulated conversion electron emerging from the stopping target, depositing energy inside the CDC gas, to eventually trigger the CTH by hitting four adjacent counters. 
 
 \subsection{Representation of simulated CDC hits}
 \label{subsec:SD}
@@ -200,7 +200,7 @@ Detector elements in a \Geant simulation are defined as ``sensitive volumes'', a
 The way in which hits are instantiated is typically dependent on the type of detector, because of differing granularities between e.g.\ a plastic scintillator and a drift chamber. A higher-granularity detector type requires finer-detailed information, hence more hit instances along the trajectory.
 
 In \SimG, the data type associated with CDC hits is called \texttt{IG4HitGas}. When \Geant reports an energy deposit inside the CDC, an instance of that class is created. If a particle makes multiple steps in a CDC cell, the deposit from each step is accumulated into the same hit instance, such that only one instance per particle per cell may exist. If a particle enters the same cell multiple times, one hit instance is created per entry.
-This is shown in Fig.~\ref{fig:sim_cdc_hits}, where the position and granularity of \texttt{IG4HitGas} instances is drawn along an electron's trajectory in the CDC.
+This is shown in Figure~\ref{fig:sim_cdc_hits}, where the position and granularity of \texttt{IG4HitGas} instances is drawn along an electron's trajectory in the CDC.
 
 
 % In early 2019, ICEDUST developers agreed to change the definition of hits inside the CDC gas volume in order to more accurately portray the energy deposit information in that detector. Along that process, I came to be thoroughly involved in the testing and refinement of this new CDC hit representation, named \texttt{IG4HitGas}. 
@@ -248,7 +248,7 @@ Leading up to the MC5 production, several aspects of the software were changed o
 
 
 
-The simulation was split into two stages by dividing the world along a boundary which effectively separates the pion-production section and transport solenoid (upstream) from the detector region (downstream), as shown in Fig.~\ref{fig:Phase-I Sampling World}. The boundary is set up to record the position and momentum of particles which enter the detector region. Most particles will enter via the beamline, but a small fraction (mostly neutrons) also penetrates through the wall, floor and ceiling. 
+The simulation was split into two stages by dividing the world along a boundary which effectively separates the pion-production section and transport solenoid (upstream) from the detector region (downstream), as shown in Figure~\ref{fig:Phase-I Sampling World}. The boundary is set up to record the position and momentum of particles which enter the detector region. Most particles will enter via the beamline, but a small fraction (mostly neutrons) also penetrates through the wall, floor and ceiling. 
 In the upstream run, only particles that enter the detector region are saved to disk, along with their ancestors. Upon doing so, their position and momentum is recorded to an \texttt{oaRooTracker} file (see~\ref{subsec:RT}) which is used as input for the downstream simulation.
 
 This way to proceed means that the upstream simulation is unaffected by the disposition of the detector region, hence one can perform the upstream run once and use the results to seed multiple downstream configurations, e.g.\ changing the detector geometry (e.g.\ between CyDet and the StrawECAL) or magnetic field. Since most of the simulation time is spent in the pion-production section, this gives a flexible way to produce high-statistics MC datasets in multiple experimental configurations.
@@ -259,7 +259,7 @@ This way to proceed means that the upstream simulation is unaffected by the disp
 The data produced with MC5 has a total disk size of \SI{13}{TB} and is archived on the tape storage system at CC-IN2P3. The sample size of $10^9$ POT events represents 62 unique beam bunches when merged, or the equivalent of $~\SI{0.1}{\ms}$ of data acquisition in Phase-I.
 
 \section{Animated CyDet event display}
-In order to visualise events in the CyDet system, I developed a tool to display hit data from MC simulations as animations, visually similar to a slow-motion online monitor of the detector. Fig.~\ref{fig:animation} shows a series of frames from one such animation involving a $\mu$--$e$ conversion electron.
+In order to visualise events in the CyDet system, I developed a tool to display hit data from MC simulations as animations, visually similar to a slow-motion online monitor of the detector. Figure~\ref{fig:animation} shows a series of frames from one such animation involving a $\mu$--$e$ conversion electron.
 
 \begin{figure}
     \centering
@@ -306,7 +306,7 @@ Each animation shows one bunch event unfolding over one cycle, i.e.\ \SI{1170}{\
 In the CDC, the true position of every hit is drawn as a circle with a radius proportional to the amount of energy deposited. Colour indicates hits produced by the same particle such that tracks can be disambiguated.
 
 The CTH counters flash only in the case of a fourfold coincidence i.e.\ if four adjacent counters are struck within a \SI{10}{\ns} window.
-Fourfold coincidences are most often caused accidentally by multiple particles, but occasionally a single track will hit four counters. In these occurrences, the track is emphasised in the animation and the particle type is displayed, as can be seen in Fig.~\ref{fig:animation:conv}.
+Fourfold coincidences are most often caused accidentally by multiple particles, but occasionally a single track will hit four counters. In these occurrences, the track is emphasised in the animation and the particle type is displayed, as can be seen in Figure~\ref{fig:animation:conv}.
 
 Hits in the CDC and CTH fade out over time such that the display does not become cluttered, but the fading rate is not representative of the actual time resolution of the sub-detectors.
 
