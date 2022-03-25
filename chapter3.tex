@@ -242,14 +242,29 @@ Leading up to the MC5 production, several aspects of the software were changed o
 \begin{figure}
     \centering
     \includegraphics[width=0.6\textwidth]{chapter3/sampling_plane_illu_ink.pdf}
-    \caption{Top-down cutaway view of the running configuration for MC5, showing $1.6\times 10^5$ overlaid events (1\% of a bunch). The orange line shows the sampling boundary where particles crossing into the detector region via the beamline or wall are recorded. Only charged-particle trajectories are shown for clarity.}
+    \caption{
+        Top-down cutaway view of the running configuration for MC5,
+        showing $1.6\times 10^5$ overlaid events (1\% of a bunch). The orange
+        line shows the sampling boundary where particles that cross into the
+        detector region via the beamline or wall are recorded. Only
+        charged-particle trajectories are shown for clarity.
+    }
     \label{fig:Phase-I Sampling World}
 \end{figure}
 
 
 
-The simulation was split into two stages by dividing the world along a boundary which effectively separates the pion-production section and transport solenoid (upstream) from the detector region (downstream), as shown in Figure~\ref{fig:Phase-I Sampling World}. The boundary is set up to record the position and momentum of particles which enter the detector region. Most particles will enter via the beamline, but a small fraction (mostly neutrons) also penetrates through the wall, floor and ceiling. 
-In the upstream run, only particles that enter the detector region are saved to disk, along with their ancestors. Upon doing so, their position and momentum is recorded to an \texttt{oaRooTracker} file (see~\ref{subsec:RT}) which is used as input for the downstream simulation.
+The simulation was split into two stages by dividing the world along a boundary
+which effectively separates the pion-production section and transport solenoid
+(upstream) from the detector region (downstream), as shown in
+Figure~\ref{fig:Phase-I Sampling World}. The boundary is set up to record the
+position and momentum of particles which enter the detector region. Most
+particles will enter via the beamline, but a small fraction (mostly neutrons)
+also penetrates through the wall, floor and ceiling. In the upstream run, only
+particles that enter the detector region are saved to disk, along with their
+ancestors. Upon doing so, their position and momentum is recorded to an
+\texttt{oaRooTracker} file (see Section~\ref{subsec:RT}) which is used as input for the
+downstream simulation.
 
 This way to proceed means that the upstream simulation is unaffected by the disposition of the detector region, hence one can perform the upstream run once and use the results to seed multiple downstream configurations, e.g.\ changing the detector geometry (e.g.\ between CyDet and the StrawECAL) or magnetic field. Since most of the simulation time is spent in the pion-production section, this gives a flexible way to produce high-statistics MC datasets in multiple experimental configurations.
 %Another benefit is that it allows for re-seeding of the downstream run, whereby each event retains the same initial conditions but uses several different seedings of the random number generator, yielding a more diverse dataset at the cost of potentially biasing the sample.
@@ -318,10 +333,20 @@ The animation rendering tool is written in Python. The code includes an algorith
 
 The source code of the ICEDUST software project is version-controlled using Git. A shared repository is hosted on the Gitlab instance of the IN2P3, where developers collaborate on building up and improving the code base. The repository contains a full history of the code, an issue tracker, and a set of wiki pages documenting the software. 
 
-Additions and changes are submitted to the central repository through merge requests from the developers.
-When submitting a merge request, changes to the code are typically reviewed by another developer or maintainer who verifies that no new bugs are introduced into the main branch. To further reduce the likelihood of an issue occurring, the ICEDUST repository makes use of Gitlab's continuous integration system.
+Additions and changes are submitted to the central repository through merge
+requests from the developers. When submitting a merge request, changes to the
+code are typically reviewed by another developer or maintainer who verifies that
+no new bugs are introduced into the main branch. To further reduce the
+likelihood of new issues appearing, the ICEDUST repository makes use of Gitlab's
+continuous integration system.
 
-Every time new code enters the main branch, the whole code base goes through a three-step pipeline. The first step compiles the code and builds a new version of every binary. The second step runs custom unit tests and validations using this new build. Each unit test typically verifies that a single functionality works as intended in an isolated environment, while validations can run multiple pieces of the software and ensure that the results are consistent between one revision of ICEDUST and the next.
+Every time new code enters the main branch, the whole code base goes through a
+three-step pipeline. The first step compiles the code and builds a new version
+of every binary. The second step runs custom unit tests and validations using
+this new build. Each unit test typically verifies that a single functionality
+works as intended in an isolated environment, while validations can run multiple
+pieces of the software and ensure that the results are consistent between one
+revision of ICEDUST and the next.
 
 If the building, unit testing and validation stages all pass, the pipeline moves to the final deployment step where the new binaries are assembled into a Docker image which is published to the repository's container registry. Users who wish to use the compiled software as-is can download this image and run it via Docker or Singularity.
 If any of the pipeline steps reports a failure, the developer submitting the merge request is notified and full logs are provided to identify the issue. A merge request is usually only accepted once the code has been reviewed and if the pipeline finishes successfully.
