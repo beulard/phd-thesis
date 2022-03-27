@@ -9,6 +9,7 @@ main.pdf
 *.synctex.gz
 *.run.xml
 single_chapter.pdf
+diagram_scratch.pdf
 *.bcf
 *.blg
 *.lof

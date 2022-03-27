@@ -64,23 +64,97 @@ prompted Rabi to ask ``who ordered that?'' in response to its discovery. In
 fact, the Standard Model still cannot give a satisfactory answer to this
 question as it does not motivate the existence of three generations of
 elementary particles. As far as the SM can explain, there is no fundamental reason
-for the existence of heavier or lighter versions of particles that share the
-same quantum properties.
+for the existence of distinct flavours.
 
 \section{The muon in the Standard Model}
+% 
 The SM identifies the muon as the second-generation charged lepton, meaning it
 is a fermion with identical quantum numbers (aside from flavour) as the electron
 and tau lepton. The only way for a muon to decay in a vacuum is through the weak
 force. The diagram for muon decay is shown in Fig.~\ref{fig:weak_decay}.
 
+
 \begin{figure}
     \centering
-    %\includegraphics[]{}
+    \feynmandiagram [layered layout, horizontal=a to b] {
+        a [particle=\(\mu^{-}\)] -- [fermion] b -- [fermion] f1 [particle=\(\nu_{\mu}\)],
+        b -- [boson, edge label'=\(W^{-}\)] c,
+        c -- [anti fermion] f2 [particle=\(\overline \nu_{e}\)],
+        c -- [fermion] f3 [particle=\(e^{-}\)],
+    };
     \caption{Feynman diagram for the weak decay of the muon.}
     \label{fig:weak_decay}
 \end{figure}
 
+% mu -> e gamma
+The process $\mu \rightarrow e + \gamma$ is in principle kinematically allowed
+as well, and the SM contains no symmetry which would forbid such a flavour
+change. However, it has never been observed experimentally. Since
+1948~\cite{PhysRev.73.257}, searches for ${\mu \rightarrow e + \gamma}$ have
+demonstrated that it does not occur at any observable rate: the current upper
+limit on its branching ratio measured by the MEG experiment is
+$10^{-13}$~\cite{mori2016final}.
 
+In the quark sector, generations can mix via weak interactions: the
+CKM matrix accurately describes how strongly each quark flavour couples
+to the others. %~\cite{PhysRevLett.10.531, 10.1143/PTP.49.652}.
+For leptons on the other hand, it is
+only through neutrino oscillations, discovered by the Super-Kamiokande
+experiment~\cite{PhysRevLett.81.1562}, that flavours have been observed to mix. 
+Flavour-changing neutrino oscillations allow a new channel for ${\mu \rightarrow
+e + \gamma}$, shown in Fig.~\ref{fig:mu_e_nu_osc}. However, the branching ratio
+calculated for this process using the upper limit on neutrino masses is given
+by:
+$$
+\mathcal{BR}(\mu \rightarrow e + \gamma) = \frac{3\alpha}{32\pi} \left|\ \sum_{i=2, 3} U^*_{\mu i} U_{e i} 
+\frac{\Delta m^2_{i1}}{M^2_W}  \ \right| ^2 \approx 10^{-54},
+$$
+where $U$ is the PMNS matrix, $\Delta m^2_{ij}$ is the mass-squared difference between the
+$i$-th and $j$-th neutrino mass eigenstates, and $M_W$ is the $W$-boson
+mass~\cite{BERNSTEIN201327}.
+Any evidence that the ${\mu \rightarrow e + \gamma}$ process occurs at a higher
+rate than this would indicate that another channel involving charged lepton
+flavour violation (CLFV) is responsible.
+
+\begin{figure}
+    \centering
+    \begin{tikzpicture}
+    \begin{feynman}
+    \vertex (a) {\(\mu\)};
+    \vertex [right=1.5cm of a] (b);
+    \vertex [right=1.8cm of b] (c);
+    \vertex [right=1.5cm of c] (d) {\(e\)};
+    
+    \vertex at ($(b)!0.5!(c) + (0, 0.9cm)$) (n);
+    \vertex at ($(b)!0.5!(c) + (0, -0.9cm)$) (w);
+    \vertex [above=0.1cm of w] (wn) {\(W\)};
+    \vertex [below=1.5cm of d] (g) {\(\gamma\)};
+    
+    \diagram* {
+    (a) -- [fermion] (b)
+    -- [fermion, quarter left, edge label=\(\nu_\mu\)] (n)
+    -- [fermion, quarter left, edge label=\(\nu_e\)] (c),
+    (b) -- [boson, quarter right] (w)
+    -- [boson, quarter right] (c),
+    (c) -- [fermion] (d),
+    (w) -- [boson] (g),
+    };
+    
+    \draw (n) -- (n) node {\(\times\)};
+    
+    \end{feynman}
+    \end{tikzpicture}
+    \caption{
+        Feynman diagram for $\mu \rightarrow e + \gamma$ via
+        flavour oscillation of a virtual neutrino.
+    }
+    \label{fig:mu_e_nu_osc}
+\end{figure}
+
+
+
+In the presence of matter, there are additional processes which could be
+investigated to find charged lepton flavour violation (CLFV), as shown in Fig.
 
 
 % Allowed and forbidden decays
@@ -95,11 +169,13 @@ force. The diagram for muon decay is shown in Fig.~\ref{fig:weak_decay}.
 
 
 \section{Charged lepton flavour violation}
-Quark generations are known to mix
+Quark generations are known to mix (CMK).
+Neutral leptons (neutrinos) are known to mix (PMNS, osc).
+Charged leptons have never been seen to mix. Why?
 
 \begin{figure}
     \centering
-    \includegraphics{chapter1/clfv_upper_limit.pdf}
+    \includegraphics{chapter1/clfv_upper_limit_v2.pdf}
     \caption{90\%-confidence upper limit on the branching ratio of three charged lepton flavour-violating processes over time. The past data points were tabulated in~\cite{BERNSTEIN201327}. Future data points are the expected sensitivities quoted in the MEG II~\cite{Baldini2018}, Mu3e~\cite{ARNDT2021165679}, COMET Phase-I~\cite{the_comet_collaboration_comet_2020} and Mu2e~\cite{bartoszek2015mu2e} design reports.}
     \label{fig:clfv_upper_limit}
 \end{figure}
