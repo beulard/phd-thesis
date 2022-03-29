@@ -3,7 +3,7 @@
 % \begin{markdown}
 % ---
 
-% + Yoshi said: this is really an intro to CLFV searches for experts out of the
+% + Yoshi said: this is really an intro to CLFV searches for experts out of the CLFV
 % field.
 
 % + What's a muon?
@@ -11,23 +11,24 @@
 % + Historical context, motivation
 %  + Why/how was the first CLFV experiment conducted?
 
-% Sindrum II: what do they start with?
-%  - Generation mixing in neutrino oscillations
-
 
 % ---
 % \end{markdown}
 
 % v1
 The Standard Model (SM) of particle physics is possibly the most successful
-mathematical model of physical phenomena so far. It provides accurate
-predictions for all observable interactions between known elementary particles.
+mathematical model of physical phenomena so far. It provides an accurate
+description of all observable interactions between known elementary particles.
+It yields predictions for what nature does and does not allow, and enables
+physicists to examine and test the fundamental laws of the universe. It provides
+a rigid framework to make theoretical predictions, from which any measured
+deviations can then be interpreted as new physics.
 
-% The very start of this chapter should introduce HEP concepts like the muon and
-% what it is, how it relates to the SM, what is the SM.
+The muon is the most sensitive probe to search for charged lepton flavour
+violation. If that is observed, it will add another piece of definite evidence,
+along with non-zero neutrino masses, that the SM cannot faithfully account for
+all fundamental interactions.
 
-% This thesis concerns itself with addressing some of the challenges faced in the
-% simulation of particles within the experimental setup of the COMET experiment.
 
 % However before we are able to dive into the main topics, it is necessary to
 % discuss the purpose of the experiment, how it emerges from the current state of
@@ -50,13 +51,12 @@ predictions for all observable interactions between known elementary particles.
 The first traces of muons were observed around 1937 by three experiments
 investigating the nature of cosmic ray-induced particle
 showers~\cite{PhysRev.51.884, PhysRev.52.1198, PhysRev.52.1003}. 
-In addition, one analysis was able to estimate the mass of the discovered
-particle at 130 times that of the electron. 
-In 1935, Yukawa predicted the existence of a particle with a similar mass whose role
-was to carry the strong force and bind atomic nuclei
-together~\cite{10.1143/PTPS.1.1}. Hence the muon and Yukawa's particle were
+One of them was able to estimate the mass of the discovered
+particle at 130 times that of the electron, around the same as the strong
+force-carrying meson predicted by Yukawa in 1935~\cite{10.1143/PTPS.1.1}. 
+Hence the muon and Yukawa's particle were
 originally believed to be one and the same particle, and it was only when
-Yukawa's meson (now called $\pi$, for primary) was observed decaying into a muon,
+the meson (now called $\pi$, for primary) was observed decaying into a muon,
 that the two particles were completely disambiguated~\cite{LATTES1947}.
 
 It was the fact that the muon appeared as nothing but a heavy electron which
@@ -71,7 +71,8 @@ for the existence of distinct flavours.
 The SM identifies the muon as the second-generation charged lepton, meaning it
 is a fermion with identical quantum numbers (aside from flavour) as the electron
 and tau lepton. The only way for a muon to decay in a vacuum is through the weak
-force. The diagram for muon decay is shown in Fig.~\ref{fig:weak_decay}.
+force. The diagram for muon decay, $\mu^- \rightarrow e^- +  \nu_\mu
++ \overline{\nu}_e$, is shown in Fig.~\ref{fig:weak_decay}.
 
 
 \begin{figure}
@@ -86,13 +87,46 @@ force. The diagram for muon decay is shown in Fig.~\ref{fig:weak_decay}.
     \label{fig:weak_decay}
 \end{figure}
 
-% mu -> e gamma
-The process $\mu \rightarrow e + \gamma$ is in principle kinematically allowed
-as well, and the SM contains no symmetry which would forbid such a flavour
-change. However, it has never been observed experimentally. Since
-1948~\cite{PhysRev.73.257}, searches for ${\mu \rightarrow e + \gamma}$ have
-demonstrated that it does not occur at any observable rate: the current upper
-limit on its branching ratio measured by the MEG experiment is
+In the SM Lagrangian with massless neutrinos, none of the terms which involve
+leptons allow for flavour violation. The Lagrangian is invariant under the
+$U(1)_e \times U(1)_\mu \times U(1)_\tau$ group, and consequently, each lepton
+family ($e$, $\mu$, $\tau$) has its own conserved number which prevents a
+charged lepton from changing flavour without neutrinos being involved. 
+
+These conservation laws do not correspond to a fundamental symmetry of nature;
+they are merely a feature of the SM Lagrangian and have, so far, been observed
+to hold experimentally. For instance, the process ${\mu \rightarrow e +
+\gamma}$, in principle allowed by kinematics, has never been observed and the
+current upper limit on its branching ratio was set by the MEG experiment at
+$10^{-13}$~\cite{mori2016final}.
+
+The observation of neutrino oscillations~\cite{PhysRevLett.81.1562} means that
+the three accidental flavour symmetries are not exact. This strongly
+motivates a search for flavour violation among the charged leptons as well, as
+any evidence for it would, together with neutrino oscillations, yield hints
+about the theory lying beyond the Standard Model.
+
+The fact that neutrinos can change flavour allows a process such as shown in
+Fig.~\ref{fig:mu_e_nu_osc} to occur, which gives rise to a non-zero rate for
+${\mu \rightarrow e + \gamma}$. However, the branching ratio calculated for this
+process using the upper limit on neutrino masses is given by:
+\begin{equation}\label{eq:br_meg}
+\mathcal{BR}(\mu \rightarrow e + \gamma) = \frac{3\alpha}{32\pi} \left|\ \sum_{i=2, 3} U^*_{\mu i} U_{e i} 
+\frac{\Delta m^2_{i1}}{M^2_W}  \ \right| ^2 \approx 10^{-54},
+\end{equation}
+where $U$ is the PMNS matrix, $\Delta m^2_{ij}$ is the mass-squared difference between the
+$i$-th and $j$-th neutrino mass eigenstates, and $M_W$ is the $W$-boson
+mass~\cite{BERNSTEIN201327}.
+Hence any evidence that the ${\mu \rightarrow e + \gamma}$ process occurs at a higher
+rate than given by Eq.~\ref{eq:br_meg} would indicate that another channel,
+involving charged lepton flavour violation (CLFV), is responsible.
+
+\section{Charged lepton flavour violation}
+\hl{HISTORY}
+
+Since 1948~\cite{PhysRev.73.257}, searches for ${\mu \rightarrow e + \gamma}$
+have demonstrated that it does not occur at any observable rate: the current
+upper limit on its branching ratio measured by the MEG experiment is
 $10^{-13}$~\cite{mori2016final}.
 
 In the quark sector, generations can mix via weak interactions: the
@@ -102,19 +136,7 @@ For leptons on the other hand, it is
 only through neutrino oscillations, discovered by the Super-Kamiokande
 experiment~\cite{PhysRevLett.81.1562}, that flavours have been observed to mix. 
 Flavour-changing neutrino oscillations allow a new channel for ${\mu \rightarrow
-e + \gamma}$, shown in Fig.~\ref{fig:mu_e_nu_osc}. However, the branching ratio
-calculated for this process using the upper limit on neutrino masses is given
-by:
-$$
-\mathcal{BR}(\mu \rightarrow e + \gamma) = \frac{3\alpha}{32\pi} \left|\ \sum_{i=2, 3} U^*_{\mu i} U_{e i} 
-\frac{\Delta m^2_{i1}}{M^2_W}  \ \right| ^2 \approx 10^{-54},
-$$
-where $U$ is the PMNS matrix, $\Delta m^2_{ij}$ is the mass-squared difference between the
-$i$-th and $j$-th neutrino mass eigenstates, and $M_W$ is the $W$-boson
-mass~\cite{BERNSTEIN201327}.
-Any evidence that the ${\mu \rightarrow e + \gamma}$ process occurs at a higher
-rate than this would indicate that another channel involving charged lepton
-flavour violation (CLFV) is responsible.
+e + \gamma}$, shown in Fig.~\ref{fig:mu_e_nu_osc}. 
 
 \begin{figure}
     \centering
@@ -163,48 +185,27 @@ investigated to find charged lepton flavour violation (CLFV), as shown in Fig.
 \cite{PhysRevLett.126.141801} % g-2
 
 % Is lhc-b related here? Lepton univ?
-\cite{lhcbcollaboration2021test} % lhc-b R_K
+\cite{Aaij2022}% lhc-b R_K
 
 
 
 
 \section{Charged lepton flavour violation}
-Quark generations are known to mix (CMK).
+Quark generations are known to mix (CKM).
 Neutral leptons (neutrinos) are known to mix (PMNS, osc).
 Charged leptons have never been seen to mix. Why?
 
 \begin{figure}
     \centering
-    \includegraphics{chapter1/clfv_upper_limit_v2.pdf}
-    \caption{90\%-confidence upper limit on the branching ratio of three charged lepton flavour-violating processes over time. The past data points were tabulated in~\cite{BERNSTEIN201327}. Future data points are the expected sensitivities quoted in the MEG II~\cite{Baldini2018}, Mu3e~\cite{ARNDT2021165679}, COMET Phase-I~\cite{the_comet_collaboration_comet_2020} and Mu2e~\cite{bartoszek2015mu2e} design reports.}
+    \includegraphics[width=\textwidth]{chapter1/clfv_upper_limit_v2.pdf}
+    \caption{
+        90\%-confidence upper limit on the branching ratio of three charged
+        lepton flavour-violating processes over time. Past experiment results
+        were tabulated in~\cite{BERNSTEIN201327}. Future data points are the
+        expected sensitivities quoted in the MEG II~\cite{Baldini2018},
+        Mu3e~\cite{ARNDT2021165679}, COMET
+        Phase-I~\cite{the_comet_collaboration_comet_2020} and
+        Mu2e~\cite{bartoszek2015mu2e} design reports.
+    }
     \label{fig:clfv_upper_limit}
 \end{figure}
-
-%The search for Lepton Flavour Violation started in 19XX with John Doe's experiment~\cite{doe}.
-
-
-
-%See Chapter~\ref{chapter2}, read~\cite{goodfellow_generative_2014}.\\
-%The smooth boi can be seen on Fig.~\ref{subfig:smooth_boi}, and the outlined boi on %Fig.~\ref{subfig:smooth_boi}. The whole figure is Fig.~\ref{fig:my_label}.
-%
-%A derivative:
-%$$\diff{x}{y} = 2\pi x y$$
-%Insane!
-%
-%And here we typeset COMET in smallcaps: \COMET. This \acrshort{COMET} is an \emph{acronym}. %You can click it to see what it means.
-%
-%\begin{figure}
-%    \centering
-%    \subfloat[A smooth boi]{
-%    \includegraphics[width=0.5\textwidth]{viewer_smooth.png}
-%    \label{subfig:smooth_boi}
-%    }
-%    \subfloat[An outlined boi]{
-%    \includegraphics[width=0.5\textwidth]{viewer_outline2.png}
-%    \label{subfig:outlined_boi}
-%    }
-%    \caption{Phase-I cutaway geometries.}
-%    \label{fig:my_label}
-%\end{figure}
-%
-%Here we cite the COMET TDR~\cite{the_comet_collaboration_comet_2020} and the upper limit on %the branching ratio of $\mu^- + \textrm{Al} \rightarrow e^- + \textrm{Al}$, $7\times %10^{-13}$, by the SINDRUM-II experiment~\cite{Bertl:2006up}.

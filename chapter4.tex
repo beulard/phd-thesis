@@ -1101,6 +1101,8 @@ with two spatial dimensions and three channels as input. Hit positions are
 discretised into a $150 \times 150$ grid and the three continuous features are
 used as channels. 
 
+\hl{150x150 is only for the 3D cnn, others use 300x300.}
+
 The ordering of hits contains important information hence our distance metric
 ought to use it, but this would require the network to process an additional
 temporal dimension. 
