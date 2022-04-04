@@ -1070,45 +1070,58 @@ experiments~\cite{kansal2020graph}.
 
 \begin{figure}
     \centering
-    \begin{subfigure}[t]{0.29\textwidth}
+    \begin{subfigure}[t]{0.32\textwidth}
         \centering
-        %\includegraphics[width=\textwidth]{chapter4/occupancy.pdf}
-        \hl{FIG}
-        \caption{}
+        \hspace{-0.85cm}
+        \includegraphics[width=\textwidth]{chapter4/fid_epoch-yz.pdf}
+        %\caption{}
     \end{subfigure}
-    \begin{subfigure}[t]{0.29\textwidth}
+    \begin{subfigure}[t]{0.32\textwidth}
         \centering
-        %\includegraphics[width=\textwidth]{chapter4/occupancy.pdf}
-        \hl{FIG}
-        \caption{}
+        \hspace{-0.85cm}
+        \includegraphics[width=\textwidth]{chapter4/fid_epoch-ty.pdf}
+        %\caption{}
     \end{subfigure}
-    \begin{subfigure}[t]{0.29\textwidth}
+    \begin{subfigure}[t]{0.32\textwidth}
         \centering
-        %\includegraphics[width=\textwidth]{chapter4/occupancy.pdf}
-        \hl{FIG}
-        \caption{}
+        \hspace{-0.85cm}
+        \includegraphics[width=\textwidth]{chapter4/fid_epoch-tz.pdf}
+        %\caption{}
     \end{subfigure}
-    \caption{Fréchet Inception Distance applied to generated CDC hits over training epochs.}
+    \caption{
+        Fréchet Inception Distance obtained from generated CDC hits over
+        training epochs. Since the Inception network requires a 2D image as
+        input, the hit data is projected along three axes and a separate FID
+        is calculated for each projection.
+    }
     \label{fig:FID_vs_epochs}
 \end{figure}
 
 The task of developing an independent quality metric for the CDC hit-generating
-GAN was tackled by a pair of MSci students during a 6-month project. 
+GAN was tackled by a pair of MSci students during a 6-month
+project~\cite{noamandirene}.
 
 As a baseline, the Inception~v3 model trained on the ImageNet dataset was used
 to compute FID between generated and real samples. The network expects tensors
 with two spatial dimensions and three channels as input. Hit positions are
-discretised into a $150 \times 150$ grid and the three continuous features are
+discretised into a $300 \times 300$ grid and the three continuous features are
 used as channels. 
+The ordering of hits contains important information hence our distance metric
+ought to use it. We can interpret the ordering as a third, temporal dimension.
+However the Inception network cannot process 3D objects, hence we are forced to
+project out one of the dimensions in order to compute FID.
+Figure~\ref{fig:FID_vs_epochs} shows FID computed for each of the three
+projections as a function of training iterations.
+
+
+In order to process whole hit sequences rather than projections, two options
+were considered: training a custom network which can take three-dimensional
+tensors as input, and adding layers to the Inception network
+and fine-tuning it.
+
+
 
 \hl{150x150 is only for the 3D cnn, others use 300x300.}
-
-The ordering of hits contains important information hence our distance metric
-ought to use it, but this would require the network to process an additional
-temporal dimension. 
-With Inception, we are forced to project out one of the dimensions in order
-to compute FID. Figure~\ref{fig:FID_vs_epochs} shows FID computed for each
-projection as a function of training iterations.
 
 A custom neural network is consequently developed to allow feature extraction
 from entire unprojected hit sequences and provide a new distance metric specific
