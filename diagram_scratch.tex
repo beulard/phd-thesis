@@ -1,6 +1,7 @@
 \documentclass[12pt,a4paper]{article}
 
 \usepackage{tikz-feynman}
+\usepackage{amsmath}
 
 \begin{document}
 qweqwe
@@ -79,5 +80,46 @@ qweqwe
 
 \end{feynman}
 \end{tikzpicture}
+
+
+
+\begin{figure}
+    \centering
+    \feynmandiagram [medium, vertical=b to d] {
+        a [particle=\(\mu^{-}\)] -- [fermion] b [blob]
+        -- [fermion] c [particle=\(e\)],
+        b -- [boson] d [particle=\(\gamma\)],
+        %b -- [boson, edge label'=\(W^{-}\)] c,
+        %c -- [anti fermion] f2 [particle=\(\overline \nu_{e}\)],
+        %c -- [fermion] f3 [particle=\(e^{-}\)],
+    };
+    \hspace{3cm}
+    \feynmandiagram [medium, horizontal=a to c] {
+        a [particle=\(\mu^{-}\)] -- [fermion] b [blob]
+        -- [fermion] c [particle=\(e\)],
+        e  [particle=\(q\)] -- [fermion] b,
+        b -- [fermion] d [particle=\(q\)],
+        %b -- [boson, edge label'=\(W^{-}\)] c,
+        %c -- [anti fermion] f2 [particle=\(\overline \nu_{e}\)],
+        %c -- [fermion] f3 [particle=\(e^{-}\)],
+    };
+    \caption{
+        wewwee
+    }
+    \label{fig:mu_e_nu_osc}
+\end{figure}
+
+\begin{align}\label{eq:Leff}
+    \mathcal{L^\text{eff}_\mathrm{CLFV}} 
+    = \ 
+    &\frac{1}{\kappa+1}\,\frac{m_\mu}{\Lambda^2}\,
+    \overline{\mu}_R \sigma_{\mu\nu} e_L F^{\mu\nu} + \text{h.c.}
+    \nonumber\\[1em]
+    + \  &\frac{\kappa}{\kappa+1} \frac{1}{\Lambda^2}\,
+    \overline{\mu}_L \gamma_\mu e_L \,
+    ( 
+        \overline{u}_L \gamma^\mu u_L + \overline{d}_L \gamma^\mu d_L
+    ) + \text{h.c.},
+\end{align}
 
 \end{document}

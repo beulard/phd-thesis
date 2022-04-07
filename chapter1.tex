@@ -267,36 +267,37 @@ from backgrounds originating from other processes, contamination of the beam and
 cosmic rays.
 
 \subsection{Standard Model backgrounds}
-In the SM, a bound muon is allowed to either decay in orbit (DIO): 
+In the SM, a bound muon is allowed to either decay in orbit: 
 \begin{equation*}\label{eq:dio}
     \mu^- + N(A, Z) \rightarrow e^- + \nu_\mu + \overline{\nu}_e + N(A, Z),
 \end{equation*}
-or it can be captured by the nucleus via a $W$ exchange: 
+or it can be captured by the nucleus via a $W$ exchange:
 \begin{equation*}\label{eq:capture}
-    \mu^- + N(A, Z) \rightarrow \nu_\mu + N^*(A, Z-1),
+    \mu^- + N(A, Z) \rightarrow \nu_\mu + N(A, Z-1),
 \end{equation*}
 % Not great: RMC is the background, but non-radiative nuclear capture isn't.
 % Make it clear.
 % Might be better to split into two subsecs
-\hl{todo see comment}
-followed by a photon emission by the excited nucleus and $e^+e^-$-pair production.
-These two processes can, depending on the target material, produce electrons
-with an energy approaching $E_{\mu\text{--}e}$, hence these events may
-be mistaken for the mono-energetic signature of coherent $\mu$--$e$ conversion.
+% yeah but RMC is minor compared to DIO (x0.2)
+% followed by a photon emission by the excited nucleus and $e^+e^-$-pair
+% production.
+Both decay in orbit and radiative muon capture can, depending on the target
+material, produce electrons with an energy approaching $E_{\mu\text{--}e}$,
+hence these events may be mistaken for a conversion electron. 
 
-For aluminium targets, the most dangerous of the two SM processes is decay in
-orbit since the high-energy endpoint of the spectrum is approximately equal to
-$E^\mathrm{Al}_{\mu\text{--}e}$~\cite{czarnecki}. The rate of DIO in the high energy
-tail is many orders of magnitude lower than at the peak, hence these background
-events are expected to be extremely rare. However, the level of sensitivity
-aimed at by next-generation searches makes DIO the most important background
-source and thus one of the main sensitivity-limiting
+For an aluminium target, the most dangerous of the two processes is decay in
+orbit (DIO) since the high-energy endpoint of the DIO spectrum is approximately
+equal to $E^\mathrm{Al}_{\mu\text{--}e}$~\cite{czarnecki}. The rate of DIO in
+the high energy tail is many orders of magnitude lower than at the peak, hence
+these background events are expected to be extremely rare. However, the level of
+sensitivity aimed at by next-generation searches makes DIO the most important
+background source and thus one of the main sensitivity-limiting
 factors~\cite{the_comet_collaboration_comet_2020}.
 
-Sources of background other than allowed SM processes are expected in
-$\mu$--$e$ conversion-searching experiments, such as beam-related and cosmic ray-induced
-events. Those specific to the COMET experiment, and the associated design
-choices which were made to minimise their occurrence, are discussed in
+Sources of background other than these allowed SM processes are expected in
+$\mu$--$e$ conversion-searching experiments, such as beam-related and cosmic
+ray-induced events. Those specific to the COMET experiment, and the associated
+design choices which were made to minimise their occurrence, are discussed in
 Section~\ref{sec:backgrounds}.
 
 
@@ -347,12 +348,87 @@ Section~\ref{sec:backgrounds}.
 
 
 
-\section{SM extension for observable $\mu$--$e$ conversion}
-In order to allow muons to violate lepton flavour conservation, the SM
-Lagrangian can be extended with the terms
-$$
-\delta \mathcal{L_\mathrm{CLFV}} = \frac{m_\mu}{(\kappa+1)\Lambda}.
-$$
+\section{Effective CLFV interactions}
+CLFV searches are sensitive to various categories of new physics, including the
+existence of an exotic Higgs, a $Z'$ boson, leptoquarks, heavy neutrinos, or
+supersymmetric particles. Independently of the specific new physics responsible
+for CLFV, we can consider a low-energy effective field theory to understand what
+deviations future experiments might expect to see due to these new high-energy
+degrees of freedom. 
 
-\hl{ todo understand theory, mention how new g-2 results might affect results
-    from de gouvea. }
+\begin{figure}
+    \centering
+    \begin{subfigure}[b]{0.3\textwidth}
+        \centering
+        \feynmandiagram [small, inline=(b.base), vertical=b to d] {
+            a [particle=\(\mu^{-}\)] -- [fermion] b [blob]
+            -- [fermion] c [particle=\(e^-\)],
+            b -- [boson] d [particle=\(\gamma\)],
+        };
+        \caption{Photonic}
+    \end{subfigure}
+    \hspace{1cm}
+    \begin{subfigure}[b]{0.3\textwidth}
+        \centering
+        \feynmandiagram [small, inline=(b.base), vertical=a to d] {
+            a [particle=\(\mu^{-}\)] -- [fermion] b [blob]
+            -- [fermion] {c [particle=\(e^-\)],
+            e [particle=\(q\)]},
+            d [particle=\(q\)] -- [fermion] b,
+        };
+        \caption{Four-fermionic}
+    \end{subfigure}
+    \caption{New tree-level vertices which arise in the effective Lagrangian
+    of Eq.~\ref{eq:Leff} and allow CLFV.}
+    \label{fig:tree_lvl_clfv}
+\end{figure}
+
+\hl{Yeah but what's deGouvea's starting point?}\\
+After integrating out heavy fields (see
+e.g.~\cite[Chapter~IV]{donoghue_golowich_holstein_2014}), one obtains the
+following effective Lagrangian, which allows CLFV to be mediated by the
+tree-level vertices shown in Fig.~\ref{fig:tree_lvl_clfv}:
+\begin{align}\label{eq:Leff}
+    \mathcal{L^\text{eff}_\mathrm{CLFV}}\,
+    =\,
+    &\frac{1}{\kappa+1}\, \frac{m_\mu}{\Lambda^2}\,
+    \overline{\mu}_R \sigma_{\mu\nu} e_L \, F^{\mu\nu} + \text{h.c.}
+    \nonumber\\[1em]
+    +\,
+    &\frac{\kappa}{\kappa+1}\, \frac{1}{\Lambda^2}\,
+    \overline{\mu}_L \gamma_\mu e_L \,
+    (\,
+        \overline{u}_L \gamma^\mu u_L + \overline{d}_L \gamma^\mu d_L
+    \,) + \text{h.c.}
+\end{align}
+where $\Lambda$ is the energy scale of the new physics, and $\kappa$ determines
+whether the preferred channel is photonic ($\kappa \rightarrow 0$) or
+four-fermionic ($\kappa \rightarrow \infty$)~\cite{DEGOUVEA201375}. 
+From the sensitivity of a future experiment, we can estimate the maximum scale
+of new physics $\Lambda$ which the experiment will be able to probe. 
+% If a new
+% particle exists with a mass lower than that, the experiment should see a
+% significant deviation from expectation, i.e. it should observe CLFV.
+Specifically, COMET and Mu2e, which have a single-event sensitivity of around
+$10^{-17}$, will probe energy scales up to $10^4$
+\si{\tera\eV}~\cite{DEGOUVEA201375}.
+
+If CLFV is observed in one of the three muon channels, the value of $\kappa$ can
+then be determined from a measurement of the branching ratio of a second
+channel. This information can then be used to constrain models and pinpoint the
+true nature of the new physics.
+
+The most accurate measurement of the muon magnetic moment to date from the Muon
+$g-2$ experiment shows a deviation of $4.2\sigma$ from the Standard Model
+prediction~\cite{PhysRevLett.126.141801}. The energy scale of new physics
+associated with the measured anomaly is expected to lie below
+\SI{2.1}{\tera\eV}~\cite{KESHAVARZI2022115675}. Following~\cite{DEGOUVEA201375},
+we can define a parameter $\theta_{e\mu} =
+\frac{\Lambda^2_{g-2}}{\Lambda^2_\text{CLFV}}$ which measures how flavour-conserving
+is the new physics responsible for the anomalous $g-2$. Assuming that this
+anomaly is caused by high-energy BSM contributions, the current CLFV upper
+limits set the maximum value for $\theta_{e\mu}$ at $10^{-5}$, i.e.\ the
+amount of flavour violation in the new physics sector is very small.
+
+
+\hl{This feels stupid... Why even include it? Doesn't sound very relevant tbh.}
