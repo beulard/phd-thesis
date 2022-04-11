@@ -5,24 +5,25 @@ The Standard Model (SM) of particle physics is possibly the most successful
 mathematical model of physical phenomena so far. It provides an accurate
 description of almost all observable interactions between known elementary
 particles. It yields predictions for what nature does and does not allow, and
-enables physicists to examine and test the fundamental laws of the universe. It
-provides a rigid framework to make theoretical predictions, from which any
-measured deviations can then be interpreted as new physics.
+enables physicists to examine and test the fundamental laws of the universe.
+Furthermore, the SM establishes a rigid framework to make theoretical
+predictions, from which any measured deviations can then be interpreted as new
+physics.
 
-% Bla bla bla
-Charged lepton flavour conservation, which stems from an accidental symmetry of
-the SM, is currently under strict scrutiny by various experiments around the
-world. This strong interest was in part driven by the observation of neutrino
-oscillations, which has proven that the current formulation of the SM cannot
-fully describe all fundamental interactions of nature. If charged lepton flavour
-violation is observed, not only will it add to the current evidence that the SM
-is incomplete, but it will help guide us toward the next theory of particle
-physics beyond the Standard Model.
+The conservation of lepton flavour, which stems from an accidental symmetry of the SM,
+is currently under strict scrutiny by various experiments around the world. 
+The observation of neutrino oscillations has already proven that lepton flavour
+is not conserved by neutral leptons, and this has driven the search for lepton
+flavour violation among the charged leptons. If it is observed, not only will it
+add to the current evidence that the SM is incomplete, but it will help guide us
+toward the next theory of particle physics beyond the Standard Model.
 
-The most sensitive probe to search for CLFV is the muon. This chapter describes
-how the muon has come from being a mysterious particle showering Earth from
-outer space to becoming a tool in high energy physics experiments used to
-explore the frontier of our knowledge of nature.
+The most sensitive probe to search for charged lepton flavour violation (CLFV)
+is the muon, in large part because muons can be readily produced and focused
+into intense beams at accelerator facilities. This chapter describes how the
+muon has come from being a mysterious particle showering Earth from outer space
+to becoming a tool in high energy physics experiments used to explore the
+frontier of our knowledge of nature.
 
 
 \section{Discovery of the muon}
@@ -170,22 +171,22 @@ Model (BSM).
 The fact that neutrinos can change flavour allows a process such as shown in
 Fig.~\ref{fig:mu_e_nu_osc} to occur, which gives rise to a non-zero rate for
 ${\mu \rightarrow e + \gamma}$. However, the branching ratio calculated for this
-process using the upper limit on neutrino masses is given by:
+process using the upper limit on neutrino masses is given by~\cite{BERNSTEIN201327}
 \begin{equation}\label{eq:br_meg}
 \mathcal{BR}(\mu \rightarrow e + \gamma) = \frac{3\alpha}{32\pi} \left|\ \sum_{i=2, 3} U^*_{\mu i} U_{e i} 
 \frac{\Delta m^2_{i1}}{m^2_W}  \ \right| ^2 \approx 10^{-54},
 \end{equation}
 where $U$ is the PMNS matrix, $\Delta m^2_{ij}$ is the mass-squared difference between the
 $i$-th and $j$-th neutrino mass eigenstates, and $m_W$ is the $W$-boson
-mass~\cite{BERNSTEIN201327}.
+mass.
 Hence, any evidence that the ${\mu \rightarrow e + \gamma}$ process occurs at a higher
 rate than given by Eq.~\ref{eq:br_meg} would indicate that another channel,
 involving charged lepton flavour violation, is responsible.
 
-\section{Charged lepton flavour violation}
+\section{Charged lepton flavour violation}\label{sec:clfv}
 
 The processes involving muons which are most sensitive for probing charged
-lepton flavour violation (CLFV) are ${\mu \rightarrow e + \gamma}$, ${\mu
+lepton flavour violation are ${\mu \rightarrow e + \gamma}$, ${\mu
 \rightarrow e+e+e}$ and ${\mu + N \rightarrow e + N}$~\cite{BERNSTEIN201327}.
 Observing CLFV with any one of them would corroborate the fact that the SM
 Lagrangian is incomplete, as is now known from neutrino oscillations. Measuring
@@ -267,94 +268,104 @@ from backgrounds originating from other processes, contamination of the beam and
 cosmic rays.
 
 \subsection{Standard Model backgrounds}
-In the SM, a bound muon is allowed to either decay in orbit: 
+\subsubsection{Decay in orbit}
+In the SM, a bound muon is allowed to decay in orbit (DIO):
 \begin{equation*}\label{eq:dio}
-    \mu^- + N(A, Z) \rightarrow e^- + \nu_\mu + \overline{\nu}_e + N(A, Z),
+    \mu^- + N(A, Z) \rightarrow e^- + \nu_\mu + \overline{\nu}_e + N(A, Z).
 \end{equation*}
-or it can be captured by the nucleus via a $W$ exchange:
+Although the process is the same as a free decay, shown in
+Fig.~\ref{fig:weak_decay}, here the nucleus is also involved in the kinematics
+of the process. In a free decay, the electron may carry at most half of the muon
+mass as kinetic energy (in the muon rest frame) when the two neutrinos are
+emitted in the opposite direction. In DIO, the nucleus can recoil and
+potentially provide more energy to the electron. If the two neutrinos are
+emitted back to back in the transverse direction to the electron, then the
+kinematics resemble that of $\mu$--$e$ conversion and the electron could easily
+be mistaken for the CLFV signal. 
+
+% Mention muon lifetime in orbit?
+
+The energy spectrum of DIO electrons for various target nuclei is well
+understood theoretically~\cite{czarnecki}, hence the expected background rate
+for $\mu$--$e$ conversion searches is precisely known. Although it is extremely
+unlikely that a DIO electron might carry as much energy as a conversion
+electron, the sensitivity aimed at by future experiments makes DIO the main
+background source and sensitivity-limiting
+factor~\cite{the_comet_collaboration_comet_2020}.
+
+
+\subsubsection{Nuclear capture}
+A muon in proximity with a nucleus may also be captured via $W$-boson exchange:
 \begin{equation*}\label{eq:capture}
-    \mu^- + N(A, Z) \rightarrow \nu_\mu + N(A, Z-1),
+    \mu^- + N(A, Z) \rightarrow \nu_\mu + N(A, Z-1).
 \end{equation*}
-% Not great: RMC is the background, but non-radiative nuclear capture isn't.
-% Make it clear.
-% Might be better to split into two subsecs
-% yeah but RMC is minor compared to DIO (x0.2)
-% followed by a photon emission by the excited nucleus and $e^+e^-$-pair
-% production.
-Both decay in orbit and radiative muon capture can, depending on the target
-material, produce electrons with an energy approaching $E_{\mu\text{--}e}$,
-hence these events may be mistaken for a conversion electron. 
+This process is similar to an electron capture and transmutes the nucleus into a
+potentially unstable isotope, which can be the source of proton, photon and
+neutron emissions as it readjusts. Particles emitted by the nucleus after muon
+capture may hit and damage the readout electronics if they are close to the
+target, as is the case in COMET Phase-I. The AlCap experiment, performed in 2013
+at the Paul Scherrer Institute, measured the spectrum of particles emitted after
+capture of stopped muons by aluminium, titanium and silicon
+nuclei~\cite{PhysRevC.105.035501}.
 
-For an aluminium target, the most dangerous of the two processes is decay in
-orbit (DIO) since the high-energy endpoint of the DIO spectrum is approximately
-equal to $E^\mathrm{Al}_{\mu\text{--}e}$~\cite{czarnecki}. The rate of DIO in
-the high energy tail is many orders of magnitude lower than at the peak, hence
-these background events are expected to be extremely rare. However, the level of
-sensitivity aimed at by next-generation searches makes DIO the most important
-background source and thus one of the main sensitivity-limiting
-factors~\cite{the_comet_collaboration_comet_2020}.
 
-Sources of background other than these allowed SM processes are expected in
+Radiative muon capture (RMC) occurs when a photon is emitted during the capture
+process. Kinematically, the photon can carry energies close to the muon mass,
+hence if it produces an electron--positron pair with asymmetric momenta, the
+electron will mimic the conversion signal. The high-energy endpoint of the RMC
+spectrum is not as high as for DIO, hence an adequate momentum resolution from a
+tracking detector will discriminate most RMC electrons from the signal. In COMET
+Phase-I, the background rate from RMC is 5 times lower than that from
+DIO~\cite{the_comet_collaboration_comet_2020}.
+
+
+
+
+Sources of background other than DIO and nuclear capture are expected in
 $\mu$--$e$ conversion-searching experiments, such as beam-related and cosmic
-ray-induced events. Those specific to the COMET experiment, and the associated
-design choices which were made to minimise their occurrence, are discussed in
-Section~\ref{sec:backgrounds}.
-
-
-% The choice of target material directly influences how frequently high-energy
-% electrons will be produced by these processes, and hence contributes in
-% setting the maximum experimental sensitivity.
-
-% This should go into the COMET section as these are specific to COMET and/or
-% specifically addressed by the COMET design.
-% Background events can be classified into three categories: intrinsic,
-% beam-related, and cosmic ray-induced.
-
-% Beam-related backgrounds come from impurities in the high-intensity muon beam.
-% The specifics of the COMET beam and how these backgrounds are alleviated is
-% discussed in Section~\ref{sec:COMET_beam}.
-
-% Cosmic rays typically produce muons with a wide range of energies in the
-% atmosphere which 
+ray-induced events. All backgrounds specific to the COMET experiment, and the
+associated design choices which were made to minimise their occurrence, are
+discussed in Section~\ref{sec:backgrounds}.
 
 
 
 
 
 
-
-
-% Since 1948~\cite{PhysRev.73.257}, searches for ${\mu \rightarrow e + \gamma}$
-% have demonstrated that it does not occur at any observable rate: the current
-% upper limit on its branching ratio measured by the MEG experiment is
-% $10^{-13}$~\cite{mori2016final}.
-
-% In the quark sector, generations can mix via weak interactions: the
-% CKM matrix accurately describes how strongly each quark flavour couples
-% to the others. %~\cite{PhysRevLett.10.531, 10.1143/PTP.49.652}.
-% For leptons on the other hand, it is
-% only through neutrino oscillations, discovered by the Super-Kamiokande
-% experiment~\cite{PhysRevLett.81.1562}, that flavours have been observed to mix. 
-% Flavour-changing neutrino oscillations allow a new channel for ${\mu \rightarrow
-% e + \gamma}$, shown in Fig.~\ref{fig:mu_e_nu_osc}. 
-
-
-% g-2 measurement
-%\cite{PhysRevLett.126.141801} % g-2
-
-% Is lhc-b related here? Lepton univ?
-%\cite{Aaij2022}% lhc-b R_K
-
-
-
-
-\section{Effective CLFV interactions}
-CLFV searches are sensitive to various categories of new physics, including the
-existence of an exotic Higgs, a $Z'$ boson, leptoquarks, heavy neutrinos, or
-supersymmetric particles. Independently of the specific new physics responsible
-for CLFV, we can consider a low-energy effective field theory to understand what
-deviations future experiments might expect to see due to these new high-energy
-degrees of freedom. 
+\section{Effective CLFV and the scale of new physics}
+Experiments searching for CLFV are sensitive to a wide variety of new physics,
+including a non-minimal Higgs, a $Z'$ boson, leptoquarks, heavy neutrinos, or
+supersymmetric particles. 
+In order to determine the scale of new physics to which future CLFV-searching
+experiments will be sensitive and the complementarity between experiments, we can
+consider a low-energy effective field theory derived from new interactions with
+generic massive ($m>\SI{1}{\tera\eV}$) particles.
+After integrating out heavy fields (see
+e.g.~\cite[Chapter~IV]{donoghue_golowich_holstein_2014}), one obtains the
+following effective Lagrangian~\cite{DEGOUVEA201375}, which allows CLFV to be
+mediated by the tree-level vertices shown in Fig.~\ref{fig:tree_lvl_clfv}:
+\begin{align}\label{eq:Leff}
+    \mathcal{L^\text{eff}_\mathrm{CLFV}}\,
+    =\,
+    &\frac{1}{\kappa+1}\, \frac{m_\mu}{\Lambda^2}\,\,
+    \overline{\mu}_R \sigma_{\mu\nu} e_L \, F^{\mu\nu} + \text{h.c.}
+    \nonumber\\[1em]
+    +\,
+    &\frac{\kappa}{\kappa+1}\, \frac{1}{\Lambda^2}\,\,
+    \overline{\mu}_L \gamma_\mu e_L \,
+    (\,
+        \overline{u}_L \gamma^\mu u_L + \overline{d}_L \gamma^\mu d_L
+    \,) + \text{h.c.}
+\end{align}
+where both interactions are suppressed by factors of $\Lambda$, the energy scale
+of the new physics, and $\kappa$ determines whether the preferred channel is
+photonic ($\kappa \rightarrow 0$) or four-fermionic ($\kappa \rightarrow
+\infty$)~\cite{DEGOUVEA201375}. The $\kappa$ parameter allows this Lagrangian to
+be model independent, i.e.\ it gives freedom for the new interaction to either
+enhance $\mu \rightarrow e\gamma$ or $\mu$--$e$ conversion more strongly.
+Searches for $\mu \rightarrow e\gamma$ will be more sensitive to CLFV than
+$\mu$--$e$ conversion searches if $\kappa \ll 1$, whereas the opposite is true
+if $\kappa \gg 1$.
 
 \begin{figure}
     \centering
@@ -378,57 +389,58 @@ degrees of freedom.
         };
         \caption{Four-fermionic}
     \end{subfigure}
-    \caption{New tree-level vertices which arise in the effective Lagrangian
-    of Eq.~\ref{eq:Leff} and allow CLFV.}
+    \caption{New vertices which arise in the effective Lagrangian of
+    Eq.~\ref{eq:Leff} and allow CLFV. The photonic interaction can also mediate
+    $\mu$--$e$ conversion by making the photon interact with an external quark.}
     \label{fig:tree_lvl_clfv}
 \end{figure}
 
-\hl{Yeah but what's deGouvea's starting point?}\\
-After integrating out heavy fields (see
-e.g.~\cite[Chapter~IV]{donoghue_golowich_holstein_2014}), one obtains the
-following effective Lagrangian, which allows CLFV to be mediated by the
-tree-level vertices shown in Fig.~\ref{fig:tree_lvl_clfv}:
-\begin{align}\label{eq:Leff}
-    \mathcal{L^\text{eff}_\mathrm{CLFV}}\,
-    =\,
-    &\frac{1}{\kappa+1}\, \frac{m_\mu}{\Lambda^2}\,
-    \overline{\mu}_R \sigma_{\mu\nu} e_L \, F^{\mu\nu} + \text{h.c.}
-    \nonumber\\[1em]
-    +\,
-    &\frac{\kappa}{\kappa+1}\, \frac{1}{\Lambda^2}\,
-    \overline{\mu}_L \gamma_\mu e_L \,
-    (\,
-        \overline{u}_L \gamma^\mu u_L + \overline{d}_L \gamma^\mu d_L
-    \,) + \text{h.c.}
-\end{align}
-where $\Lambda$ is the energy scale of the new physics, and $\kappa$ determines
-whether the preferred channel is photonic ($\kappa \rightarrow 0$) or
-four-fermionic ($\kappa \rightarrow \infty$)~\cite{DEGOUVEA201375}. 
-From the sensitivity of a future experiment, we can estimate the maximum scale
-of new physics $\Lambda$ which the experiment will be able to probe. 
-% If a new
-% particle exists with a mass lower than that, the experiment should see a
-% significant deviation from expectation, i.e. it should observe CLFV.
-Specifically, COMET and Mu2e, which have a single-event sensitivity of around
-$10^{-17}$, will probe energy scales up to $10^4$
-\si{\tera\eV}~\cite{DEGOUVEA201375}.
+From the estimated sensitivity of a future experiment, we can estimate the
+maximum scale of new physics $\Lambda$ which the experiment will be able to
+probe. COMET Phase-II and Mu2e, which have a single-event sensitivity of around
+$10^{-17}$~\cite{the_comet_collaboration_comet_2020, bartoszek2015mu2e}, will
+probe energy scales $\Lambda$ up to \SI{4000}{\tera\eV} if $\kappa$ is small and up to
+\SI{7000}{\tera\eV} if $\kappa$ is large~\cite{ben_thesis, ewen_thesis}. 
 
-If CLFV is observed in one of the three muon channels, the value of $\kappa$ can
-then be determined from a measurement of the branching ratio of a second
-channel. This information can then be used to constrain models and pinpoint the
-true nature of the new physics.
+Even in the situation where no positive signal is observed, probing these enormous
+energy scales will heavily constrain any model which predicts new heavy
+particles whose interactions allow any significant amount of CLFV. On the other
+hand, if CLFV is observed in either the $\mu\rightarrow e\gamma$ or $\mu$--$e$
+conversion channels, the value of $\kappa$ can then be determined from a
+measurement in the other channel. This data can then further constrain and
+disambiguate models, and help to pinpoint the true nature of the new physics.
 
-The most accurate measurement of the muon magnetic moment to date from the Muon
-$g-2$ experiment shows a deviation of $4.2\sigma$ from the Standard Model
-prediction~\cite{PhysRevLett.126.141801}. The energy scale of new physics
-associated with the measured anomaly is expected to lie below
-\SI{2.1}{\tera\eV}~\cite{KESHAVARZI2022115675}. Following~\cite{DEGOUVEA201375},
-we can define a parameter $\theta_{e\mu} =
-\frac{\Lambda^2_{g-2}}{\Lambda^2_\text{CLFV}}$ which measures how flavour-conserving
-is the new physics responsible for the anomalous $g-2$. Assuming that this
-anomaly is caused by high-energy BSM contributions, the current CLFV upper
-limits set the maximum value for $\theta_{e\mu}$ at $10^{-5}$, i.e.\ the
-amount of flavour violation in the new physics sector is very small.
+\section{Related experiments}
+Charged lepton flavour violation is but one of the many properties of leptons
+currently scrutinised by experiments. Related but orthogonal measurements
+include the muon magnetic moment and lepton universality. From their results, it
+is impossible to predict whether CLFV will appear, but they are complementary in
+constraining the models of new physics which could lead to the observed
+discrepancies.
+
+The Muon $g-2$ experiment at Fermilab recently observed a $4.2\sigma$
+discrepancy between the Standard Model prediction and the measured value for the
+magnetic moment of the muon~\cite{PhysRevLett.126.141801}. This deviation,
+assuming it is a true sign of new physics\footnote{
+    The theoretical expectation for the SM magnetic moment is disputed by a
+    different approach using lattice QCD~\cite{Borsanyi2021}. The latter calculation
+    is indeed more consistent with the measurement, hence further investigation is
+    necessary to understand the cause of the initial discrepancy and why the two
+    calculations disagree.
+}, could be attributed to various scenarios where new particles, e.g.\ 
+leptoquarks, a new Higgs doublet or neutral boson, interact with the muon.
 
 
-\hl{This feels stupid... Why even include it? Doesn't sound very relevant tbh.}
+The LHCb experiment at CERN has found evidence for lepton non-universality in
+the decay of b-quarks, with a significance of $3.1\sigma$~\cite{Aaij2022}. As
+with the $g-2$ discrepancy, models which could explain the anomaly include a
+heavy neutral boson, leptoquarks, or an extended Higgs sector. 
+
+Together, the Muon $g-2$ and LHCb results suggest a tension related to a special
+property of the muon, which would differentiate it from the electron in a new,
+unexplained way. Although there are so far no tangible traces of CLFV, models
+attempting to resolve the $g-2$ and LHCb anomalies often also allow CLFV at some
+level~\cite{DEGOUVEA201375, PhysRevD.101.115016, PhysRevD.100.115010}. Hence,
+measurements such as the $\mu$--$e$ conversion branching ratio are crucial to
+further constrain models and guide the theory toward the true nature of the new
+physics.

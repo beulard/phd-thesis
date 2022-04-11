@@ -177,7 +177,14 @@ Hence, the \SimG simulation associates standard \Geant hadronic and electromagne
 
 To model hadronic interactions, \SimG uses the \texttt{QGSP\_BERT\_HP} reference physics list as the default. In this model, hadron-nucleus interactions between the \SI{8}{\GeV} proton beam and the pion-production target are handled by the Bertini Cascade model~\cite{WRIGHT2015175}.
 
-Muons at rest receive special treatment in \SimG due to their important contribution toward the background rate. The default energy spectrum of electrons from muon decay-in-orbit is replaced by the numerical evaluation of~\cite{czarnecki}, which includes the effect of nuclear recoil and thus allows electron energies up to \SI{104.973}{\MeV}. In addition, the nuclear muon capture (NMC) model is replaced to adhere to the results of the AlCap experiment~\cite{litchfield2015status} which measured the energy spectrum of protons emitted after NMC in aluminium.
+Muons at rest receive special treatment in \SimG due to their important
+contribution toward the background rate. The default energy spectrum of
+electrons from muon decay-in-orbit is replaced by the numerical evaluation
+of~\cite{czarnecki}, which includes the effect of nuclear recoil and thus allows
+electron energies up to \SI{104.973}{\MeV}. In addition, the nuclear muon
+capture (NMC) model is replaced to adhere to the results of the AlCap
+experiment~\cite{PhysRevC.105.035501} which measured the energy spectrum of
+protons emitted after NMC in aluminium.
 
 
 
