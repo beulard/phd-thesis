@@ -18,7 +18,7 @@ flavour violation among the charged leptons. If it is observed, not only will it
 add to the current evidence that the SM is incomplete, but it will help guide us
 toward the next theory of particle physics beyond the Standard Model.
 
-The most sensitive probe to search for charged lepton flavour violation (CLFV)
+The most sensitive probe to search for charged lepton flavour violation
 is the muon, in large part because muons can be readily produced and focused
 into intense beams at accelerator facilities. This chapter describes how the
 muon has come from being a mysterious particle showering Earth from outer space
@@ -59,31 +59,85 @@ is shown in Fig.~\ref{fig:weak_decay}.
         a [particle=\(\mu^{-}\)] -- [fermion] b -- [fermion] f1 [particle=\(\nu_{\mu}\)],
         b -- [boson, edge label'=\(W^{-}\)] c,
         c -- [anti fermion] f2 [particle=\(\overline \nu_{e}\)],
-        c -- [fermion] f3 [particle=\(e^{-}\)],
+        c -- [fermion] f3 [particle=\(e^{-}\)]
     };
-    \caption{Feynman diagram for the weak decay of the muon.}
+
+    \caption{ Feynman diagram for the weak decay of the muon. Note how lepton
+        flavour is conserved by the presence of a muon neutrino and an electron
+        anti-neutrino. }
     \label{fig:weak_decay}
 \end{figure}
 
 In the SM Lagrangian with massless neutrinos, none of the terms which involve
 leptons allow for flavour violation. The Lagrangian is invariant under
 transformations of the ${U(1)_e \times U(1)_\mu \times U(1)_\tau}$ group.
-Consequently, each lepton family ($e$, $\mu$, $\tau$) has its own conserved
+Consequently, each lepton generation ($e$, $\mu$, $\tau$) has its own conserved
 number. In theory, this completely prevents a charged lepton from changing
 flavour without neutrinos being involved to balance the process. 
 
 These conservation laws do not correspond to a fundamental symmetry of nature;
 they are merely an accidental feature of the SM Lagrangian and have, so far,
-been observed to hold experimentally. For instance, the process ${\mu
-\rightarrow e + \gamma}$, in principle allowed by kinematics, has never been
-observed and the current upper limit on its branching ratio was set by the MEG
-experiment at $10^{-13}$~\cite{mori2016final}.
+been observed to hold experimentally. 
+For instance, the process ${\mu \rightarrow e + \gamma}$, in principle allowed
+by kinematics, has never been observed and the current upper limit on its
+branching ratio was set by the MEG experiment at
+$10^{-13}$~\cite{mori2016final}. 
 
+
+
+\subsection{Tensions between theory and experiment}
+Various fundamental properties of the muon are currently under investigation by
+experiments around the world. Recent measurements have started to suggest that
+the charged lepton sector might be the next to reveal physics beyond the
+Standard Model (BSM). From these results, it is impossible to predict whether
+charged lepton flavour violation (CLFV) will also appear. However, CLFV searches
+are complementary in constraining the models of new physics which could lead to
+the observed discrepancies.
+
+The Muon $g-2$ experiment at Fermilab recently observed a $4.2\sigma$
+discrepancy between the Standard Model prediction and the measured value for the
+magnetic moment of the muon~\cite{PhysRevLett.126.141801}. This deviation,
+assuming it is a true sign of new physics\footnote{
+    The theoretical expectation for the SM magnetic moment is disputed by a
+    different approach using lattice QCD~\cite{Borsanyi2021}. The latter calculation
+    is indeed more consistent with the measurement, hence further investigation is
+    necessary to understand the cause of the initial discrepancy and why the two
+    calculations disagree.
+}, could be attributed to various scenarios where new particles, e.g.\ 
+leptoquarks, a new Higgs doublet or neutral boson, interact with the muon.
+
+
+The LHCb experiment at CERN has found evidence for lepton non-universality in
+the decay of b-quarks, with a significance of $3.1\sigma$~\cite{Aaij2022}. As
+with the $g-2$ discrepancy, models which could explain the anomaly include a
+heavy neutral boson, leptoquarks, or an extended Higgs sector. 
+
+Together, the Muon $g-2$ and LHCb tensions suggest a special property of the
+muon which would differentiate it from the electron in a new, so far unexplained
+way. Although there are so far no tangible traces of CLFV, theoretical models
+attempting to resolve the $g-2$ and LHCb anomalies often also allow CLFV at a
+level within experimental reach~\cite{DEGOUVEA201375, PhysRevD.101.115016,
+PhysRevD.100.115010}. Hence, measurements such as the $\mu$--$e$ conversion
+branching ratio are crucial to further constrain models and guide the theory
+toward the true nature of the new physics.
+
+
+% CLFV with neutrino oscillations: GIM suppression
+\subsection{Lepton flavour with massive neutrinos}
 The observation of neutrino oscillations~\cite{PhysRevLett.81.1562} means that
-the three accidental flavour symmetries are not exact. This strongly motivates a
-search for flavour violation among the charged leptons as well, as any evidence
-for it would yield additional hints about the theory lying beyond the Standard
-Model (BSM).
+the three accidental lepton flavour symmetries are not exact. It is now known
+that the flavour content of a neutrino changes as it propagates, hence the
+flavour quantum numbers are not true conserved quantities for leptons. 
+
+In the quark sector, flavour-changing neutral currents (FCNC) are one-loop order
+processes which allow a quark to change generations (e.g.\ from a strange quark
+to a down quark). The fact that this occurs only rarely is explained by the GIM
+mechanism: interference between diagrams with different flavours of mediating
+quarks causes the branching ratio of FCNC to be heavily
+suppressed~\cite{PhysRevD.2.1285}.
+
+
+
 
 \begin{figure}
 \centering
@@ -166,49 +220,48 @@ Model (BSM).
         processes enable CLFV, their branching ratios are heavily suppressed to
         unobservable levels because of the lightness of
         neutrinos compared to the weak scale~\cite{BERNSTEIN201327}.}
+    \label{fig:lepton_fcnc}
 \end{figure}
 
-The fact that neutrinos can change flavour allows a process such as shown in
-Fig.~\ref{fig:mu_e_nu_osc} to occur, which gives rise to a non-zero rate for
-${\mu \rightarrow e + \gamma}$. However, the branching ratio calculated for this
-process using the upper limit on neutrino masses is given by~\cite{BERNSTEIN201327}
+In the lepton sector, the fact that neutrinos are massless in the SM implies
+that FCNC among charged leptons is completely forbidden. With the addition of
+massive oscillating neutrinos, processes such as those shown in
+Fig.~\ref{fig:lepton_fcnc} become allowed. These provide the only known way that
+charged lepton flavour can be violated. However, the GIM suppression in this case is
+much more significant than in the quark sector because neutrinos are almost
+massless (compared to the weak scale). For instance, oscillating neutrinos allow
+the process shown in Fig.~\ref{fig:mu_e_nu_osc} to occur, which gives rise to a
+non-zero rate for ${\mu \rightarrow e + \gamma}$. The branching ratio calculated
+for this process using the upper limit on neutrino masses is given
+by~\cite{BERNSTEIN201327}
 \begin{equation}\label{eq:br_meg}
 \mathcal{BR}(\mu \rightarrow e + \gamma) = \frac{3\alpha}{32\pi} \left|\ \sum_{i=2, 3} U^*_{\mu i} U_{e i} 
 \frac{\Delta m^2_{i1}}{m^2_W}  \ \right| ^2 \approx 10^{-54},
 \end{equation}
-where $U$ is the PMNS matrix, $\Delta m^2_{ij}$ is the mass-squared difference between the
-$i$-th and $j$-th neutrino mass eigenstates, and $m_W$ is the $W$-boson
-mass.
-Hence, any evidence that the ${\mu \rightarrow e + \gamma}$ process occurs at a higher
-rate than given by Eq.~\ref{eq:br_meg} would indicate that another channel,
-involving charged lepton flavour violation, is responsible.
+where $U$ is the PMNS matrix, $\Delta m^2_{ij}$ is the mass-squared difference
+between the $i$-th and $j$-th neutrino mass eigenstates, and $m_W$ is the
+$W$-boson mass. 
+A similar suppression also applies to the rates of other muon CLFV processes allowed in the
+SM extended with neutrino masses~\cite{doi:10.1063/1.56214}.
 
-\section{Charged lepton flavour violation}\label{sec:clfv}
+The vanishingly small branching ratio of Eq.~\ref{eq:br_meg} implies that
+$\mu\rightarrow e\gamma$ cannot be observed by current experiments unless some
+unexpected interaction is at play. Consequently, this and other CLFV processes
+are excellent probes to search for new physics. Specifically, many models for
+physics BSM give rise to direct mixing between charged lepton flavours at levels
+that may be observable in current and near-future experiments. Any experimental
+evidence that CLFV occurs at a rate higher than that of a neutrino-mediated FCNC
+would yield important clues as to what new physics lies beyond the SM.
 
-The processes involving muons which are most sensitive for probing charged
-lepton flavour violation are ${\mu \rightarrow e + \gamma}$, ${\mu
-\rightarrow e+e+e}$ and ${\mu + N \rightarrow e + N}$~\cite{BERNSTEIN201327}.
-Observing CLFV with any one of them would corroborate the fact that the SM
-Lagrangian is incomplete, as is now known from neutrino oscillations. Measuring
-CLFV in two or more processes would then help us to determine which --- if any
---- of the many theorised models for new physics is realised in nature.
+\section{Searching for charged lepton flavour violation}\label{sec:clfv}
 
+Three muon processes can be investigated in order to search for CLFV: ${\mu
+\rightarrow e\gamma}$, ${\mu \rightarrow eee}$ and ${\mu N \rightarrow e N}$
+(muon to electron conversion)~\cite{BERNSTEIN201327}. Observing any one of them
+would corroborate the fact that the SM Lagrangian is incomplete, as is now known
+from neutrino oscillations. Observing two would then help us to determine which
+of the many theorised models for new physics is realised in nature. 
 
-CLFV has been sought after ever since the muon's discovery: the first
-investigation of whether nature allows $\mu \rightarrow e + \gamma$ was done in
-1948~\cite{PhysRev.73.257}. A multitude of experiments followed, but none so far
-have been able to find a signal. Fig.~\ref{fig:clfv_upper_limit} shows
-experimentally-estimated upper limits on the branching ratios of $\mu
-\rightarrow e\gamma$, $\mu\rightarrow eee$ and $\mu N \rightarrow e N$ over
-time, since the first experiment and into the next decade. 
-
-As higher and higher sensitivities are required, experiments must be able to
-produce a muon source which is more and more intense while demonstrating a
-precise control over every source of background. This is made possible by new
-technologies --- in both hardware and software --- put in application across
-entire experiment designs. The next generation of CLFV-seeking precision
-experiments, which consists of MEG II, Mu3e, COMET and Mu2e, aims to be 10 to
-\numprint{10000} times more sensitive than the last generation.
 
 \begin{figure}
     \centering
@@ -227,6 +280,23 @@ experiments, which consists of MEG II, Mu3e, COMET and Mu2e, aims to be 10 to
     \label{fig:clfv_upper_limit}
 \end{figure}
 
+CLFV has been sought after ever since the muon's discovery: the first
+investigation of whether nature allows $\mu \rightarrow e \gamma$ was done in
+1948~\cite{PhysRev.73.257}. A multitude of experiments followed, but none so far
+have been able to find a signal. Fig.~\ref{fig:clfv_upper_limit} shows
+experimentally-estimated upper limits on the branching ratios of $\mu
+\rightarrow e\gamma$, $\mu\rightarrow eee$ and $\mu N \rightarrow e N$ over
+time, since the first experiment and into the next decade. 
+
+As higher and higher sensitivities are required, experiments must be able to
+produce a muon source which is more and more intense while demonstrating a
+precise control over every source of background. This is made possible by new
+technologies in both hardware and software applied across entire experiment
+designs. The next generation of CLFV-seeking precision experiments, which
+consists of MEG II, Mu3e, COMET and Mu2e, aims to be 10 to \numprint{10000}
+times more sensitive than the last generation.
+
+
 \section{Muon to electron conversion}
 % mu-e conversion
 Muon to electron conversion is the neutrino-less decay of a muon bound to an
@@ -235,7 +305,7 @@ $$
 \mu^- + N(A, Z) \rightarrow e^- + N(A, Z),
 $$
 where $A$ is the mass number and $Z$ the atomic number.
-Similarly to $\mu\rightarrow e+\gamma$, this process is allowed in the SM
+Similarly to $\mu\rightarrow e\gamma$, this process is allowed in the SM
 extended with massive neutrinos via the diagram shown in
 Fig.~\ref{fig:mu-e_conv_SM}, but suppressed to an experimentally
 unreachable level. Any signs of it occurring at current experimental
@@ -315,7 +385,7 @@ hence if it produces an electron--positron pair with asymmetric momenta, the
 electron will mimic the conversion signal. The high-energy endpoint of the RMC
 spectrum is not as high as for DIO, hence an adequate momentum resolution from a
 tracking detector will discriminate most RMC electrons from the signal. In COMET
-Phase-I, the background rate from RMC is 5 times lower than that from
+Phase-I, the expected background count from RMC is 5 times lower than that from
 DIO~\cite{the_comet_collaboration_comet_2020}.
 
 
@@ -334,7 +404,7 @@ discussed in Section~\ref{sec:backgrounds}.
 
 \section{Effective CLFV and the scale of new physics}
 Experiments searching for CLFV are sensitive to a wide variety of new physics,
-including a non-minimal Higgs, a $Z'$ boson, leptoquarks, heavy neutrinos, or
+including a non-minimal Higgs, a $Z'$ boson, leptoquarks, heavy neutrinos, and
 supersymmetric particles. 
 In order to determine the scale of new physics to which future CLFV-searching
 experiments will be sensitive and the complementarity between experiments, we can
@@ -360,7 +430,7 @@ mediated by the tree-level vertices shown in Fig.~\ref{fig:tree_lvl_clfv}:
 where both interactions are suppressed by factors of $\Lambda$, the energy scale
 of the new physics, and $\kappa$ determines whether the preferred channel is
 photonic ($\kappa \rightarrow 0$) or four-fermionic ($\kappa \rightarrow
-\infty$)~\cite{DEGOUVEA201375}. The $\kappa$ parameter allows this Lagrangian to
+\infty$). The $\kappa$ parameter allows this Lagrangian to
 be model independent, i.e.\ it gives freedom for the new interaction to either
 enhance $\mu \rightarrow e\gamma$ or $\mu$--$e$ conversion more strongly.
 Searches for $\mu \rightarrow e\gamma$ will be more sensitive to CLFV than
@@ -407,40 +477,5 @@ energy scales will heavily constrain any model which predicts new heavy
 particles whose interactions allow any significant amount of CLFV. On the other
 hand, if CLFV is observed in either the $\mu\rightarrow e\gamma$ or $\mu$--$e$
 conversion channels, the value of $\kappa$ can then be determined from a
-measurement in the other channel. This data can then further constrain and
+measurement in the other channel. This data will then further constrain and
 disambiguate models, and help to pinpoint the true nature of the new physics.
-
-\section{Related experiments}
-Charged lepton flavour violation is but one of the many properties of leptons
-currently scrutinised by experiments. Related but orthogonal measurements
-include the muon magnetic moment and lepton universality. From their results, it
-is impossible to predict whether CLFV will appear, but they are complementary in
-constraining the models of new physics which could lead to the observed
-discrepancies.
-
-The Muon $g-2$ experiment at Fermilab recently observed a $4.2\sigma$
-discrepancy between the Standard Model prediction and the measured value for the
-magnetic moment of the muon~\cite{PhysRevLett.126.141801}. This deviation,
-assuming it is a true sign of new physics\footnote{
-    The theoretical expectation for the SM magnetic moment is disputed by a
-    different approach using lattice QCD~\cite{Borsanyi2021}. The latter calculation
-    is indeed more consistent with the measurement, hence further investigation is
-    necessary to understand the cause of the initial discrepancy and why the two
-    calculations disagree.
-}, could be attributed to various scenarios where new particles, e.g.\ 
-leptoquarks, a new Higgs doublet or neutral boson, interact with the muon.
-
-
-The LHCb experiment at CERN has found evidence for lepton non-universality in
-the decay of b-quarks, with a significance of $3.1\sigma$~\cite{Aaij2022}. As
-with the $g-2$ discrepancy, models which could explain the anomaly include a
-heavy neutral boson, leptoquarks, or an extended Higgs sector. 
-
-Together, the Muon $g-2$ and LHCb results suggest a tension related to a special
-property of the muon, which would differentiate it from the electron in a new,
-unexplained way. Although there are so far no tangible traces of CLFV, models
-attempting to resolve the $g-2$ and LHCb anomalies often also allow CLFV at some
-level~\cite{DEGOUVEA201375, PhysRevD.101.115016, PhysRevD.100.115010}. Hence,
-measurements such as the $\mu$--$e$ conversion branching ratio are crucial to
-further constrain models and guide the theory toward the true nature of the new
-physics.

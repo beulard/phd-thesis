@@ -809,13 +809,13 @@ In the case of generated hits, the wire vector is not exactly one-hot: instead,
 the output of the softmax operation is a vector of real-valued probabilities for
 each wire. The multiplication of the above wire position matrix with such a
 vector can be interpreted as a weighted sum of all wire positions with the
-weight corresponding to the softmax probability. Hence the result is not an
+weight corresponding to the softmax probability. Hence, the result is not an
 exact wire location but an approximate region of the detector in which the
 generator envisions the hit to be.
 
 As discussed in~\cite{NIPS2017_892c3b1c}, one might suspect that the
 discriminator can learn to reject the output of the generator because it does
-not look like a one-hot vector. However the Wasserstein distance between the
+not look like a one-hot vector. However, the Wasserstein distance between the
 real and generated data remains well-defined and continuous even in this
 particular case of a discrete variable, hence using the WGAN loss does allow the
 networks to learn.
@@ -824,7 +824,7 @@ networks to learn.
 \subsection{Training}
 The networks are trained via gradient descent of the WGAN-GP loss, using the
 Adam~\cite{Kingma2015AdamAM} algorithm. The PyTorch framework with which the GAN
-is implemented allows all tensor operations to be performed on a Nvidia Graphics
+is implemented allows all tensor operations to be performed on an Nvidia Graphics
 Processing Unit (GPU) via CUDA, which speeds up training iterations roughly
 tenfold. Hyperparameters, such as learning rate and $\lambda_{GP}$, were
 initially set to a default value from common practice guidelines and then
@@ -897,7 +897,7 @@ function itself.}. The score
 returned by the discriminator network is dependent upon its exact architecture,
 the dataset and all hyperparameters, hence it cannot be used as a reliable metric. 
 
-Unlike natural images which can be examined visually to determine whether or not
+Unlike natural images which can be examined visually to determine whether
 they depict something real, sequences of hits in a detector are difficult to
 evaluate perceptually. 
 Figure~\ref{fig:comp_uncurated} shows a comparison between uncurated individual
@@ -908,8 +908,8 @@ consecutive hits.
 
 On a larger scale, we also compare the distributions of hit features across many
 samples in order to verify that the GAN can model the dataset properly. Drawing
-2D histograms of each pair of feature, as in
-Figure~\ref{fig:comp_feature_distributions}, also reveals whether or not feature
+2D histograms of each pair of features, as in
+Figure~\ref{fig:comp_feature_distributions}, also reveals whether feature
 correlations are faithfully modelled by $G$.
 
 \begin{figure}
@@ -1108,7 +1108,7 @@ discretised into a $300 \times 300$ grid and the three continuous features are
 used as channels. 
 The ordering of hits contains important information hence our distance metric
 ought to use it. We can interpret the ordering as a third, temporal dimension.
-However the Inception network cannot process 3D objects, hence we are forced to
+However, the Inception network cannot process 3D objects, hence we are forced to
 project out one of the dimensions in order to compute FID.
 Figure~\ref{fig:FID_vs_epochs} shows FID computed for each of the three
 projections as a function of training iterations.
@@ -1123,10 +1123,13 @@ and fine-tuning it.
 
 \hl{150x150 is only for the 3D cnn, others use 300x300.}
 
+\hl{ They fine tune the additional Iv3 layers with noise vs rconst
+    classification as well. (Same as for 3D CNN) }
+
 A custom neural network is consequently developed to allow feature extraction
 from entire unprojected hit sequences and provide a new distance metric specific
 to the hit-generating GAN. In analogy with FID, the network is trained
-independently from the GAN to classify hit samples. The categories are chosen to
+independently of the GAN to classify hit samples. The categories are chosen to
 be the same reconstructible and noise-like classes which we used to define what
 data the GAN learns to generate. We expect such a classifier to rely on the
 positioning and clustering of hit patterns to discriminate samples. Hence the
