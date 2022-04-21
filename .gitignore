@@ -17,6 +17,8 @@ diagram_scratch.pdf
 *.swp
 *.fls
 *.fdb_latexmk
+*.md.tex
+*.markdown.in
 main.run.xml
 main.markdown.in
 main.markdown.lua
@@ -27,3 +29,4 @@ main.synctex.gz
 .latexmkrc
 .gitignore
 .vscode
+

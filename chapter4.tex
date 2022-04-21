@@ -59,7 +59,7 @@ In addition, because of the large distance between the pion production section
 and the detector area, only about one POT collision in a thousand will produce
 observable hits in the detector system. 
 
-Hence despite being the most physically
+Hence, despite being the most physically
 accurate means to synthesise data in the detector, simulating each proton
 individually is also very computationally inefficient. Using this brute-force
 method with the infrastructure used for MC5, it is only possible to produce the
@@ -118,7 +118,7 @@ simulation more efficient at the cost of more uncertainty in the outcomes.
 In the MC5 simulation described in Section~\ref{sec:mc5}, particles
 entering the detector region (either via the beam pipe or through the walls) are
 frozen and saved to disk to be processed later. These saved states can be reused
-by propagating them with many different random seeds, thus affecting the outcome
+by propagating them with multiple distinct random seeds, thus affecting the outcome
 of every interaction and augmenting our sample.
 
 Another way of generating events closer to our region of interest is to
@@ -185,7 +185,7 @@ $p_{\bm{z}}(\bm{z})$, typically a multivariate normal distribution for
 simplicity and speed. The objective of $G$ is to generate samples
 $\tilde{\bm{x}} = G(\bm{z} \sim p_{\bm{z}})$ such that
 $D(\tilde{\bm{x}}) \rightarrow 1$. In other words, the generator aims to
-maximise the second term in Eq.~\ref{eq:D_loss}, and its loss function is
+maximise the second term in Equation~\ref{eq:D_loss}, and its loss function is
 \begin{align}\label{eq:GAN_gen}
     \mathcal{L}_G & =
     \mathbb{E}_{\tilde{\bm{x}} \sim g} [ \log( 1 - D(\tilde{\bm{x}}) )]\nonumber        \\
@@ -203,8 +203,10 @@ Although it is not a formal requirement, using neural networks for $D$ and $G$
 allows the above minimax solution to be approximated via backpropagation and
 stochastic gradient descent. At every iteration, we evaluate the gradient of
 each loss with respect to the internal weights of its respective network. Every
-weight is then adjusted toward the direction of largest decrease in the loss.
+weight is then adjusted toward the direction of steepest decrease in the loss.
 
+\hl{ Perhaps add a diagram showing the flow: gen makes fake sample, disc outputs
+    score used to backpropagate. }
 
 \subsection{Wasserstein GAN}
 % WGAN, WGAN with Gradient Penalty
@@ -217,7 +219,7 @@ algorithm, network architecture.
 
 The Wasserstein GAN (WGAN) formulation is an attempt to address the stability
 issues of the original GAN~\cite{arjovsky2017wasserstein}. The authors argue
-that solving Eq.~\ref{eq:GAN}, which implicitly minimises the Jensen-Shannon
+that solving Equation~\ref{eq:GAN}, which implicitly minimises the Jensen-Shannon
 divergence between $p$ and $g$, leads to vanishing gradients when the
 discriminator is too powerful, and thus to unstable training. Instead, they
 propose to minimise the Wasserstein-1 distance between $p$ and $g$ because of
@@ -245,7 +247,7 @@ network architectures.
 % WGAN-GP
 \subsubsection{Gradient penalty}
 The same year, another method to enforce the Lipschitz constraint on $D$ was
-discussed in~\cite{NIPS2017_892c3b1c}, which outlines the shortcomings of weight
+discussed in Reference~\cite{NIPS2017_892c3b1c}, which outlines the shortcomings of weight
 clipping and instead proposes to constrain the discriminator's gradient. By
 definition, a function is 1-Lipschitz if and only if its gradient has norm at
 most 1 everywhere. Since this is difficult to achieve in practice, the authors
@@ -270,10 +272,10 @@ fake sample will fool the discriminator:
     \mathcal{L}_G =
     -\mathbb{E}_{\bm{z} \sim p_{\bm{z}}} \left[ D(G(\bm{z})) \right],
 \end{equation}
-which is the second term of Eq.~\ref{eq:WGAN-GP} with a minus sign, similarly to
+which is the second term of Equation~\ref{eq:WGAN-GP} with a minus sign, similarly to
 the relationship between Eqs.~\ref{eq:GAN} and~\ref{eq:GAN_gen}. Note that more
 generally, the generator loss should be defined as $\mathcal{L}_G \equiv
--\mathcal{L}_D$ to achieve adversarial training. However in the case of neural
+-\mathcal{L}_D$ to achieve adversarial training. However, in the case of neural
 networks trained by gradient descent, only the derivative of $\mathcal{L}_G$
 with respect to $G$'s weights is relevant. Since the other terms in
 $\mathcal{L}_D$ do not depend on $G$'s weights, we can discard them in
@@ -364,7 +366,7 @@ for COMET Phase-I.
 
 %The training dataset is composed of discrete energy deposits made by simulated
 %particles in the gas of the drift chamber. Each hit occurs on a specific sense
-%wire, whose layout was described in~\hl{ref{sec:cdc}}.
+%wire, whose layout was described in Section~\hl{ref{sec:cdc}}.
 In order to build a generative model to mimic the patterns of hits in the
 detector, it is necessary to consider these hits as physical energy
 deposits created by simulating energy loss processes of particles inside the
@@ -469,7 +471,7 @@ GAN-generated hits come completely unlabelled.
 
 These reasons motivate a splitting of the dataset into \emph{reconstructible}
 events, which only the MC simulation may simulate, and \emph{noise-like} events,
-where no reconstructible track occurs and the data is deemed ``uninteresting''
+where no reconstructible track occurs, and the data is deemed ``uninteresting''
 enough that it can be augmented by the GAN without biasing the physical results.
 
 % EVENT RECOMBINATION Once the GAN model is trained, it should be able to
@@ -668,9 +670,9 @@ kernel weights. This operation is illustrated in Figure~\ref{fig:temporal_conv}.
 
 Unlike in the common case of raster images, the input to the discriminator is
 not a two-dimensional array of pixels, but a one-dimensional sequence of hits.
-Hence the kernels are also one dimensional. The ``channels'' of the input
+Hence, the kernels are also one dimensional. The ``channels'' of the input
 sequence correspond to features of the hits. Within a convolutional layer,
-Eq.~\ref{eq:conv1d} is applied as many times as there are channels in the input
+Equation~\ref{eq:conv1d} is applied as many times as there are channels in the input
 sequence, and the result is the sum over channels. The operation can also be
 applied in parallel with many different kernels, in which case each kernel will
 produce one channel in the output sequence.
@@ -813,7 +815,7 @@ weight corresponding to the softmax probability. Hence, the result is not an
 exact wire location but an approximate region of the detector in which the
 generator envisions the hit to be.
 
-As discussed in~\cite{NIPS2017_892c3b1c}, one might suspect that the
+As discussed in Reference~\cite{NIPS2017_892c3b1c}, one might suspect that the
 discriminator can learn to reject the output of the generator because it does
 not look like a one-hot vector. However, the Wasserstein distance between the
 real and generated data remains well-defined and continuous even in this
@@ -853,7 +855,7 @@ every 100 mini-batch iterations, the critic loss is evaluated on test samples
 which are absent from the training dataset. This allows us to determine whether
 $D$ is overfitting to the training data, in which case the loss calculated using
 training and test samples (Figure~\ref{fig:gan_losses:test}) would diverge, as
-demonstrated in~\cite{NIPS2017_892c3b1c}.
+demonstrated in Reference~\cite{NIPS2017_892c3b1c}.
 
 
 \begin{figure}
@@ -979,7 +981,7 @@ D_\mathrm{KL} \infdivx{P}{Q} = \sum_{x \in \mathcal{X}} P(x) \log \frac{P(x)}{Q(
 where in our case $P$ denotes the distribution of real hits and $Q$ that of
 generated hits. To compute $D_\mathrm{KL}$, the three continuous features of
 every hit are binned into a 3D histogram to approximate the probability density
-functions $P$ and $Q$ and the sum in Eq.~\ref{eq:kl_div} is a sum over all
+functions $P$ and $Q$ and the sum in Equation~\ref{eq:kl_div} is a sum over all
 (non-zero) bins. The \texttt{edep} and \texttt{t} features are log-transformed
 such that the resulting histogram is smoother. Figure~\ref{fig:kl_div} shows the
 Kullback-Leibler divergence between the continuous distributions of real and
