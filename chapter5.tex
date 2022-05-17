@@ -1,12 +1,6 @@
 \chapter{Backward Monte Carlo simulation for cosmic ray events}
 
 \begin{markdown}
----
-
-- Backward MC theory, with diagram showing analogy inner/outer boundary sampling [VNiess]
-- Perhaps some background with adjoint MC refs
-
----
 
 1. Intro to BMC: relation to adjoint MC (find refs), maybe diagram
 
@@ -15,11 +9,28 @@ flux, sampling PDF, BMC weights, topography map of J-PARC
 
 3. Integration into ICEDUST: implementation of sampling methods, event loop, output to
 oaRooTracker format
-+ https://gitlab.in2p3.fr/comet/ICEDUST_packages/-/merge_requests/534
-+ https://gitlab.in2p3.fr/comet/ICEDUST_packages/-/wikis/Backward-Monte-Carlo-sampling-with-SimBackwardMC#rate-calculation
++ `https://gitlab.in2p3.fr/comet/ICEDUST_packages/-/merge_requests/534`
++ `https://gitlab.in2p3.fr/comet/ICEDUST_packages/-/wikis/Backward-Monte-Carlo-sampling-with-SimBackwardMC#rate-calculation`
 
 3. Actual estimation of background rate in Phase-I, maybe just quoting V's
 result
 
 
 \end{markdown}
+
+Cosmic ray-induced events represent a significant part of the expected
+background in the COMET experiment, as discussed in
+Section~\ref{sec:backgrounds}. In simulation studies, cosmic rays tend to be
+expensive to simulate since they can fly in from any angle across a wide range
+of energies. In order to avoid wasting computational time on events which are
+unlikely to produce hits in the detector system, the flow of time in the Monte
+Carlo simulation can be reversed. 
+
+\section{Backward Monte Carlo simulation}
+In typical forward Monte Carlo simulation, events are generated with a known
+probability or rate and then propagated in time and space to determine their
+outcomes. 
+
+Backward Monte Carlo implies that events are generated close to the detector,
+ensuring that they result in hits, and then propagated back to a boundary
+where their flux is known in order to determine their rate.

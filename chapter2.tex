@@ -32,17 +32,47 @@
 ---
 \end{markdown}
 
-COMET (COherent Muon-to-Electron Transition) is a muon-beam experiment aiming to
-observe the muon-to-electron conversion process, or at least to constrain its
-branching ratio to an unprecedented upper limit. Currently being built at the
-J-PARC facility in Tokai, Japan, its physics program will be run in a two-stage
-approach, Phase-I and Phase-II. These two phases are expected to improve our
-sensitivity to the conversion signal by factors of 100 and \num{10000},
-respectively, with respect to the current world-leading measurement conducted at
-the SINDRUM II experiment~\cite{Bertl:2006up}.
+COMET (COherent Muon-to-Electron Transition) is a future muon-beam experiment
+which will search for the muon-to-electron conversion process. Currently under
+construction at the J-PARC facility in Tokai, Japan, its physics program will be
+run in a two-stage approach, Phase-I and Phase-II. These two phases are expected
+to be 100 and \numprint{10000} more sensitive to $\mu$--$e$ conversion,
+respectively, than the current world-leading measurement conducted at the
+SINDRUM II experiment~\cite{Bertl:2006up}. In order to reach these goals, the
+COMET experiment is designed with strict requirements defined to efficiently
+reject background events and thus push the sensitivity limit as high as
+possible.
+
+\section{Muon production}
+Searching for $\mu$--$e$ conversion requires an intense source of muons. The
+COMET experiment relies on the J-PARC accelerator facility to provide protons.
+The proton beam hits a static graphite target to produce pions, which then decay
+to muons. In order for the collision to produce a reasonable number of pions
+while avoiding anti-proton production\footnote{
+Anti-protons have the same charge as pions but travel more slowly for a given
+momentum. Hence, they can produce delayed secondaries which hit the detector
+system, which is a source of background as discussed in
+Section~\ref{sec:delayed_backgrounds}. A beam energy of \SI{8}{\GeV} is the
+lower limit above which anti-proton production becomes kinematically allowed.
+}, the protons in the beam have a kinetic energy of \SI{8}{\GeV}. 
 
 
+\section{Experimental backgrounds}\label{sec:backgrounds}
+The COMET experiment is specifically designed to be sensitive to a $\mu$--$e$
+conversion signal, i.e.\ to eliminate as many sources of background as possible
+while making sure to notice the process if it does occur. 
 
+Observing $\mu$--$e$ conversion requires the production of an intense source of
+muons which must be bound to atomic nuclei. COMET uses a proton beam from the
+J-PARC main ring.
+
+
+The COMET experiment will produce a
+muon beam and direct it toward a static aluminium target to slow down and stop
+the muons. As discussed in Section~\ref{sec:sm_backgrounds}, a bound muon can
+undergo decay in orbit (DIO) or nuclear capture. 
+
+\section{Design requirements}
 
 The design of the COMET experiment is heavily angled toward suppressing
 backgrounds to the $\mu$--$e$ conversion signal. Understanding the background
@@ -50,7 +80,6 @@ sources and their properties is key in making sense of the experimental design.
 
 \section{The COMET beam}\label{sec:COMET_beam}
 
-\section{Experimental backgrounds}\label{sec:backgrounds}
 
 % The choice of target material directly influences how frequently high-energy
 % electrons will be produced by these processes, and hence contributes in
