@@ -1169,14 +1169,6 @@ and it can be used to compute FID on GAN-generated samples.
 Figure~\ref{fig:custom_distance_vs_epochs} shows FID over epochs of the CDC GAN
 training.
 
-\begin{figure}
-    \centering
-    \includegraphics[width=0.4\textwidth]{chapter4/cnn_fid-epoch.pdf}
-    \caption{ Fréchet Inception Distance computed by the domain-specific 3D CNN
-        over training epochs of the CDC GAN.}
-    \label{fig:custom_distance_vs_epochs}
-\end{figure}
-
 
 \subsubsection{Transfer learning Inception v3}
 
@@ -1193,13 +1185,36 @@ computed by the TL Inception v3 over epochs of the CDC GAN training.
 
 \begin{figure}
     \centering
-    \includegraphics[width=0.4\textwidth]{chapter4/tr_learning-epoch.pdf}
-    \caption{ Fréchet Inception Distance computed by the transfer learning
-        Inception v3 network over training epochs of the CDC GAN.}
-    \label{fig:transfer_learning_FID_vs_epochs}
+    \begin{subfigure}[t]{0.4\textwidth}
+        \centering
+        \hspace{-1cm} % To align graphics with caption
+        \includegraphics[width=\textwidth]{chapter4/cnn_fid-epoch.pdf}
+        \caption{
+            Domain-specific 3D CNN.
+        }
+        \label{fig:custom_distance_vs_epochs}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[t]{0.4\textwidth}
+        \centering
+        \hspace{-1cm} % To align graphics with caption
+        \includegraphics[width=\textwidth]{chapter4/tr_learning-epoch.pdf}
+        \caption{ 
+            Transfer Learning Inception v3.
+        }
+        \label{fig:transfer_learning_FID_vs_epochs}
+    \end{subfigure}
+    \caption{
+        Fréchet Inception Distance computed over training epochs of the CDC GAN
+        by two external neural networks. Unlike in
+        Figure~\ref{fig:FID_vs_epochs}, hit sequences can be processed at once
+        without projecting them along an axis. The 3D CNN is trained on
+        Monte Carlo hit data, in the same way as the front and back layers added
+        to Inception~v3 for transfer learning.
+    }
 \end{figure}
 
-\subsubsection{Interpretation of the FID}
+\subsection{Interpretation of FID}
 The Fréchet Inception Distance is a single quantity whose value indicates how
 similar generated samples are to real samples. It summarises the statistics of
 features extracted by an external neural network, but it does not directly show
@@ -1209,10 +1224,36 @@ We could also plot the feature vectors directly and determine where their
 distributions differ between real and fake samples, however the vectors have a
 high dimensionality and cannot be easily visualised. The solution that was
 adopted is to use the Uniform Manifold Approximation and Projection
-(UMAP)~\cite{umap} to optimally project the feature vectors onto two dimensions.
+(UMAP)~\cite{umap} method to optimally project the feature vectors onto two
+dimensions. Each sample can then be associated with a single point in a 2D space
+and thus one can more easily visualise the distribution of samples. 
+
+Figure~\ref{fig:umap} shows a UMAP plot of generated and real samples, including
+reconstructible hit sequences. The position of each point is a projection of the
+feature vector extracted from each sample by the transfer learning Inception v3
+network. Such a plot shows that reconstructible and noise-like sequences are
+adequately discriminated by the network, and that the generated and noise-like
+sequences overlap in large part. Hence, the GAN is clearly able to produce
+samples which resemble the training dataset. However, some portion of the space
+covered by noise-like MC samples is not occupied by any generated samples, which
+indicates that the GAN cannot produce these types of samples.
+
+By tracing UMAP points back to the sample they were computed from, one can then
+attempt to understand the type of sample which the GAN cannot faithfully
+produce. This yields insight into the GAN's strategy and where exactly it fails
+to perform, which subsequently helps to adjust its design and architecture.
 
 
-\hl{was here}
+\begin{figure}
+    \centering
+    \includegraphics[width=0.4\textwidth]{chapter4/umap_TL_fid_singlefit.pdf}
+    \caption{ UMAP computed from feature vectors extracted by the TL
+        Inception~v3 network, for reconstructible, noise-like and generated hit
+        sequences. The number of neighbours in the UMAP transform was set to
+        50. }
+    \label{fig:umap}
+\end{figure}
+
 
 
 % The hit generation rate is X hits/s, whereas a traditional MC simulation
