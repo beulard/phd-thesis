@@ -1,4 +1,4 @@
-\chapter{The COMET experiment}\label{chapter2}
+\chapter{The COMET Experiment}\label{chapter2}
 
 \begin{markdown}
 ---
@@ -12,7 +12,7 @@
     + For simulation section, need to explain how CDC and CTH work, and how combined they enable mu--e conv measurement
     - Detailed description of the CDC, which is crucial for the GAN section.
      - Stereo angles
-+ Phase alpha
++ Phase alpha?
 
 - References: TDR, SINDRUM II, 
 
@@ -32,16 +32,34 @@
 ---
 \end{markdown}
 
+% Description and goals
 COMET (COherent Muon-to-Electron Transition) is a future muon-beam experiment
-which will search for the muon-to-electron conversion process. Currently under
-construction at the J-PARC facility in Tokai, Japan, its physics program will be
-run in a two-stage approach, Phase-I and Phase-II. These two phases are expected
-to be 100 and \numprint{10000} more sensitive to $\mu$--$e$ conversion,
-respectively, than the current world-leading measurement conducted at the
-SINDRUM II experiment~\cite{Bertl:2006up}. In order to reach these goals, the
-COMET experiment is designed with strict requirements defined to efficiently
-reject background events and thus push the sensitivity limit as high as
-possible.
+designed to search for the muon-to-electron conversion process. It is currently
+under construction at the Japan Proton Accelerator Research Complex (J-PARC)
+facility in Tokai, Japan. The goal of COMET is to be \numprint{10000} times more
+sensitive to $\mu$--$e$ conversion than the current world-leading limit set by
+the SINDRUM II experiment~\cite{Bertl:2006up}. 
+
+% Requirements
+In order to reach these goals, the COMET experiment is designed with strict
+requirements defined to make the conversion signal as clear as possible, while
+efficiently rejecting background events. The most essential requirements are:
+\begin{itemize}
+    \item An intense muon source to probe the rarest of events,
+    \item A pulsed beam such that timing information can be used to reject backgrounds,
+    \item Strict selection of the beam particles' charge and momentum prior to reaching
+    the detector.
+\end{itemize}
+These requirements and the design choices that were made to address them are
+described in more detail in Section~\ref{Phase-I_requirements}.
+% Later, go back to requirements and explain in more detail and then tell what
+% the design choices were to address these requirements.
+
+% Strategy
+COMET is planned to run in a staged approach such that the properties of the
+newly built beam can be finely understood before making the measurement. COMET
+Phase-I aims to reach a single-event sensitivity\footnote{\hl{Definition?}} to $\mu$--$e$ conversion of
+$3\times 10^{-15}$, a factor-100 improvement over SINDRUM II.
 
 \section{Muon production}
 Searching for $\mu$--$e$ conversion requires an intense source of muons. The
