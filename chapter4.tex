@@ -1072,10 +1072,10 @@ the same class.
 The Fréchet Inception Distance (FID) is an evolution of the Inception score
 which additionally uses statistics extracted from the training dataset to
 estimate a distance between real and generated
-samples~\cite{10.5555/3295222.3295408}. Conventionally, a pre-trained Inception
-v3 model~\cite{7780677} is applied to real and generated samples. Activations
-from an intermediate layer are extracted and their mean $\bm{\mu}$ and
-covariance $\bm{\Sigma}$ are estimated, from which the Fréchet (or
+samples~\cite{10.5555/3295222.3295408}. Conventionally, a pre-trained
+Inception-v3 model~\cite{7780677} is applied to real and generated samples.
+Activations from an intermediate layer are extracted and their mean $\bm{\mu}$
+and covariance $\bm{\Sigma}$ are estimated, from which the Fréchet (or
 Wasserstein-2) distance is calculated as
 $$
 d^2 = | \bm{\mu}_G - \bm{\mu}_R |^2 + 
@@ -1097,8 +1097,8 @@ experiments~\cite{kansal2020graph}.
 
 \subsection{Evaluating the CDC GAN performance}
 
-\subsubsection{Pre-trained Inception v3}
-As a baseline to evaluate the CDC GAN, the Inception~v3 model trained on the
+\subsubsection{Pre-trained Inception-v3}
+As a baseline to evaluate the CDC GAN, the Inception-v3 model trained on the
 ImageNet dataset was used to compute FID between generated and real samples. The
 network expects images as input, i.e.\ tensors with two spatial dimensions and
 three channels, which means our hit data must be arranged to fit this shape.
@@ -1134,7 +1134,7 @@ computed for each of the three projections as a function of training iterations.
         %\caption{}
     \end{subfigure}
     \caption{ Fréchet Inception Distance computed by the pre-trained
-        Inception~v3 network over training epochs of the CDC GAN. Since
+        Inception-v3 network over training epochs of the CDC GAN. Since
         Inception requires a 2D image as input and our hit sequences have a
         third temporal dimension, the hit data is projected along its axes and
         a separate FID is calculated for each projection. }
@@ -1170,18 +1170,18 @@ Figure~\ref{fig:custom_distance_vs_epochs} shows FID over epochs of the CDC GAN
 training.
 
 
-\subsubsection{Transfer learning Inception v3}
+\subsubsection{Transfer learning Inception-v3}
 
 Transfer learning (TL) refers to the addition and subsequent training of layers
 to a fixed pre-trained network in order to apply it to a new domain. By adding
-layers to the front and back of Inception v3, it can be adapted to the hit
+layers to the front and back of Inception-v3, it can be adapted to the hit
 sequence classification task. The weights in the new layers are adjusted to
 discriminate noise-like from reconstructible hit sequences, which allows
 domain-specific features to be extracted. In addition, because the input layer
 is modified, this new network is made to provide a single FID score rather than
 three to compare GAN-generated samples to real ones.
 Figure~\ref{fig:transfer_learning_FID_vs_epochs} shows the resulting FID score
-computed by the TL Inception v3 over epochs of the CDC GAN training.
+computed by the TL Inception-v3 over epochs of the CDC GAN training.
 
 \begin{figure}
     \centering
@@ -1200,7 +1200,7 @@ computed by the TL Inception v3 over epochs of the CDC GAN training.
         \hspace{-1cm} % To align graphics with caption
         \includegraphics[width=\textwidth]{chapter4/tr_learning-epoch.pdf}
         \caption{ 
-            Transfer Learning Inception v3.
+            Transfer Learning Inception-v3.
         }
         \label{fig:transfer_learning_FID_vs_epochs}
     \end{subfigure}
@@ -1210,7 +1210,7 @@ computed by the TL Inception v3 over epochs of the CDC GAN training.
         Figure~\ref{fig:FID_vs_epochs}, hit sequences can be processed at once
         without projecting them along an axis. The 3D CNN is trained on
         Monte Carlo hit data, in the same way as the front and back layers added
-        to Inception~v3 for transfer learning.
+        to Inception-v3 for transfer learning.
     }
 \end{figure}
 
@@ -1230,7 +1230,7 @@ and thus one can more easily visualise the distribution of samples.
 
 Figure~\ref{fig:umap} shows a UMAP plot of generated and real samples, including
 reconstructible hit sequences. The position of each point is a projection of the
-feature vector extracted from each sample by the transfer learning Inception v3
+feature vector extracted from each sample by the transfer learning Inception-v3
 network. Such a plot shows that reconstructible and noise-like sequences are
 adequately discriminated by the network, and that the generated and noise-like
 sequences overlap in large part. Hence, the GAN is clearly able to produce
@@ -1248,7 +1248,7 @@ to perform, which subsequently helps to adjust its design and architecture.
     \centering
     \includegraphics[width=0.4\textwidth]{chapter4/umap_TL_fid_singlefit.pdf}
     \caption{ UMAP computed from feature vectors extracted by the TL
-        Inception~v3 network, for reconstructible, noise-like and generated hit
+        Inception-v3 network, for reconstructible, noise-like and generated hit
         sequences. The number of neighbours in the UMAP transform was set to
         50. }
     \label{fig:umap}
