@@ -9,7 +9,8 @@
 %         + mu-e conv signal description
 %         + **List of background sources**
 % + CyDet:
-%     + For simulation section, need to explain how CDC and CTH work, and how combined they enable mu--e conv measurement
+%     + For simulation section, need to explain how CDC and CTH work, and how
+%       combined they enable mu--e conv measurement
 %     - Detailed description of the CDC, which is crucial for the GAN section.
 %      - Stereo angles
 % + Phase alpha?
@@ -19,11 +20,13 @@
 % ---
 
 % + Requirements: high sensitivity to signal, efficient rejection of backgrounds
-%  + -> Need intense muon beam, pulsed, and detector design must avoid backgrounds
+%  + -> Need intense muon beam, pulsed, and detector design must avoid
+%    backgrounds
 % + TIMING of signal (muon lifetime)
 % + Proton beam energy: why 8 Gev -> antiproton production
 % + Intensity: beam current, beam power, POTs per second
-% + Send backward-going secondaries to detector, discard the main part of secondaries (forward-going)
+% + Send backward-going secondaries to detector, discard the main part of
+%   secondaries (forward-going)
 % + Curved solenoid + dipole field (by tilting coils, see Krikler)
 % + Stopping target -> why Al
 % + Bunch structure, extinction
@@ -44,15 +47,17 @@ the SINDRUM II experiment~\cite{Bertl:2006up}.
 % Requirements
 In order to reach these goals, the COMET experiment is designed with strict
 requirements defined to make the conversion signal as clear as possible, while
-efficiently rejecting background events. The most essential requirements are:
+efficiently rejecting background events. The essential requirements that define
+the COMET experiment are:
 \begin{itemize}
     \item An intense muon source to probe the rare conversion process;
     \item A pulsed beam such that timing information can be used to reject backgrounds;
     \item Strict selection of charge and momentum of beam particles prior to
-    reaching the detector.
+    reaching the detector;
+    \item A tracking detector to search for the \SI{104.97}{\MeV} conversion signature.
 \end{itemize}
 These requirements and the design choices that were made to address them are
-described in more detail in Section~\ref{Phase-I_requirements}.
+described in more detail in the rest of this chapter.
 % Later, go back to requirements and explain in more detail and then tell what
 % the design choices were to address these requirements.
 
@@ -60,22 +65,27 @@ described in more detail in Section~\ref{Phase-I_requirements}.
 COMET is planned to run in a staged approach such that the properties of the
 newly designed beam can be finely understood before making the measurement.
 COMET Phase-I has a double purpose, each fulfilled by a distinct detector
-systems. The StrECAL detector, composed of a straw-tube tracker and
+system. The StrECAL detector, composed of a straw-tube tracker and
 electromagnetic calorimeter, will study the beam composition and timing
 properties and increase our understanding of potential backgrounds. The
 Cylindrical Detector, composed of a cylindrical drift chamber and a trigger
 hodoscope, will perform a $\mu$--$e$ conversion search with a single-event
-sensitivity (see Section~\ref{sec:SES}) of $3\times 10^{-15}$, a factor-100 improvement over SINDRUM II.
-COMET Phase-II is a planned upgrade to Phase-I with higher beam intensity and
-better background rejection via a longer momentum-selecting beamline. Phase-II
-aims to improve on the single-event sensitivity of Phase-I by another factor of
-$100$ to reach a single-event sensitivity of $2.6\times 10^{-17}$.
+sensitivity (see Section~\ref{sec:SES}) of $3\times 10^{-15}$, a factor-100
+improvement over SINDRUM II. COMET Phase-II is a planned upgrade to Phase-I with
+higher beam intensity and better background rejection via a longer
+momentum-selecting beamline. Phase-II aims to improve on the single-event
+sensitivity of Phase-I by another factor of $100$ to reach a single-event
+sensitivity of $2.6\times 10^{-17}$.
 
 Figure~\ref{fig:comet_schematic} shows a top-down schematic view of the COMET
 experiment, laying out the different sections that make up the beamline in
-Phase-I and Phase-II. Note the addition of more momentum-selecting curved
-solenoids in Phase-II for better rejection of high-momentum background-inducing
-particles.
+Phase-I and Phase-II. In the latter, the transport solenoid is doubled to allow
+more pions to decay to muons while tightening the momentum selection further. An
+additional curved solenoid, the \emph{electron spectrometer,} further eliminates
+particles whose momenta do not match the \SI{104.97}{\MeV} conversion signature
+after the muon stopping target section, before they enter the detector system.
+While Phase-I will use the StrECAL to study the beam properties, Phase-II will
+use it as the conversion-searching detector system.
 
 \begin{figure}
     \centering
@@ -104,8 +114,26 @@ particles.
 % f_\mathrm{cap} f_\mathrm{gnd} A_{\mu\mathrm{--}e}}$}
 
 \section{Proton beam}\label{sec:COMET_beam}
-J-PARC provides a 8 \SI{8}{\GeV} proton beam 
-The proton beam is provided by the J-PARC facility. It is a 
+Muons in the COMET experiment are produced from the decay of pions produced by
+proton collisions on a static solid target. The primary proton beam is provided
+by the J-PARC facility. Protons are delivered with an energy of \SI{8}{\GeV},
+picked to maximise the pion yield while minimising the production of
+anti-protons, a potential background source.
+
+The beam has a pulsed time profile: protons are grouped into \SI{100}{\ns}
+bunches, each containing $16\times 10^6$ protons. Bunches are separated by
+\SI{1170}{\ns}, which allows conversion signals to be searched for between two
+collisions, when the detector is relatively quiet. 
+
+The mean lifetime of a muon bound to an aluminium nucleus is
+\SI{864}{\ns}~\cite{PhysRevC.35.2212}, while the \emph{beam flash}, i.e.\ hits
+caused by prompt processes just after the proton beam collision, dies off
+rapidly within a few hundreds of nanoseconds. Hence, the trigger timing window
+can be tuned to reject hits from the beam flash while preserving the acceptance
+of electrons from the conversion of bound muons.
+
+\section{The pion-production section}
+
 
 \section{Muon production}
 % NOT REVIEWED:
@@ -132,10 +160,10 @@ muons which must be bound to atomic nuclei. COMET uses a proton beam from the
 J-PARC main ring.
 
 
-The COMET experiment will produce a
-muon beam and direct it toward a static aluminium target to slow down and stop
-the muons. As discussed in Section~\ref{sec:sm_backgrounds}, a bound muon can
-undergo decay in orbit (DIO) or nuclear capture. 
+The COMET experiment will produce a muon beam and direct it toward a static
+aluminium target to slow down and stop the muons. As discussed in
+Section~\ref{sec:sm_backgrounds}, a bound muon can undergo decay in orbit (DIO)
+or nuclear capture. 
 
 \section{Design requirements}
 

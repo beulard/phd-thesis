@@ -24,9 +24,9 @@
      inkscape:pagecheckerboard="0"
      inkscape:document-units="mm"
      showgrid="false"
-     inkscape:zoom="2.7182947"
-     inkscape:cx="301.84365"
-     inkscape:cy="173.63827"
+     inkscape:zoom="4.8657014"
+     inkscape:cx="319.68669"
+     inkscape:cy="52.818695"
      inkscape:window-width="1912"
      inkscape:window-height="1042"
      inkscape:window-x="4"
@@ -463,6 +463,20 @@
          style="fill:none;fill-opacity:0.75;fill-rule:evenodd;stroke:context-stroke;stroke-width:1pt"
          d="M 0,5.65 V -5.65"
          id="path162212" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       refX="0"
+       refY="0"
+       orient="auto"
+       inkscape:stockid="Arrow1Mend8097"
+       inkscape:isstock="true"
+       id="Arrow1Mend8097">
+      <path
+         transform="matrix(-0.4,0,0,-0.4,-4,0)"
+         style="fill:#f3440f;fill-rule:evenodd;stroke:#f3440f;stroke-width:1pt"
+         d="M 0,0 5,-5 -12.5,0 5,5 Z"
+         id="path165312" />
     </marker>
   </defs>
   <g
@@ -1875,7 +1889,7 @@
       </g>
     </g>
     <path
-       style="fill:none;stroke:#f3440f;stroke-width:0.5;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#Arrow1Mend)"
+       style="fill:none;stroke:#f3440f;stroke-width:0.5;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#Arrow1Mend8097)"
        d="m 67.196574,57.680394 60.919296,10.67099"
        id="path81969"
        sodipodi:nodetypes="cc" />
@@ -1893,14 +1907,14 @@
     <text
        xml:space="preserve"
        style="font-size:4.23333px;line-height:1.25;font-family:Mont;-inkscape-font-specification:Mont;letter-spacing:0px;word-spacing:0px;fill:#f3440f;fill-opacity:1;stroke-width:0.264583"
-       x="104.82288"
+       x="103.7709"
        y="55.123337"
        id="text89240-9"><tspan
          sodipodi:role="line"
          id="tspan89238-6"
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.23333px;font-family:Montserrat;-inkscape-font-specification:Montserrat;fill:#f3440f;fill-opacity:1;stroke-width:0.264583"
-         x="104.82288"
-         y="55.123337">Pion-production target</tspan></text>
+         x="103.7709"
+         y="55.123337">Pion-production section</tspan></text>
     <text
        xml:space="preserve"
        style="font-size:4.23333px;line-height:1.25;font-family:Mont;-inkscape-font-specification:Mont;letter-spacing:0px;word-spacing:0px;fill:#f3440f;fill-opacity:1;stroke-width:0.264583"
@@ -1938,13 +1952,13 @@
        xml:space="preserve"
        style="font-size:4.23333px;line-height:1.25;font-family:Mont;-inkscape-font-specification:Mont;letter-spacing:0px;word-spacing:0px;fill:#f3440f;fill-opacity:1;stroke-width:0.264583"
        x="72.873184"
-       y="217.27936"
+       y="218.86684"
        id="text89240-9-0-5-7-9"><tspan
          sodipodi:role="line"
          id="tspan89238-6-1-2-9-3"
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.23333px;font-family:Montserrat;-inkscape-font-specification:Montserrat;fill:#f3440f;fill-opacity:1;stroke-width:0.264583"
          x="72.873184"
-         y="217.27936">StrECAL detector system</tspan></text>
+         y="218.86684">StrECAL detector system</tspan></text>
     <path
        sodipodi:type="star"
        style="opacity:1;fill:#f3440f;fill-opacity:1;stroke:#000000;stroke-width:1.40598;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:4.3465;stroke-opacity:1;paint-order:markers stroke fill;stop-color:#000000"

@@ -4,9 +4,9 @@
 <svg
    id="svg5"
    version="1.1"
-   viewBox="0 0 123.39264 114.88975"
-   height="114.88975mm"
-   width="123.39264mm"
+   viewBox="0 0 124.21217 114.95188"
+   height="114.95187mm"
+   width="124.21217mm"
    sodipodi:docname="comet_schematic_phase-I.svg"
    inkscape:version="1.1.2 (0a00cf5339, 2022-02-04)"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
@@ -24,9 +24,9 @@
      inkscape:pagecheckerboard="0"
      inkscape:document-units="mm"
      showgrid="false"
-     inkscape:zoom="2.7182947"
-     inkscape:cx="305.15455"
-     inkscape:cy="125.07842"
+     inkscape:zoom="0.95953385"
+     inkscape:cx="29.701923"
+     inkscape:cy="318.90485"
      inkscape:window-width="1912"
      inkscape:window-height="1042"
      inkscape:window-x="4"
@@ -38,7 +38,7 @@
      fit-margin-top="0"
      fit-margin-left="0"
      fit-margin-right="0"
-     fit-margin-bottom="0"
+     fit-margin-bottom="3"
      inkscape:snap-intersection-paths="false"
      inkscape:object-paths="true"
      inkscape:object-nodes="true" />
@@ -47,22 +47,22 @@
     <marker
        style="overflow:visible"
        id="StopL"
-       refX="0.0"
-       refY="0.0"
+       refX="0"
+       refY="0"
        orient="auto"
        inkscape:stockid="StopL"
        inkscape:isstock="true">
       <path
          transform="scale(0.8)"
-         style="fill:none;fill-opacity:0.75000000;fill-rule:evenodd;stroke:context-stroke;stroke-width:1.0pt"
-         d="M 0.0,5.65 L 0.0,-5.65"
+         style="fill:none;fill-opacity:0.75;fill-rule:evenodd;stroke:context-stroke;stroke-width:1pt"
+         d="M 0,5.65 V -5.65"
          id="path142314" />
     </marker>
     <marker
        inkscape:stockid="DistanceStart"
        orient="auto"
-       refY="0.0"
-       refX="0.0"
+       refY="0"
+       refX="0"
        id="marker142433"
        style="overflow:visible"
        inkscape:isstock="true">
@@ -70,23 +70,23 @@
          id="g142431">
         <path
            id="path142425"
-           d="M 0,0 L 2,0"
+           d="M 0,0 H 2"
            style="fill:none;stroke:context-fill;stroke-width:1.15;stroke-linecap:square" />
         <path
            id="path142427"
-           d="M 0,0 L 13,4 L 9,0 13,-4 L 0,0 z "
+           d="M 0,0 13,4 9,0 13,-4 Z"
            style="fill:context-stroke;fill-rule:evenodd;stroke:none" />
         <path
            id="path142429"
-           d="M 0,-4 L 0,40"
+           d="M 0,-4 V 40"
            style="fill:none;stroke:context-stroke;stroke-width:1;stroke-linecap:square" />
       </g>
     </marker>
     <marker
        inkscape:stockid="DistanceStart"
        orient="auto"
-       refY="0.0"
-       refX="0.0"
+       refY="0"
+       refX="0"
        id="DistanceStart"
        style="overflow:visible"
        inkscape:isstock="true">
@@ -94,15 +94,15 @@
          id="g2300">
         <path
            id="path2306"
-           d="M 0,0 L 2,0"
+           d="M 0,0 H 2"
            style="fill:none;stroke:context-fill;stroke-width:1.15;stroke-linecap:square" />
         <path
            id="path2302"
-           d="M 0,0 L 13,4 L 9,0 13,-4 L 0,0 z "
+           d="M 0,0 13,4 9,0 13,-4 Z"
            style="fill:context-stroke;fill-rule:evenodd;stroke:none" />
         <path
            id="path2304"
-           d="M 0,-4 L 0,40"
+           d="M 0,-4 V 40"
            style="fill:none;stroke:context-stroke;stroke-width:1;stroke-linecap:square" />
       </g>
     </marker>
@@ -644,7 +644,7 @@
          sodipodi:nodetypes="ccccc" />
     </g>
     <path
-       style="fill:#ffffff;fill-opacity:0.48528299;stroke:none;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       style="fill:#ffffff;fill-opacity:0.485283;stroke:none;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        d="m 39.343432,153.78587 c 6.434233,0.35765 12.588417,0.68465 18.569829,0.0625 l 0.0312,-18.7519 -3.438885,0.79149 -0.101311,-0.44922 -1.130726,-0.68649 -9.170887,0.10515 -4.884841,0.035 z"
        id="path66255"
        sodipodi:nodetypes="ccccccccc" />
@@ -1553,14 +1553,14 @@
     <text
        xml:space="preserve"
        style="font-size:4.23333px;line-height:1.25;font-family:Mont;-inkscape-font-specification:Mont;letter-spacing:0px;word-spacing:0px;fill:#f3440f;fill-opacity:1;stroke-width:0.264583"
-       x="104.82288"
+       x="103.7709"
        y="55.123337"
        id="text89240-9"><tspan
          sodipodi:role="line"
          id="tspan89238-6"
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.23333px;font-family:Montserrat;-inkscape-font-specification:Montserrat;fill:#f3440f;fill-opacity:1;stroke-width:0.264583"
-         x="104.82288"
-         y="55.123337">Pion-production target</tspan></text>
+         x="103.7709"
+         y="55.123337">Pion-production section</tspan></text>
     <text
        xml:space="preserve"
        style="font-size:4.23333px;line-height:1.25;font-family:Mont;-inkscape-font-specification:Mont;letter-spacing:0px;word-spacing:0px;fill:#f3440f;fill-opacity:1;stroke-width:0.264583"
@@ -2058,7 +2058,7 @@
        sodipodi:nodetypes="ccc" />
     <path
        style="fill:none;stroke:#000000;stroke-width:0.4;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:1.2, 0.4;stroke-dashoffset:0;stroke-opacity:1;marker-end:url(#Arrow1Mend-4)"
-       d="m 74.405509,148.55774 -15.753123,0"
+       d="M 74.405509,148.55774 H 58.652386"
        id="path89151-0"
        sodipodi:nodetypes="cc" />
   </g>
