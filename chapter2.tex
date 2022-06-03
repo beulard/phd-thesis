@@ -134,6 +134,8 @@ of electrons from the conversion of bound muons.
 
 % Could also add info on buckets, 4/5 time structure
 
+% Extinction!
+
 \section{Pion-production section}
 
 \begin{figure}
@@ -165,7 +167,7 @@ forward-moving pions.
 
 \begin{figure}
     \centering
-    \includegraphics[width=0.5\textwidth]{chapter2/pion_momentum_forward_backward.pdf}
+    \includegraphics[width=0.5\textwidth]{chapter2/pion_mom-v2.pdf}
     \caption{ Momentum distribution of pions produced by simulating proton
     collisions with Geant4, depending on whether their initial direction is
     forward or backward with respect to the proton beam direction. }
@@ -206,21 +208,6 @@ overall stronger for higher-momentum particles. The ratio $\frac{p_T}{p_L}$,
 which defines a helical trajectory's \emph{pitch angle}, is also a major
 factor in a particle's drift.
 
-The drift caused by the curved solenoid makes all particles of the same charge
-move in the same direction to varying degrees depending on momentum. In order to
-select particles of a specific momentum, a vertical component is added to the
-magnetic field to counterbalance the drift. Selected particles thus stay on
-axis, while higher- and lower-momentum particles drift off axis. With the addition
-of a collimator at the end of the transport solenoid, particles with unwanted
-momenta are effectively eliminated from the beam.
-
-Figure~\ref{fig:drift} shows drift $D$ as a function of $s$, the longitudinal
-distance travelled by particles along the solenoid. $D$ is shown for different
-values of momentum and assuming the same pitch angle of \SI{45}{\degree}. This
-illustrates how, by adding a dipole field, particles with a momentum outside the
-required range can be efficiently eliminated by collimators at the top and
-bottom of the beam pipe.
-
 \begin{figure}
     \centering
     \begin{subfigure}[b]{0.46\textwidth}
@@ -246,25 +233,71 @@ bottom of the beam pipe.
     \label{fig:drift}
 \end{figure}
 
-\section{Muon stopping target}
+The drift caused by the curved solenoid makes all particles of the same charge
+move in the same direction to varying degrees depending on momentum. In order to
+select particles of a specific momentum, a vertical component is added to the
+magnetic field to counterbalance the drift. Selected particles thus stay on
+axis, while higher- and lower-momentum particles drift off axis. With the addition
+of a collimator at the end of the transport solenoid, particles with unwanted
+momenta are effectively eliminated from the beam.
 
+Figure~\ref{fig:drift} shows drift $D$ as a function of $s$, the longitudinal
+distance travelled by particles along the solenoid. $D$ is shown for different
+values of momentum and assuming the same pitch angle of \SI{45}{\degree}. This
+illustrates how, by adding a dipole field, particles with a momentum outside the
+required range can be efficiently eliminated by collimators at the top and
+bottom of the beam pipe.
+
+\section{Muon stopping target}
+The purpose of the muon stopping target is to slow down and stop as many muons
+as possible while not blocking the path of conversion electrons. It is composed
+of a series of thin aluminium disks placed in the path of the muon beam. The
+disks are \SI{20}{\cm} in diameter, \SI{0.2}{\mm} thick, and separated by
+\SI{5}{\cm}.
+The more aluminium there is, the more muons will be stopped and allowed to
+undergo conversion. However, more material means more energy lost by electrons
+flying outward, hence the design of the target optimises between muon stopping
+rate and acceptance of conversion electrons by the detector system.
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.8\textwidth]{chapter2/transport_solenoid.pdf}
+    \caption{ Muon stopping target. }
+    \label{fig:muon_stopping_target}
+\end{figure}
+
+The material of the stopping target influences the conversion rate, but also the
+lifetime of a muon caught in orbit around a nucleus. A heavy target favours the
+expected rate of $\mu$--$e$ conversion, however it also causes the nuclear
+capture rate to be higher. In COMET, beam bunches are separated by
+\SI{1.17}{\ns} and prompt backgrounds typically die off within a few hundred
+nanoseconds. A muonic atom with an iron or heavier nucleus has a lifetime less
+than \SI{200}{\ns}, which would be too short to allow muons to convert after the
+beam flash. Hence, a light target such as aluminium, with a longer stopped muon
+lifetime of \SI{864}{\ns}, is better suited to the COMET conversion search.
 
 \section{Detector systems}
-\subsection{}
+\subsection{StrECAL}
+The StrECAL combines a straw-tube tracker with an electromagnetic calorimeter.
 
-\section{Muon production}
-% NOT REVIEWED:
-Searching for $\mu$--$e$ conversion requires an intense source of muons. The
-COMET experiment relies on the J-PARC accelerator facility to provide protons.
-The proton beam hits a static graphite target to produce pions, which then decay
-to muons. In order for the collision to produce a reasonable number of pions
-while avoiding anti-proton production\footnote{
-Anti-protons have the same charge as pions but travel more slowly for a given
-momentum. Hence, they can produce delayed secondaries which hit the detector
-system, which is a source of background as discussed in
-Section~\ref{sec:delayed_backgrounds}. A beam energy of \SI{8}{\GeV} is the
-lower limit above which anti-proton production becomes kinematically allowed.
-}, the protons in the beam have a kinetic energy of \SI{8}{\GeV}. 
+\subsection{CyDet}
+The Cylindrical Detector (CyDet) consists of a Cylindrical Drift Chamber (CDC)
+for tracking and a Cylindrical Trigger Hodoscope (CTH) for triggering on
+specific tracks.
+
+\subsection{Cosmic ray veto}
+The COMET experiment hall is constantly irradiated by muons produced in the
+atmosphere by cosmic rays.
+
+\section{Conversion signature}
+Conversion electrons are mono-energetic and emitted isotropically by muons
+stopped in the target disks. In the magnetic field of the detector solenoid,
+they have a helical trajectory which can be reconstructed by the CDC or Straw
+Tracker.
+
+% Timing
+
+% Trigger criteria
 
 
 \section{Experimental backgrounds}\label{sec:backgrounds}
@@ -280,13 +313,13 @@ J-PARC main ring.
 The COMET experiment will produce a muon beam and direct it toward a static
 aluminium target to slow down and stop the muons. As discussed in
 Section~\ref{sec:sm_backgrounds}, a bound muon can undergo decay in orbit (DIO)
-or nuclear capture. 
+or nuclear capture.
 
-\section{Design requirements}
+% Antiprotons
 
-The design of the COMET experiment is heavily angled toward suppressing
-backgrounds to the $\mu$--$e$ conversion signal. Understanding the background
-sources and their properties is key in making sense of the experimental design.
+\section{Sensitivity}\label{sec:SES}
+
+
 
 % The choice of target material directly influences how frequently high-energy
 % electrons will be produced by these processes, and hence contributes in
