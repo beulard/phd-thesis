@@ -134,7 +134,15 @@ of electrons from the conversion of bound muons.
 
 % Could also add info on buckets, 4/5 time structure
 
-% Extinction!
+Stray protons arriving in the time between two bunches can contribute to the
+experimental backgrounds by sending particles toward the detector region at
+unexpected times. COMET requires the J-PARC proton beam to have fewer than one
+such stray proton for every 600 bunches in order to reach its sensitivity goals.
+This corresponds to an extinction factor
+$$
+R_\mathrm{extinction} \equiv \frac{\mathrm{protons\ between\
+bunches}}{\mathrm{protons\ per\ bunch}} \approx 10^{-10}.
+$$
 
 \section{Pion-production section}
 
@@ -253,18 +261,14 @@ The purpose of the muon stopping target is to slow down and stop as many muons
 as possible while not blocking the path of conversion electrons. It is composed
 of a series of thin aluminium disks placed in the path of the muon beam. The
 disks are \SI{20}{\cm} in diameter, \SI{0.2}{\mm} thick, and separated by
-\SI{5}{\cm}.
+\SI{5}{\cm}. The stopping target is shown in Figure~\ref{fig:cydet}, surrounded
+by the Cylindrical Detector.
+
 The more aluminium there is, the more muons will be stopped and allowed to
 undergo conversion. However, more material means more energy lost by electrons
 flying outward, hence the design of the target optimises between muon stopping
 rate and acceptance of conversion electrons by the detector system.
 
-\begin{figure}
-    \centering
-    \includegraphics[width=0.8\textwidth]{chapter2/transport_solenoid.pdf}
-    \caption{ Muon stopping target. }
-    \label{fig:muon_stopping_target}
-\end{figure}
 
 The material of the stopping target influences the conversion rate, but also the
 lifetime of a muon caught in orbit around a nucleus. A heavy target favours the
@@ -272,18 +276,61 @@ expected rate of $\mu$--$e$ conversion, however it also causes the nuclear
 capture rate to be higher. In COMET, beam bunches are separated by
 \SI{1.17}{\ns} and prompt backgrounds typically die off within a few hundred
 nanoseconds. A muonic atom with an iron or heavier nucleus has a lifetime less
-than \SI{200}{\ns}, which would be too short to allow muons to convert after the
-beam flash. Hence, a light target such as aluminium, with a longer stopped muon
-lifetime of \SI{864}{\ns}, is better suited to the COMET conversion search.
+than \SI{200}{\ns}, which would be too short to allow muons to stay bound and
+convert after the beam flash is over. Hence, a light target such as aluminium,
+with a longer stopped muon lifetime of \SI{864}{\ns}, is better suited to the
+COMET conversion search.
 
 \section{Detector systems}
 \subsection{StrECAL}
-The StrECAL combines a straw-tube tracker with an electromagnetic calorimeter.
+The StrECAL combines a straw-tube tracking detector with an electromagnetic
+calorimeter for energy measurement. In COMET Phase-I, the StrECAL will serve as
+a beam characterisation apparatus. It will be placed directly at the end of the
+transport solenoid, without a muon stopping target, to study the composition of
+the COMET beam and gain a more thorough understanding of potential backgrounds.
+The collected data can also serve to validate and refine the Monte Carlo
+simulation in preparation for the conversion measurement.
+
+In COMET Phase-II, the StrECAL will serve as the detector system for the
+conversion measurement. It will be placed after the electron spectrometer, a
+curved solenoid section tuned to select conversion electrons, as shown in
+Figure~\ref{fig:comet_schematic}. Figure~\ref{fig:strecal} shows a rendering of
+the StrECAL detector system in Phase-II.
+
+The Straw Tracker uses thin straw tubes as drift chambers, arranged into
+circular planes. A series of stations, each one able to measure the horizontal
+and vertical position of a particle, are positioned along the beam direction. A
+spatial resolution of less than \SI{100}{\um} allows the Straw Tracker to
+reconstruct trajectories and estimate particle momenta via time-of-flight
+information.
+
+The ECAL is a crystal electromagnetic calorimeter which supplements the Straw
+Tracker in measuring energy and thus identifying electrons. The ECAL uses
+lutetium-yttrium oxyorthosilicate (LYSO) as its scintillating crystals and
+avalanche photodiodes to collect the emitted photons.
+
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.8\textwidth]{chapter2/strecal.png}
+    \caption{ Cutaway 3D view of the StrECAL detector. The ECAL is shown in
+        purple and the Straw Tracker stations in blue. }
+    \label{fig:strecal}
+\end{figure}
 
 \subsection{CyDet}
 The Cylindrical Detector (CyDet) consists of a Cylindrical Drift Chamber (CDC)
 for tracking and a Cylindrical Trigger Hodoscope (CTH) for triggering on
-specific tracks.
+specific event signatures.
+
+Figure~\ref{fig:cydet}.
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.8\textwidth]{chapter2/cydet.pdf}
+    \caption{ Cylindrical Detector. }
+    \label{fig:cydet}
+\end{figure}
 
 \subsection{Cosmic ray veto}
 The COMET experiment hall is constantly irradiated by muons produced in the
