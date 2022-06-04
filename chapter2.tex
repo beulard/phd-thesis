@@ -149,7 +149,7 @@ $$
 \begin{figure}
     \centering
     \includegraphics[width=0.8\textwidth]{chapter2/pion_production_section.png.pdf}
-    \caption{ Cutaway 3D view of the pion-production section. The orange arrow
+    \caption{ Cutaway view of the pion-production section. The orange arrow
         indicates the path of the proton beam while the teal arrow shows the
         direction of backward-going pions captured by the magnetic field.}
     \label{fig:pion_production_section}
@@ -159,7 +159,7 @@ Pions are produced by the collision of the proton beam on a solid target made of
 graphite in Phase-I, and tungsten in Phase-II. This region is permeated by a
 \SI{5}{\tesla} magnetic field produced by a superconducting solenoid, which
 confines the pions and directs them toward the transport solenoid.
-Figure~\ref{fig:pion_production_section} shows a cutaway 3D view of this
+Figure~\ref{fig:pion_production_section} shows a cutaway view of this
 region.
 
 
@@ -187,7 +187,7 @@ forward-moving pions.
 \begin{figure}
     \centering
     \includegraphics[width=0.8\textwidth]{chapter2/transport_solenoid.pdf}
-    \caption{ Cutaway 3D view of the Phase-I transport solenoid. The curved
+    \caption{ Cutaway view of the Phase-I transport solenoid. The curved
         solenoid (in red) combined with collimators (in teal) select particles
         depending on their charge and momentum. }
     \label{fig:transport_solenoid}
@@ -313,7 +313,7 @@ avalanche photodiodes to collect the emitted photons.
 \begin{figure}
     \centering
     \includegraphics[width=0.8\textwidth]{chapter2/strecal.png}
-    \caption{ Cutaway 3D view of the StrECAL detector. The ECAL is shown in
+    \caption{ Cutaway view of the StrECAL detector. The ECAL is shown in
         purple and the Straw Tracker stations in blue. }
     \label{fig:strecal}
 \end{figure}
@@ -321,20 +321,48 @@ avalanche photodiodes to collect the emitted photons.
 \subsection{CyDet}
 The Cylindrical Detector (CyDet) consists of a Cylindrical Drift Chamber (CDC)
 for tracking and a Cylindrical Trigger Hodoscope (CTH) for triggering on
-specific event signatures.
-
-Figure~\ref{fig:cydet}.
+specific event signatures. The CyDet surrounds the muon stopping target and sits
+within the detector solenoid which generates a \SI{1}{\tesla} longitudinal
+magnetic field. This configuration is designed to eliminate backgrounds from the
+beam itself as well as low-momentum products of the collision while maximising
+the acceptance of conversion electrons.
+Figure~\ref{fig:cydet} shows a rendering of the Cylindrical Detector.
 
 \begin{figure}
     \centering
     \includegraphics[width=0.8\textwidth]{chapter2/cydet.pdf}
-    \caption{ Cylindrical Detector. }
+    \caption{ Cutaway view of the Cylindrical Detector, composed of the
+        Cylindrical Drift Chamber (in beige) and Cylindrical Trigger Hodoscope
+        (in purple). The detector solenoid coils are visible in red, and the
+        muon stopping target disks sit in the centre of the detector system.
+        \hl{TODO change color of RECBEs so they're different from CTH counters.}
+        }
     \label{fig:cydet}
 \end{figure}
 
+The CDC is a drift chamber used to track charged particles emanating from the
+muon stopping target. It has an inner radius of \SI{50}{\cm}, which prevents
+charged particles produced in the muon beam collision whose transverse momentum
+is smaller than \SI{60}{\MeV/\clight} from reaching it. 
+
+The CDC has 4986 sense wires strung out longitudinally in 20 concentric layers.
+Layers have an alternating stereo angle, whereby the wires in a layer are
+rotated slightly either clockwise or anti-clockwise with respect to the axis.
+This special property allows the drift chamber to roughly resolve the
+longitudinal position of a particle in addition to its radial and azimuthal
+position. The ionising material in the CDC is a helium-isobutane mixture.
+
+% CDC efficiency: geometric acceptance?
+
 \subsection{Cosmic ray veto}
 The COMET experiment hall is constantly irradiated by muons produced in the
-atmosphere by cosmic rays.
+atmosphere by cosmic rays. The cosmic ray veto (CRV) is an additional active detector
+which surrounds the CyDet or StrECAL detector system. Its purpose is to identify
+events induced by cosmic muons rather than by the COMET beam, and thus reduce
+the probability that such events will be mistaken for the conversion signal.
+
+% Do we need to describe the CRV? Can we just say it needs to have X efficiency.
+The CRV is composed of four layers of scintillator. \hl{Not all of it. GRPC.}
 
 \section{Conversion signature}
 Conversion electrons are mono-energetic and emitted isotropically by muons
