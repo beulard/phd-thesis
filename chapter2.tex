@@ -59,8 +59,6 @@ the COMET experiment are:
 \end{itemize}
 These requirements and the design choices that were made to address them are
 described in more detail in the rest of this chapter.
-% Later, go back to requirements and explain in more detail and then tell what
-% the design choices were to address these requirements.
 
 % Strategy
 \subsubsection{Strategy}
@@ -375,7 +373,7 @@ events induced by cosmic muons rather than by the COMET beam, and thus reduce
 the probability that such events will be mistaken for the conversion signal.
 
 % Do we need to describe the CRV? Can we just say it needs to have X efficiency.
-The CRV is composed of four layers of scintillator. \hl{Not all of it. GRPC.}
+%The CRV is composed of four layers of scintillator. \hl{Not all of it. GRPC.}
 
 \section{Conversion signature}
 Conversion electrons are mono-energetic and emitted isotropically by muons
@@ -403,9 +401,17 @@ aluminium target to slow down and stop the muons. As discussed in
 Section~\ref{sec:sm_backgrounds}, a bound muon can undergo decay in orbit (DIO)
 or nuclear capture.
 
+% Backgrounds = signal contamination. Backgrounds do not enter the equation for
+% SES, but SES involves quality cut factors whose purpose is to lower background
+% rates. The goal is to show that background rate << 1, only then SES makes
+% sense since we've shown that we can actually detect a single event with little
+% doubt that it's a conversion signal.
+
 % Antiprotons
 
 \section{Sensitivity}\label{sec:SES}
+
+\hl{What factors go into acceptance? Discuss them first before defining SES?}
 
 From the total number of stopped muons and net signal acceptance of the detector
 system, one can define the single event sensitivity (SES) of COMET as
