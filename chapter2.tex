@@ -45,7 +45,8 @@ sensitive to $\mu$--$e$ conversion than the current world-leading limit set by
 the SINDRUM II experiment~\cite{Bertl:2006up}. 
 
 % Requirements
-In order to reach these goals, the COMET experiment is designed with strict
+\subsubsection{Requirements}
+In order to reach its goal, the COMET experiment is designed with strict
 requirements defined to make the conversion signal as clear as possible, while
 efficiently rejecting background events. The essential requirements that define
 the COMET experiment are:
@@ -62,6 +63,7 @@ described in more detail in the rest of this chapter.
 % the design choices were to address these requirements.
 
 % Strategy
+\subsubsection{Strategy}
 COMET is planned to run in a staged approach such that the properties of the
 newly designed beam can be finely understood before making the measurement.
 COMET Phase-I has a double purpose, each fulfilled by a distinct detector
@@ -69,14 +71,15 @@ system. The StrECAL detector, composed of a straw-tube tracker and
 electromagnetic calorimeter, will study the beam composition and timing
 properties and increase our understanding of potential backgrounds. The
 Cylindrical Detector, composed of a cylindrical drift chamber and a trigger
-hodoscope, will perform a $\mu$--$e$ conversion search with a single-event
-sensitivity (see Section~\ref{sec:SES}) of $3\times 10^{-15}$, a factor-100
-improvement over SINDRUM II. COMET Phase-II is a planned upgrade to Phase-I with
-higher beam intensity and better background rejection via a longer
+hodoscope, will be used to perform a $\mu$--$e$ conversion search with a
+single-event sensitivity (see Section~\ref{sec:SES}) of $3\times 10^{-15}$, a
+factor-100 improvement over SINDRUM II. COMET Phase-II is a planned upgrade to
+Phase-I with higher beam intensity and better background rejection via a longer
 momentum-selecting beamline. Phase-II aims to improve on the single-event
 sensitivity of Phase-I by another factor of $100$ to reach a single-event
 sensitivity of $2.6\times 10^{-17}$.
 
+\subsubsection{Design}
 Figure~\ref{fig:comet_schematic} shows a top-down schematic view of the COMET
 experiment, laying out the different sections that make up the beamline in
 Phase-I and Phase-II. In the latter, the transport solenoid is doubled to allow
@@ -108,13 +111,15 @@ use it as the conversion-searching detector system.
     \label{fig:comet_schematic}
 \end{figure}
 
+The following sections describe in more detail each component of the beamline.
+
 % \footnote{For $\mu$--$e$ conversion searches, the single-event
 % sensitivity (SES) is defined in terms of the fraction of muons captured by the
 % target as $\mathrm{SES}(\mu^- N \rightarrow e^- N) = \frac{1}{N_\mu
 % f_\mathrm{cap} f_\mathrm{gnd} A_{\mu\mathrm{--}e}}$}
 
 \section{Proton beam}\label{sec:COMET_beam}
-Muons in the COMET experiment are produced from the decay of pions produced by
+Muons in the COMET experiment are produced from the decay of pions created in
 proton collisions on a static solid target. The primary proton beam is provided
 by the J-PARC facility. Protons are delivered with an energy of \SI{8}{\GeV},
 picked to maximise the pion yield while minimising the production of
@@ -122,21 +127,23 @@ anti-protons, a potential background source.
 
 The beam has a pulsed time profile: protons are grouped into \SI{100}{\ns}
 bunches, each containing $16\times 10^6$ protons. Bunches are separated by
-\SI{1170}{\ns}, which allows conversion signals to be searched for between two
-collisions, when the detector is relatively quiet. 
-
-The mean lifetime of a muon bound to an aluminium nucleus is
-\SI{864}{\ns}~\cite{PhysRevC.35.2212}, while the \emph{beam flash}, i.e.\ hits
-caused by prompt processes just after the proton beam collision, dies off
-rapidly within a few hundreds of nanoseconds. Hence, the trigger timing window
-can be tuned to reject hits from the beam flash while preserving the acceptance
-of electrons from the conversion of bound muons.
+\SI{1170}{\ns}. Just after the collision, secondary particles will quickly move
+down the COMET beamline and produce numerous background hits in the detector
+system. This prompt and intense flooding of the detector is called the
+\emph{beam flash}, and typically dies down within a few hundred nanoseconds. The
+\SI{1170}{\ns} time span between two bunches, combined with the fact that muons
+bound by the muon stopping target have a lifetime of \SI{864}{\ns} (see
+Section~\ref{sec:stopping_target}), allows COMET to search for conversion
+electrons from muons that remain bound after the beam flash has ended, and until
+the next collision occurs.
 
 % Could also add info on buckets, 4/5 time structure
 
+% Also, timing diagram?
+
 Stray protons arriving in the time between two bunches can contribute to the
 experimental backgrounds by sending particles toward the detector region at
-unexpected times. COMET requires the J-PARC proton beam to have fewer than one
+unexpected timings. COMET requires the J-PARC proton beam to have fewer than one
 such stray proton for every 600 bunches in order to reach its sensitivity goals.
 This corresponds to an extinction factor
 $$
@@ -210,7 +217,7 @@ amount of drift $D$ depends on momentum $p$ according to the equation
 where $q$ is the charge, $B$ is the strength of the field along the gyration
 axis, $s$ is the distance travelled along the solenoid, $R$ is the radius of the
 curve, and $p_L$ and $p_T$ respectively denote momentum longitudinal and
-transverse to the solenoid axis. From this expression, one can see that
+transverse to the solenoid axis~\cite{ben_thesis}. From this expression, one can see that
 oppositely charged particles drift in opposite directions, and that drift is
 overall stronger for higher-momentum particles. The ratio $\frac{p_T}{p_L}$,
 which defines a helical trajectory's \emph{pitch angle}, is also a major
@@ -256,10 +263,10 @@ illustrates how, by adding a dipole field, particles with a momentum outside the
 required range can be efficiently eliminated by collimators at the top and
 bottom of the beam pipe.
 
-\section{Muon stopping target}
+\section{Muon stopping target}\label{sec:stopping_target}
 The purpose of the muon stopping target is to slow down and stop as many muons
-as possible while not blocking the path of conversion electrons. It is composed
-of a series of thin aluminium disks placed in the path of the muon beam. The
+as possible while not blocking the path of converted electrons. It is composed
+of a series of 17 thin aluminium disks placed in the path of the muon beam. The
 disks are \SI{20}{\cm} in diameter, \SI{0.2}{\mm} thick, and separated by
 \SI{5}{\cm}. The stopping target is shown in Figure~\ref{fig:cydet}, surrounded
 by the Cylindrical Detector.
@@ -276,10 +283,11 @@ expected rate of $\mu$--$e$ conversion, however it also causes the nuclear
 capture rate to be higher. In COMET, beam bunches are separated by
 \SI{1.17}{\ns} and prompt backgrounds typically die off within a few hundred
 nanoseconds. A muonic atom with an iron or heavier nucleus has a lifetime less
-than \SI{200}{\ns}, which would be too short to allow muons to stay bound and
-convert after the beam flash is over. Hence, a light target such as aluminium,
-with a longer stopped muon lifetime of \SI{864}{\ns}, is better suited to the
-COMET conversion search.
+than \SI{200}{\ns}~\cite{ben_thesis}, which would be too short to allow muons to
+stay bound and convert after the beam flash is over. Hence, a light target such
+as aluminium, with a longer stopped muon lifetime of
+\SI{864}{\ns}~\cite{PhysRevC.35.2212}, is better suited to the COMET conversion
+search.
 
 \section{Detector systems}
 \subsection{StrECAL}
@@ -340,6 +348,7 @@ Figure~\ref{fig:cydet} shows a rendering of the Cylindrical Detector.
     \label{fig:cydet}
 \end{figure}
 
+\subsubsection{Cylindrical Drift Chamber}
 The CDC is a drift chamber used to track charged particles emanating from the
 muon stopping target. It has an inner radius of \SI{50}{\cm}, which prevents
 charged particles produced in the muon beam collision whose transverse momentum
@@ -353,6 +362,10 @@ longitudinal position of a particle in addition to its radial and azimuthal
 position. The ionising material in the CDC is a helium-isobutane mixture.
 
 % CDC efficiency: geometric acceptance?
+% Resolution?
+
+\subsubsection{Cylindrical Trigger Hodoscope}
+
 
 \subsection{Cosmic ray veto}
 The COMET experiment hall is constantly irradiated by muons produced in the
@@ -393,6 +406,24 @@ or nuclear capture.
 % Antiprotons
 
 \section{Sensitivity}\label{sec:SES}
+
+From the total number of stopped muons and net signal acceptance of the detector
+system, one can define the single event sensitivity (SES) of COMET as
+\begin{equation}
+    \mathrm{SES} = \frac{1}{N_\mu \  A_{\mu-e} \  
+    \mathcal{B}_\mathrm{capture} \  f_\mathrm{coherent}}
+\end{equation}
+where $N_\mu$ is the number of stopped muons, $A_{\mu-e}$ is the signal
+acceptance, $\mathcal{B}_\mathrm{capture}$ is the branching ratio of nuclear
+capture, and $f_\mathrm{coherent}$ is the fraction of conversions estimated to
+occur coherently and leave the nucleus in its ground state.
+
+COMET Phase-I with the Cylindrical Detector is expected to run for 150 days
+corresponding to a total number of stopped muons of $N_\mu = 1.5 \times
+10^{16}$. Using the values from the Phase-I technical design
+report~\cite{the_comet_collaboration_comet_2020}: $A_{\mu-e} = 0.041$,
+$\mathcal{B}_\mathrm{capture} = 0.61$ and $f_\mathrm{coherent} = 0.9$, the
+single event sensitivity of Phase-I is $3 \times 10^{-15}$.
 
 
 
