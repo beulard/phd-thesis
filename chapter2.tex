@@ -102,10 +102,11 @@ use it as the conversion-searching detector system.
         \includegraphics[width=\textwidth]{chapter2/comet_schematic.pdf}
         \caption{Phase-II.}
     \end{subfigure}
-    \caption{ Schematic top-down view of the COMET experiment. The light red
-        rectangles along the beamline represent solenoids which guide the beam.
-        Curved solenoids additionally help to select charge and momentum, as
-        discussed in Section~\ref{sec:curved_solenoids}.}
+    \caption{ Schematic top-down view of the COMET experiment. The beam pipe is
+    represented in gray, and the light red rectangles along the beamline
+    represent the solenoids that generate the magnetic field. Curved solenoids
+    additionally help to select charge and momentum, as discussed in
+    Section~\ref{sec:curved_solenoids}.}
     \label{fig:comet_schematic}
 \end{figure}
 
@@ -234,15 +235,17 @@ factor in a particle's drift.
         \centering
         \hspace{-0.8cm}
         \includegraphics[width=\textwidth]{chapter2/drift_vs_s_0.05mT.pdf}
-        \caption{\SI{0.05}{\milli\tesla} vertical dipole field.}
+        \caption{\SI{0.05}{\tesla} vertical dipole field.}
     \end{subfigure}
     \caption{ Effective drift of particles of various momenta as they progress
-        along the Phase-I transport solenoid. By applying an additional vertical
-        magnetic field, particles of a specific momentum can be selected. Here,
-        a \SI{0.05}{\milli\tesla} dipole field allows particles around
-        \SI{45}{\MeV/\clight} to stay on axis while higher- and lower-momentum
-        particles drift in opposite directions, and can then be suppressed by
-        collimators at the end of the transport section. }
+        along the Phase-I transport solenoid. Solid lines show drift for a pitch
+        angle of \SI{45}{\degree}, and the surrounding bands show the effect of
+        a $\pm \SI{10}{\degree}$ change in pitch angle on the drift. By applying
+        an additional vertical magnetic field, particles of a specific momentum
+        can be selected. Here, a \SI{0.05}{\tesla} dipole field allows
+        particles around \SI{45}{\MeV/\clight} to stay on axis while higher- and
+        lower-momentum particles drift in opposite directions, and can then be
+        suppressed by collimators at the end of the transport section. }
     \label{fig:drift}
 \end{figure}
 
@@ -255,11 +258,9 @@ of a collimator at the end of the transport solenoid, particles with unwanted
 momenta are effectively eliminated from the beam.
 
 Figure~\ref{fig:drift} shows drift $D$ as a function of $s$, the longitudinal
-distance travelled by particles along the solenoid. $D$ is shown for different
-values of momentum and assuming the same pitch angle of \SI{45}{\degree}. This
-illustrates how, by adding a dipole field, particles with a momentum outside the
-required range can be efficiently eliminated by collimators at the top and
-bottom of the beam pipe.
+distance travelled by particles along the solenoid. This illustrates how, by
+adding a dipole field, particles with a momentum outside the required range can
+be efficiently eliminated by collimators at the top and bottom of the beam pipe.
 
 \section{Muon stopping target}\label{sec:stopping_target}
 The purpose of the muon stopping target is to slow down and stop as many muons
@@ -305,10 +306,10 @@ the StrECAL detector system in Phase-II.
 
 The Straw Tracker uses thin straw tubes as drift chambers, arranged into
 circular planes. A series of stations, each one able to measure the horizontal
-and vertical position of a particle, are positioned along the beam direction. A
-spatial resolution of less than \SI{100}{\um} allows the Straw Tracker to
-reconstruct trajectories and estimate particle momenta via time-of-flight
-information.
+and vertical position of a particle, are positioned along the beam direction.
+The straws have a resolution of less than \SI{100}{\um}, which allows the Straw
+Tracker to reconstruct trajectories and estimate particle momenta via
+time-of-flight information.
 
 The ECAL is a crystal electromagnetic calorimeter which supplements the Straw
 Tracker in measuring energy and thus identifying electrons. The ECAL uses
@@ -318,9 +319,9 @@ avalanche photodiodes to collect the emitted photons.
 
 \begin{figure}
     \centering
-    \includegraphics[width=0.8\textwidth]{chapter2/strecal.png}
-    \caption{ Cutaway view of the StrECAL detector. The ECAL is shown in
-        purple and the Straw Tracker stations in blue. }
+    \includegraphics[width=0.8\textwidth]{chapter2/strecal_recolor.png}
+    \caption{ Cutaway view of the StrECAL detector. The Straw Tracker stations
+    are shown in blue and the ECAL in yellow.  }
     \label{fig:strecal}
 \end{figure}
 
@@ -329,51 +330,99 @@ The Cylindrical Detector (CyDet) consists of a Cylindrical Drift Chamber (CDC)
 for tracking and a Cylindrical Trigger Hodoscope (CTH) for triggering on
 specific event signatures. The CyDet surrounds the muon stopping target and sits
 within the detector solenoid which generates a \SI{1}{\tesla} longitudinal
-magnetic field. This configuration is designed to eliminate backgrounds from the
-beam itself as well as low-momentum products of the collision while maximising
-the acceptance of conversion electrons.
-Figure~\ref{fig:cydet} shows a rendering of the Cylindrical Detector.
+magnetic field. This configuration, shown in Figure~\ref{fig:cydet}, is designed
+to eliminate backgrounds from the beam itself as well as low-momentum products
+of the collision while maximising the acceptance of conversion electrons.
+Figure~\ref{fig:cydet_signal_event} additionally shows the signature of a
+simulated conversion electron inside the CyDet system.
 
 \begin{figure}
     \centering
-    \includegraphics[width=0.8\textwidth]{chapter2/cydet.pdf}
+    \includegraphics[width=0.8\textwidth]{chapter2/cydet_recolor.png}
     \caption{ Cutaway view of the Cylindrical Detector, composed of the
-        Cylindrical Drift Chamber (in beige) and Cylindrical Trigger Hodoscope
-        (in purple). The detector solenoid coils are visible in red, and the
-        muon stopping target disks sit in the centre of the detector system.
-        \hl{TODO change color of RECBEs so they're different from CTH counters.}
-        }
+        Cylindrical Drift Chamber (in teal) and Cylindrical Trigger Hodoscope
+        (in yellow). The muon stopping target disks, in purple, sit in the
+        centre of the detector system. }
     \label{fig:cydet}
 \end{figure}
 
 \subsubsection{Cylindrical Drift Chamber}
 The CDC is a drift chamber used to track charged particles emanating from the
-muon stopping target. It has an inner radius of \SI{50}{\cm}, which prevents
-charged particles produced in the muon beam collision whose transverse momentum
-is smaller than \SI{60}{\MeV/\clight} from reaching it. 
+muon stopping target. It has an inner radius of \SI{50}{\cm}, which, combined
+with the longitudinal magnetic field, prevents charged particles produced in the
+muon beam collision and whose transverse momentum is smaller than
+\SI{60}{\MeV/\clight} from reaching it. In order to achieve the sensitivity goal
+for Phase-I, the CDC has a momentum resolution better than
+\SI{200}{\keV/\clight} in order to differentiate between conversion electrons
+and electrons from the tails of the decay-in-orbit and radiative muon capture
+spectra. 
 
-The CDC has 4986 sense wires strung out longitudinally in 20 concentric layers.
-Layers have an alternating stereo angle, whereby the wires in a layer are
-rotated slightly either clockwise or anti-clockwise with respect to the axis.
-This special property allows the drift chamber to roughly resolve the
-longitudinal position of a particle in addition to its radial and azimuthal
-position. The ionising material in the CDC is a helium-isobutane mixture.
+% Geometry
+The CDC contains 4986 \emph{sense wires} strung out longitudinally in 20
+concentric layers. The wires in each layer are rotated slightly off of the
+longitudinal axis, and the rotation is alternatively clockwise and
+anti-clockwise from one layer to the next. This special property, called the
+\emph{stereo angle}, allows the drift chamber to stereoscopically reconstruct,
+within \SI{3}{mm}, the longitudinal position of a particle~\cite{ewen_thesis}. 
 
-% CDC efficiency: geometric acceptance?
+
+% Operating principle
+Each sense wire is held at a potential of up to \SI{1900}{\volt} and is
+surrounded by 8 grounded \emph{field wires} to generate an inward electric
+field. When a charged particle ionises the gas, the field accelerates freed
+electrons toward the sense wire. These electrons can gain enough energy to further
+ionise the gas, leading to avalanche multiplication (see
+e.g.~\cite[Chapter~6]{leo}). The avalanche produces a pulse on the sense wire,
+which is acquired by the readout electronics. 
+
+
+% Drift time
+
+% The time period between the passage of the ionising charged particle and the
+% ionisation products inducing a pulse on the wire depends on the \emph{drift velocity}
+% of the gas, which depends on the applied voltage.
+
+% ... not necessary?
+
+
+% CDC efficiency: geometric acceptance? in signal section
 % Resolution?
 
 \subsubsection{Cylindrical Trigger Hodoscope}
+The CTH consists of two \emph{modules} that line the inner wall of the CDC, one
+upstream and one downstream of the muon stopping target. Each module contains
+two layers of 48 partially-overlapping scintillation counters. The overlap
+between counters allows the CTH to reject a large fraction of background hits,
+e.g.\ from photons produced in the muon beam collision. This is done by only
+accepting fourfold-coincident events, where four neighbouring counters (two in
+the inner layer, two in the outer layer) are hit in a short \SI{10}{\ns} time
+span. Figure~\ref{fig:cydet_signal_event} shows how a conversion electron might
+produce such a fourfold coincidence.
+
+The CTH provides an online triggering mechanism which significantly reduces the
+number of background events accepted by the CyDet system.
+
+% Resolution?
+The CTH counters have a time resolution better than \SI{1}{\ns}.
+
+% Trigger window
+In order to suppress the large amount of hits from products of the beam
+flash, the CTH defines a trigger window which starts \SI{500}{\ns} after the
+proton beam collision and ends just before the next collision occurs.
 
 
 \subsection{Cosmic ray veto}
 The COMET experiment hall is constantly irradiated by muons produced in the
-atmosphere by cosmic rays. The cosmic ray veto (CRV) is an additional active detector
-which surrounds the CyDet or StrECAL detector system. Its purpose is to identify
-events induced by cosmic muons rather than by the COMET beam, and thus reduce
-the probability that such events will be mistaken for the conversion signal.
+atmosphere by cosmic rays. The cosmic ray veto (CRV) is an additional active
+detector which will surround the CyDet and StrECAL detector systems. Its purpose
+is to identify events induced by cosmic muons rather than by the COMET beam, and
+thus reduce the probability that such events will be mistaken for the conversion
+signal.
 
-% Do we need to describe the CRV? Can we just say it needs to have X efficiency.
-%The CRV is composed of four layers of scintillator. \hl{Not all of it. GRPC.}
+% Do we need to describe the CRV in detail? Can we just say it needs to have X
+% efficiency. 
+% The CRV is composed of four layers of scintillator. \hl{Not all of
+%it. GRPC.}
 
 \section{Conversion signature}
 Conversion electrons are mono-energetic and emitted isotropically by muons
@@ -382,8 +431,24 @@ they have a helical trajectory which can be reconstructed by the CDC or Straw
 Tracker.
 
 % Timing
+A conversion signal can occur at any timing when muons are bound inside the muon
+stopping target. 
 
 % Trigger criteria
+% Depends on det system. Phase-I vs Phase-II? Only Phase-I?
+
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.6\textwidth]{chapter2/cydet_signal_track_v2.pdf}
+    \caption{ Conversion electron trajectory as observed by the Cylindrical
+    Detector. \hl{Effect of stereo angle, fourfold coincidence, tracking, TODO
+    make dots smaller and have consistent colour (it's a vscode bug actually)}.}
+    \label{fig:cydet_signal_event}
+\end{figure}
+
+Figure~\ref{fig:cydet_signal_event} shows a simulated conversion electron going
+through the Cylindrical Detector.
 
 
 \section{Experimental backgrounds}\label{sec:backgrounds}
