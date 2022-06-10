@@ -52,10 +52,12 @@ efficiently rejecting background events. The essential requirements that define
 the COMET experiment are:
 \begin{itemize}
     \item An intense muon source to probe the rare conversion process;
-    \item A pulsed beam such that timing information can be used to reject backgrounds;
+    \item A pulsed beam such that timing information can be used to reject
+    backgrounds;
     \item Strict selection of charge and momentum of beam particles prior to
     reaching the detector;
-    \item A tracking detector to search for the \SI{104.97}{\MeV} conversion signature.
+    \item A tracking detector to search for the \SI{104.97}{\MeV} conversion
+    signature.
 \end{itemize}
 These requirements and the design choices that were made to address them are
 described in more detail in the rest of this chapter.
@@ -216,11 +218,11 @@ amount of drift $D$ depends on momentum $p$ according to the equation
 where $q$ is the charge, $B$ is the strength of the field along the gyration
 axis, $s$ is the distance travelled along the solenoid, $R$ is the radius of the
 curve, and $p_L$ and $p_T$ respectively denote momentum longitudinal and
-transverse to the solenoid axis~\cite{ben_thesis}. From this expression, one can see that
-oppositely charged particles drift in opposite directions, and that drift is
-overall stronger for higher-momentum particles. The ratio $\frac{p_T}{p_L}$,
-which defines a helical trajectory's \emph{pitch angle}, is also a major
-factor in a particle's drift.
+transverse to the solenoid axis~\cite{ben_thesis}. From this expression, one can
+see that oppositely charged particles drift in opposite directions, and that
+drift is overall stronger for higher-momentum particles. The ratio
+$\frac{p_T}{p_L}$, which defines a helical trajectory's \emph{pitch angle}, is
+also a major factor in a particle's drift.
 
 \begin{figure}
     \centering
@@ -379,8 +381,8 @@ which is acquired by the readout electronics.
 % Drift time
 
 % The time period between the passage of the ionising charged particle and the
-% ionisation products inducing a pulse on the wire depends on the \emph{drift velocity}
-% of the gas, which depends on the applied voltage.
+% ionisation products inducing a pulse on the wire depends on the \emph{drift
+% velocity} of the gas, which depends on the applied voltage.
 
 % ... not necessary?
 
@@ -391,24 +393,31 @@ which is acquired by the readout electronics.
 \subsubsection{Cylindrical Trigger Hodoscope}
 The CTH consists of two \emph{modules} that line the inner wall of the CDC, one
 upstream and one downstream of the muon stopping target. Each module contains
-two layers of 48 partially-overlapping scintillation counters. The overlap
-between counters allows the CTH to reject a large fraction of background hits,
-e.g.\ from photons produced in the muon beam collision. This is done by only
-accepting fourfold-coincident events, where four neighbouring counters (two in
-the inner layer, two in the outer layer) are hit in a short \SI{10}{\ns} time
-span. Figure~\ref{fig:cydet_signal_event} shows how a conversion electron might
+two layers of 48 partially-overlapping scintillation counters. Each counter has
+a time resolution of \SI{1}{\ns}. The main purpose of the CTH is to reject
+background events coming from the beam itself and from products of the muon beam
+collision while complementing the CDC in identifying conversion electrons.
+
+The overlap between counters allows the CTH to reject a large fraction of
+background hits, e.g.\ from photons produced in the muon beam collision. This is
+done by only accepting fourfold-coincident events, where four neighbouring
+counters (two in the inner layer, two in the outer layer) are hit in a short
+\SI{10}{\ns} time span. The CTH thus provides an online triggering mechanism
+which significantly reduces the number of background events accepted by the
+CyDet system due to its proximity with the muon stopping target.
+Figure~\ref{fig:cydet_signal_event} shows how a conversion electron might
 produce such a fourfold coincidence.
 
-The CTH provides an online triggering mechanism which significantly reduces the
-number of background events accepted by the CyDet system.
+% % Trigger window
+% In addition to the fourfold coincidence criterion, the CTH
+% In order to suppress the large amount of hits from products of the beam
+% flash, the CTH defines a trigger window which starts \SI{500}{\ns} after the
+% proton beam collision and ends just before the next collision occurs.
+
 
 % Resolution?
-The CTH counters have a time resolution better than \SI{1}{\ns}.
+% The CTH counters have a time resolution better than \SI{1}{\ns}.
 
-% Trigger window
-In order to suppress the large amount of hits from products of the beam
-flash, the CTH defines a trigger window which starts \SI{500}{\ns} after the
-proton beam collision and ends just before the next collision occurs.
 
 
 \subsection{Cosmic ray veto}
@@ -431,8 +440,13 @@ they have a helical trajectory which can be reconstructed by the CDC or Straw
 Tracker.
 
 % Timing
-A conversion signal can occur at any timing when muons are bound inside the muon
-stopping target. 
+The expected timing of conversion electrons is directly correlated to the time
+distribution of muons bound inside the stopping target. In Phase-I, in order to
+suppress prompt backgrounds from the beam flash, the detector is tuned to only
+start triggering on events that occur at least $t=\SI{700}{\ns}$ after each
+proton collision, which also reduces the signal acceptance by \SI{70}{\percent}.
+
+% Show time distribution of stopped muons?
 
 % Trigger criteria
 % Depends on det system. Phase-I vs Phase-II? Only Phase-I?
@@ -440,10 +454,13 @@ stopping target.
 
 \begin{figure}
     \centering
-    \includegraphics[width=0.6\textwidth]{chapter2/cydet_signal_track_v2.pdf}
+    \includegraphics[width=0.6\textwidth]{chapter2/cydet_signal_track_v3.pdf}
     \caption{ Conversion electron trajectory as observed by the Cylindrical
-    Detector. \hl{Effect of stereo angle, fourfold coincidence, tracking, TODO
-    make dots smaller and have consistent colour (it's a vscode bug actually)}.}
+    Detector. The effect of stereo angles is visible at the start of the
+    trajectory where hits have alternating azimuthal positions around the actual
+    electron track. Upon reaching the CTH, the electron produces consecutive
+    hits in four adjacent counters, satisfying the fourfold coincidence trigger
+    criterion.}
     \label{fig:cydet_signal_event}
 \end{figure}
 
@@ -476,22 +493,51 @@ or nuclear capture.
 
 \section{Sensitivity}\label{sec:SES}
 
-\hl{What factors go into acceptance? Discuss them first before defining SES?}
+The sensitivity of the COMET experiment is expressed as a \emph{single event
+sensitivity} (SES), which indicates the highest value of the $\mu$--$e$
+conversion branching ratio for which COMET expects to see one event. Using
+single event sensitivity makes sense if the expected number of background events
+is less than one, which was discussed in Section~\ref{sec:backgrounds}.
 
-From the total number of stopped muons and net signal acceptance of the detector
-system, one can define the single event sensitivity (SES) of COMET as
+The signal acceptance is composed of seven efficiency factors: trigger
+efficiency, data acquisition (DAQ) efficiency, reconstruction efficiency, geometrical
+acceptance, track quality cuts, momentum window efficiency and time window
+efficiency. Table~\ref{tab:acceptance} lists these factors as they were
+estimated in the COMET Phase-I technical design
+report~\cite{the_comet_collaboration_comet_2020}.
+
+\begin{table}
+    \centering
+    \begin{tabular}{l|ccccccc|c}
+        \toprule
+        Factor & Trigger & DAQ & Reconstruction & Geometrical & Cuts & Momentum
+        & Timing & Net
+        \\ 
+        Value & 0.9 & 0.9 & 0.99 & 0.26 & 0.7 & 0.93 & 0.3 & 0.041 \\
+        \bottomrule
+    \end{tabular}
+    \caption{ Efficiency factors used to determine the net signal acceptance in
+    COMET Phase-I~\cite{the_comet_collaboration_comet_2020}.}
+    \label{tab:acceptance} 
+\end{table}
+
+From the total number of stopped muons $N_\mu$ and net signal acceptance
+$A_{\mu-e}$ of the detector system, the SES of COMET can be expressed as
 \begin{equation}
     \mathrm{SES} = \frac{1}{N_\mu \  A_{\mu-e} \  
     \mathcal{B}_\mathrm{capture} \  f_\mathrm{coherent}}
 \end{equation}
-where $N_\mu$ is the number of stopped muons, $A_{\mu-e}$ is the signal
-acceptance, $\mathcal{B}_\mathrm{capture}$ is the branching ratio of nuclear
-capture, and $f_\mathrm{coherent}$ is the fraction of conversions estimated to
-occur coherently and leave the nucleus in its ground state.
+where $\mathcal{B}_\mathrm{capture}$ is the branching ratio of nuclear capture,
+and $f_\mathrm{coherent}$ is the fraction of conversions estimated to occur
+coherently and leave the nucleus in its ground state.
 
-COMET Phase-I with the Cylindrical Detector is expected to run for 150 days
-corresponding to a total number of stopped muons of $N_\mu = 1.5 \times
-10^{16}$. Using the values from the Phase-I technical design
+. The efficiency is typically given by the fraction of
+signal events accepted. 
+
+
+COMET Phase-I with the Cylindrical Detector is expected to reach a sensitivityto
+run for 150 days corresponding to a total number of stopped muons of $N_\mu =
+1.5 \times 10^{16}$. Using the values from the Phase-I technical design
 report~\cite{the_comet_collaboration_comet_2020}: $A_{\mu-e} = 0.041$,
 $\mathcal{B}_\mathrm{capture} = 0.61$ and $f_\mathrm{coherent} = 0.9$, the
 single event sensitivity of Phase-I is $3 \times 10^{-15}$.
