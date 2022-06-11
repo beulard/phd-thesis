@@ -444,7 +444,11 @@ The expected timing of conversion electrons is directly correlated to the time
 distribution of muons bound inside the stopping target. In Phase-I, in order to
 suppress prompt backgrounds from the beam flash, the detector is tuned to only
 start triggering on events that occur at least $t=\SI{700}{\ns}$ after each
-proton collision, which also reduces the signal acceptance by \SI{70}{\percent}.
+proton collision. This trigger window also reduces the signal acceptance by
+\SI{70}{\percent} because a large part of the bound muons will have undergone
+decay or capture before the window starts.
+
+\hl{ Mention track quality cuts here}
 
 % Show time distribution of stopped muons?
 
@@ -494,26 +498,27 @@ or nuclear capture.
 \section{Sensitivity}\label{sec:SES}
 
 The sensitivity of the COMET experiment is expressed as a \emph{single event
-sensitivity} (SES), which indicates the highest value of the $\mu$--$e$
+sensitivity} (SES), which indicates the lowest value of the $\mu$--$e$
 conversion branching ratio for which COMET expects to see one event. Using
 single event sensitivity makes sense if the expected number of background events
 is less than one, which was discussed in Section~\ref{sec:backgrounds}.
 
-The signal acceptance is composed of seven efficiency factors: trigger
-efficiency, data acquisition (DAQ) efficiency, reconstruction efficiency, geometrical
-acceptance, track quality cuts, momentum window efficiency and time window
-efficiency. Table~\ref{tab:acceptance} lists these factors as they were
-estimated in the COMET Phase-I technical design
+The SES is inversely proportional to the net signal acceptance of the detector
+system. The signal acceptance is composed of seven efficiency factors:
+geometrical acceptance, trigger efficiency, data acquisition (DAQ) efficiency,
+reconstruction efficiency, track quality cuts, momentum window efficiency and
+time window efficiency. Table~\ref{tab:acceptance} lists these factors as they
+were estimated in the COMET Phase-I technical design
 report~\cite{the_comet_collaboration_comet_2020}.
 
 \begin{table}
     \centering
     \begin{tabular}{l|ccccccc|c}
         \toprule
-        Factor & Trigger & DAQ & Reconstruction & Geometrical & Cuts & Momentum
-        & Timing & Net
+        Factor & Geometrical & Trigger & DAQ & Reconstruction & Cuts & Momentum
+        & Timing & Net oioioiioio fixme
         \\ 
-        Value & 0.9 & 0.9 & 0.99 & 0.26 & 0.7 & 0.93 & 0.3 & 0.041 \\
+        Value & 0.26 & 0.9 & 0.9 & 0.99 & 0.7 & 0.93 & 0.3 & 0.041 \\
         \bottomrule
     \end{tabular}
     \caption{ Efficiency factors used to determine the net signal acceptance in
@@ -522,20 +527,22 @@ report~\cite{the_comet_collaboration_comet_2020}.
 \end{table}
 
 From the total number of stopped muons $N_\mu$ and net signal acceptance
-$A_{\mu-e}$ of the detector system, the SES of COMET can be expressed as
+$A_{\mu-e}$ of the detector system, the single event sensitivity of COMET can be
+expressed as
 \begin{equation}
     \mathrm{SES} = \frac{1}{N_\mu \  A_{\mu-e} \  
     \mathcal{B}_\mathrm{capture} \  f_\mathrm{coherent}}
 \end{equation}
-where $\mathcal{B}_\mathrm{capture}$ is the branching ratio of nuclear capture,
+where $\mathcal{B}_\mathrm{capture}$ is the branching ratio of nuclear muon capture,
 and $f_\mathrm{coherent}$ is the fraction of conversions estimated to occur
 coherently and leave the nucleus in its ground state.
 
-. The efficiency is typically given by the fraction of
-signal events accepted. 
 
 
-COMET Phase-I with the Cylindrical Detector is expected to reach a sensitivityto
+COMET Phase-I with the Cylindrical Detector is expected to reach a sensitivity
+to \hl{TODO change logic to determine runtime from sensitivity...}
+
+% [...] 
 run for 150 days corresponding to a total number of stopped muons of $N_\mu =
 1.5 \times 10^{16}$. Using the values from the Phase-I technical design
 report~\cite{the_comet_collaboration_comet_2020}: $A_{\mu-e} = 0.041$,
