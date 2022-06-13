@@ -1,10 +1,9 @@
-\chapter{The COMET Experiment}\label{chapter2}
+\chapter{The COMET Experiment}\label{ch:comet}
 
 % \begin{markdown}
 % ---
 
 % - Description of the COMET experiment's goal, design with nice illustrations
-%     + *Reference next chapter for geometry renderings*
 %     + Signal and background:
 %         + mu-e conv signal description
 %         + **List of background sources**
@@ -44,7 +43,6 @@ in Tokai, Japan. The goal of COMET is to be \numprint{10000} times more
 sensitive to $\mu$--$e$ conversion than the current world-leading limit set by
 the SINDRUM II experiment~\cite{Bertl:2006up}. 
 
-% Requirements
 \subsubsection{Requirements}
 In order to reach its goal, the COMET experiment is designed with strict
 requirements defined to make the conversion signal as clear as possible, while
@@ -62,7 +60,6 @@ the COMET experiment are:
 These requirements and the design choices that were made to address them are
 described in more detail in the rest of this chapter.
 
-% Strategy
 \subsubsection{Strategy}
 COMET is planned to run in a staged approach such that the properties of the
 newly designed beam can be finely understood before making the measurement.
@@ -114,10 +111,6 @@ use it as the conversion-searching detector system.
 
 The following sections describe in more detail each component of the beamline.
 
-% \footnote{For $\mu$--$e$ conversion searches, the single-event
-% sensitivity (SES) is defined in terms of the fraction of muons captured by the
-% target as $\mathrm{SES}(\mu^- N \rightarrow e^- N) = \frac{1}{N_\mu
-% f_\mathrm{cap} f_\mathrm{gnd} A_{\mu\mathrm{--}e}}$}
 
 \section{Proton beam}\label{sec:COMET_beam}
 Muons in the COMET experiment are produced from the decay of pions created in
@@ -147,10 +140,10 @@ experimental backgrounds by sending particles toward the detector region at
 unexpected timings. COMET requires the J-PARC proton beam to have fewer than one
 such stray proton for every 600 bunches in order to reach its sensitivity goals.
 This corresponds to an extinction factor
-$$
+\begin{equation}\label{eq:extinction}
 R_\mathrm{extinction} \equiv \frac{\mathrm{protons\ between\
 bunches}}{\mathrm{protons\ per\ bunch}} \approx 10^{-10}.
-$$
+\end{equation}
 
 \section{Pion-production section}
 
@@ -221,7 +214,7 @@ curve, and $p_L$ and $p_T$ respectively denote momentum longitudinal and
 transverse to the solenoid axis~\cite{ben_thesis}. From this expression, one can
 see that oppositely charged particles drift in opposite directions, and that
 drift is overall stronger for higher-momentum particles. The ratio
-$\frac{p_T}{p_L}$, which defines a helical trajectory's \emph{pitch angle}, is
+$\frac{p_L}{p_T}$, which defines a helical trajectory's \emph{pitch angle}, is
 also a major factor in a particle's drift.
 
 \begin{figure}
@@ -267,15 +260,16 @@ be efficiently eliminated by collimators at the top and bottom of the beam pipe.
 \section{Muon stopping target}\label{sec:stopping_target}
 The purpose of the muon stopping target is to slow down and stop as many muons
 as possible while not blocking the path of converted electrons. It is composed
-of a series of 17 thin aluminium disks placed in the path of the muon beam. The
+of a series of 17 thin aluminium disks placed in the way of the muon beam. The
 disks are \SI{20}{\cm} in diameter, \SI{0.2}{\mm} thick, and separated by
 \SI{5}{\cm}. The stopping target is shown in Figure~\ref{fig:cydet}, surrounded
 by the Cylindrical Detector.
 
-The more aluminium there is, the more muons will be stopped and allowed to
-undergo conversion. However, more material means more energy lost by electrons
-flying outward, hence the design of the target optimises between muon stopping
-rate and acceptance of conversion electrons by the detector system.
+The more aluminium there is, the higher the number of muons that will be stopped
+and allowed to undergo conversion. However, more material also means more energy
+lost by electrons flying outward, hence the design of the target optimises
+between muon stopping rate and acceptance of conversion electrons by the
+detector system.
 
 
 The material of the stopping target influences the conversion rate, but also the
@@ -302,14 +296,14 @@ simulation in preparation for the conversion measurement.
 
 In COMET Phase-II, the StrECAL will serve as the detector system for the
 conversion measurement. It will be placed after the electron spectrometer, a
-curved solenoid section tuned to select conversion electrons, as shown in
+curved solenoid section designed to select conversion electrons, as shown in
 Figure~\ref{fig:comet_schematic}. Figure~\ref{fig:strecal} shows a rendering of
 the StrECAL detector system in Phase-II.
 
 The Straw Tracker uses thin straw tubes as drift chambers, arranged into
 circular planes. A series of stations, each one able to measure the horizontal
 and vertical position of a particle, are positioned along the beam direction.
-The straws have a resolution of less than \SI{100}{\um}, which allows the Straw
+The straws have a resolution better than \SI{100}{\um}, which allows the Straw
 Tracker to reconstruct trajectories and estimate particle momenta via
 time-of-flight information.
 
@@ -356,8 +350,8 @@ muon beam collision and whose transverse momentum is smaller than
 \SI{60}{\MeV/\clight} from reaching it. In order to achieve the sensitivity goal
 for Phase-I, the CDC has a momentum resolution better than
 \SI{200}{\keV/\clight} in order to differentiate between conversion electrons
-and electrons from the tails of the decay-in-orbit and radiative muon capture
-spectra. 
+and electrons from the high-energy tails of the decay-in-orbit and radiative
+muon capture spectra. 
 
 % Geometry
 The CDC contains 4986 \emph{sense wires} strung out longitudinally in 20
@@ -386,10 +380,6 @@ which is acquired by the readout electronics.
 
 % ... not necessary?
 
-
-% CDC efficiency: geometric acceptance? in signal section
-% Resolution?
-
 \subsubsection{Cylindrical Trigger Hodoscope}
 The CTH consists of two \emph{modules} that line the inner wall of the CDC, one
 upstream and one downstream of the muon stopping target. Each module contains
@@ -408,52 +398,22 @@ CyDet system due to its proximity with the muon stopping target.
 Figure~\ref{fig:cydet_signal_event} shows how a conversion electron might
 produce such a fourfold coincidence.
 
-% % Trigger window
-% In addition to the fourfold coincidence criterion, the CTH
-% In order to suppress the large amount of hits from products of the beam
-% flash, the CTH defines a trigger window which starts \SI{500}{\ns} after the
-% proton beam collision and ends just before the next collision occurs.
-
-
-% Resolution?
-% The CTH counters have a time resolution better than \SI{1}{\ns}.
-
-
 
 \subsection{Cosmic ray veto}
 The COMET experiment hall is constantly irradiated by muons produced in the
 atmosphere by cosmic rays. The cosmic ray veto (CRV) is an additional active
-detector which will surround the CyDet and StrECAL detector systems. Its purpose
-is to identify events induced by cosmic muons rather than by the COMET beam, and
-thus reduce the probability that such events will be mistaken for the conversion
-signal.
-
-% Do we need to describe the CRV in detail? Can we just say it needs to have X
-% efficiency. 
-% The CRV is composed of four layers of scintillator. \hl{Not all of
-%it. GRPC.}
+detector which will tightly enclose the CyDet and StrECAL detector systems. Its
+purpose is to identify events induced by cosmic muons rather than by the COMET
+beam, and thus reduce the probability that such events will be mistaken for a
+conversion signal.
 
 \section{Conversion signature}
-Conversion electrons are mono-energetic and emitted isotropically by muons
-stopped in the target disks. In the magnetic field of the detector solenoid,
-they have a helical trajectory which can be reconstructed by the CDC or Straw
-Tracker.
+Conversion electrons are mono-energetic at $E=\SI{104.97}{\MeV}$ and emitted
+isotropically by muons stopped in the target disks. In the magnetic field of the
+detector solenoid, they have a helical trajectory which can be reconstructed by
+the CDC or Straw Tracker. Figure~\ref{fig:cydet_signal_event} shows a simulated
+conversion electron going through the Cylindrical Detector.
 
-% Timing
-The expected timing of conversion electrons is directly correlated to the time
-distribution of muons bound inside the stopping target. In Phase-I, in order to
-suppress prompt backgrounds from the beam flash, the detector is tuned to only
-start triggering on events that occur at least $t=\SI{700}{\ns}$ after each
-proton collision. This trigger window also reduces the signal acceptance by
-\SI{70}{\percent} because a large part of the bound muons will have undergone
-decay or capture before the window starts.
-
-\hl{ Mention track quality cuts here}
-
-% Show time distribution of stopped muons?
-
-% Trigger criteria
-% Depends on det system. Phase-I vs Phase-II? Only Phase-I?
 
 
 \begin{figure}
@@ -468,24 +428,79 @@ decay or capture before the window starts.
     \label{fig:cydet_signal_event}
 \end{figure}
 
-Figure~\ref{fig:cydet_signal_event} shows a simulated conversion electron going
-through the Cylindrical Detector.
+
+% Timing
+The expected timing of conversion electrons is directly correlated to the time
+distribution of muons bound inside the stopping target. In Phase-I, in order to
+suppress prompt backgrounds from the beam flash, the detector is tuned to only
+start triggering on events that occur at least $t=\SI{700}{\ns}$ after each
+proton collision. This trigger window also reduces the signal acceptance by
+a factor of 0.7 because the majority of bound muons (which have a lifetime of
+\SI{864}{\ns}) will have undergone decay or capture before the window starts.
+
+In Phase-I, signal-like trajectories in the CDC are subject to quality cuts in
+order to avoid misidentifying backgrounds. These cuts ensure that the trajectory
+is smooth and long enough to be accurately reconstructed, but they reduce the
+acceptance of conversion signals by another factor of 0.3.
+
+
+% Show time distribution of stopped muons?
 
 
 \section{Experimental backgrounds}\label{sec:backgrounds}
-The COMET experiment is specifically designed to be sensitive to a $\mu$--$e$
-conversion signal, i.e.\ to eliminate as many sources of background as possible
-while making sure to notice the process if it does occur. 
 
-Observing $\mu$--$e$ conversion requires the production of an intense source of
-muons which must be bound to atomic nuclei. COMET uses a proton beam from the
-J-PARC main ring.
+Intrinsic backgrounds from muon decay-in-orbit and nuclear muon capture can
+mimic the conversion signal, as was discussed in Section~\ref{sec:sm_backgrounds}.
+The COMET experiment is also affected by experimental backgrounds caused by the
+intense beam, as well as cosmic ray-induced events.
+
+Beam-induced backgrounds include delayed events caused by slow particles and
+products of stray protons arriving between two bunches.
+Antiprotons are the main source of delayed backgrounds due to their slow
+speed relative to pions and muons of the same momentum. They are negatively
+charged so cannot be efficiently selected out by the beamline, hence they can
+collide late with the muon stopping target and produce signal-like secondary
+electrons during the trigger window.
+
+When a stray proton hits the pion-production target late, secondaries may
+quickly travel to the detector region and produce a signal-like electron, which
+can also be mistaken for the conversion signal. This is the main reason for requiring
+the strict extinction factor of Equation~\ref{eq:extinction} from the J-PARC
+proton beam.
+
+Finally, cosmic rays could be a major source of background events. The
+background rate depends heavily on the amount of shielding and material above
+the COMET detector system, as well as the efficiency of the cosmic ray veto. The
+topic of rate estimation for cosmic ray-induced backgrounds is discussed more
+thoroughly in Chapter~\ref{ch:cosmics}.
+
+\begin{table}
+    \centering
+    \begin{tabular}{l|cccc|c}
+        \toprule
+        Background source & Intrinsic & Stray protons & Antiprotons &
+        Cosmics  & Total\\ 
+        Estimated events & 0.014 & 0.007 & 0.001 & 0.010 & 0.032 \\ \bottomrule
+    \end{tabular}
+    \caption{Expected number of background events from each potential
+    source~\cite{the_comet_collaboration_comet_2020}. The total count is much
+    smaller than one, such that the observation of a single signal electron
+    could be evidence that charged lepton flavour is violated.}
+    \label{tab:backgrounds}
+\end{table}
 
 
-The COMET experiment will produce a muon beam and direct it toward a static
-aluminium target to slow down and stop the muons. As discussed in
-Section~\ref{sec:sm_backgrounds}, a bound muon can undergo decay in orbit (DIO)
-or nuclear capture.
+Table~\ref{tab:backgrounds} shows the rates estimated in the COMET Phase-I
+technical design report (TDR)~\cite[Section
+10.6]{the_comet_collaboration_comet_2020} for each source of background in the
+$\mu$--$e$ conversion search. The total number of background events over the
+data acquisition run time required to achieve the sensitivity goal is predicted
+to be 0.032 given an extinction factor $R_\mathrm{extinction} = 3 \times
+10^{-11}$. Since this background event count is much smaller than one, the
+observation of a single signal-like electron may indicate that a CLFV process is
+at play, which would further motivate this search through COMET Phase-II and beyond.
+
+
 
 % Backgrounds = signal contamination. Backgrounds do not enter the equation for
 % SES, but SES involves quality cut factors whose purpose is to lower background
@@ -493,36 +508,38 @@ or nuclear capture.
 % sense since we've shown that we can actually detect a single event with little
 % doubt that it's a conversion signal.
 
-% Antiprotons
 
 \section{Sensitivity}\label{sec:SES}
 
 The sensitivity of the COMET experiment is expressed as a \emph{single event
-sensitivity} (SES), which indicates the lowest value of the $\mu$--$e$
+sensitivity} (SES), which indicates the upper bound on the $\mu$--$e$
 conversion branching ratio for which COMET expects to see one event. Using
 single event sensitivity makes sense if the expected number of background events
-is less than one, which was discussed in Section~\ref{sec:backgrounds}.
+is less than one, which was discussed in the previous section.
 
 The SES is inversely proportional to the net signal acceptance of the detector
 system. The signal acceptance is composed of seven efficiency factors:
 geometrical acceptance, trigger efficiency, data acquisition (DAQ) efficiency,
 reconstruction efficiency, track quality cuts, momentum window efficiency and
-time window efficiency. Table~\ref{tab:acceptance} lists these factors as they
-were estimated in the COMET Phase-I technical design
-report~\cite{the_comet_collaboration_comet_2020}.
+trigger time window efficiency. Table~\ref{tab:acceptance} lists these factors as they
+were estimated in the COMET Phase-I TDR~\cite[Section
+10.1]{the_comet_collaboration_comet_2020}.
 
 \begin{table}
     \centering
+    \begin{adjustbox}{max width=1.1\textwidth,center}
     \begin{tabular}{l|ccccccc|c}
         \toprule
         Factor & Geometrical & Trigger & DAQ & Reconstruction & Cuts & Momentum
-        & Timing & Net oioioiioio fixme
+        & Timing & Net
         \\ 
-        Value & 0.26 & 0.9 & 0.9 & 0.99 & 0.7 & 0.93 & 0.3 & 0.041 \\
+        Efficiency & 0.26 & 0.9 & 0.9 & 0.99 & 0.7 & 0.93 & 0.3 & 0.041 \\
         \bottomrule
     \end{tabular}
-    \caption{ Efficiency factors used to determine the net signal acceptance in
-    COMET Phase-I~\cite{the_comet_collaboration_comet_2020}.}
+    \end{adjustbox}
+    \caption{ Efficiency factors used to determine the signal acceptance in
+    COMET Phase-I TDR~\cite{the_comet_collaboration_comet_2020}. The net acceptance
+    is the product of all efficiency factors.}
     \label{tab:acceptance} 
 \end{table}
 
@@ -539,30 +556,8 @@ coherently and leave the nucleus in its ground state.
 
 
 
-COMET Phase-I with the Cylindrical Detector is expected to reach a sensitivity
-to \hl{TODO change logic to determine runtime from sensitivity...}
-
-% [...] 
-run for 150 days corresponding to a total number of stopped muons of $N_\mu =
-1.5 \times 10^{16}$. Using the values from the Phase-I technical design
-report~\cite{the_comet_collaboration_comet_2020}: $A_{\mu-e} = 0.041$,
-$\mathcal{B}_\mathrm{capture} = 0.61$ and $f_\mathrm{coherent} = 0.9$, the
-single event sensitivity of Phase-I is $3 \times 10^{-15}$.
-
-
-
-% The choice of target material directly influences how frequently high-energy
-% electrons will be produced by these processes, and hence contributes in
-% setting the maximum experimental sensitivity.
-
-% This should go into the COMET section as these are specific to COMET and/or
-% specifically addressed by the COMET design.
-% Background events can be classified into three categories: intrinsic,
-% beam-related, and cosmic ray-induced.
-
-% Beam-related backgrounds come from impurities in the high-intensity muon beam.
-% The specifics of the COMET beam and how these backgrounds are alleviated is
-% discussed in Section~\ref{sec:COMET_beam}.
-
-% Cosmic rays typically produce muons with a wide range of energies in the
-% atmosphere which 
+COMET Phase-I with the Cylindrical Detector is expected to reach a SES of $3
+\times 10^{-15}$. Given the values listed in the Phase-I TDR: $A_{\mu-e} =
+0.041$, $\mathcal{B}_\mathrm{capture} = 0.61$ and $f_\mathrm{coherent} = 0.9$,
+reaching the sensitivity goal requires $N_\mu = 1.5 \times 10^{16}$ stopped
+muons, equivalent to a data acquisition period of 146 days.

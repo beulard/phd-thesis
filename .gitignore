@@ -15,6 +15,7 @@ diagram_scratch.pdf
 *.lof
 *.lot
 *.toc
+*.synctex
 *.swp
 *.fls
 *.fdb_latexmk
