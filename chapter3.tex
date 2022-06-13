@@ -190,30 +190,41 @@ protons emitted after NMC in aluminium.
 
 
 \subsection{Signal simulation}
-By default, the list of physical processes considered by \SimG includes only SM-allowed interactions and decays, and hence does not include $\mu$--$e$ conversion. In order to simulate signal events, one can manually produce conversion electrons out of the muons stopped inside the stopping target.
+By default, the list of physical processes considered by \SimG includes only
+SM-allowed interactions and decays, and hence does not include $\mu$--$e$
+conversion. In order to simulate signal events, one can manually produce
+conversion electrons out of the muons stopped inside the stopping target.
 
-From the normal beam simulation, one can estimate the spatial distribution of muons stopped in the stopping target and subsequently sample conversion electrons from it. In sensitivity studies, signal events are commonly overlaid onto a pure background sample in order to evaluate the signal acceptance and background rejection efficiencies of the hit filtering and track finding routines. % Accurate?
+From the normal beam simulation, one can estimate the spatial and temporal
+distributions of muons being stopped in the stopping target, and subsequently
+sample conversion electrons from it. In sensitivity studies, signal events are
+commonly overlaid onto a pure background sample in order to evaluate the signal
+acceptance and background rejection efficiencies of the hit filtering and track
+finding routines. % Accurate?
 
-\begin{figure}
-    \centering
-    \captionsetup[subfigure]{justification=centering}
-    \begin{subfigure}[t]{0.43\textwidth}
-    \centering
-    \includegraphics[width=0.95\textwidth]{chapter3/signal_event_display_crop_axes.pdf}
-    \caption{Event shown in \texttt{DisplayCore}, the 3D event display.}
-    \end{subfigure}
-    \hfill
-    \begin{subfigure}[t]{0.48\textwidth}
-    \centering
-    \includegraphics[width=0.95\textwidth]{chapter3/cydet_signal_track_v2.pdf}
-    \caption{Event as seen by the CDC and CTH detectors.}
-    \end{subfigure}
+%% Moved to COMET chapter
+% \begin{figure}
+%     \centering
+%     \captionsetup[subfigure]{justification=centering}
+%     \begin{subfigure}[t]{0.43\textwidth}
+%     \centering
+%     \includegraphics[width=0.95\textwidth]{chapter3/signal_event_display_crop_axes.pdf}
+%     \caption{Event shown in \texttt{DisplayCore}, the 3D event display.}
+%     \end{subfigure}
+%     \hfill
+%     \begin{subfigure}[t]{0.48\textwidth}
+%     \centering
+%     \includegraphics[width=0.95\textwidth]{chapter3/cydet_signal_track_v2.pdf}
+%     \caption{Event as seen by the CDC and CTH detectors.}
+%     \end{subfigure}
     
-    \caption{Example of a simulated signal trajectory in the CyDet system. This particular event triggers the CTH and would be considered as an ideal candidate of a $\mu$--$e$ conversion signal.}
-    \label{fig:signal_event}
-\end{figure}
+%     \caption{Example of a simulated signal trajectory in the CyDet system. This particular event triggers the CTH and would be considered as an ideal candidate of a $\mu$--$e$ conversion signal.}
+%     \label{fig:signal_event}
+% \end{figure}
 
-Figure~\ref{fig:signal_event} shows a simulated conversion electron emerging from the stopping target, depositing energy inside the CDC gas, to eventually trigger the CTH by hitting four adjacent counters. 
+Figure~\ref{fig:cydet_signal_event} shows a simulated conversion electron
+emerging from the stopping target, depositing energy inside the CDC gas, to
+eventually trigger the CTH by hitting four adjacent counters. 
 
 \subsection{Representation of simulated CDC hits}
 \label{subsec:SD}

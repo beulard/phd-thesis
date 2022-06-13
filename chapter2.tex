@@ -418,7 +418,21 @@ conversion electron going through the Cylindrical Detector.
 
 \begin{figure}
     \centering
-    \includegraphics[width=0.6\textwidth]{chapter2/cydet_signal_track_v3.pdf}
+    \captionsetup[subfigure]{justification=centering}
+    \begin{subfigure}[b]{0.44\textwidth}
+    \centering
+    \includegraphics[width=0.85\textwidth]{chapter2/signal_event_display_crop_axes.pdf}
+    \vspace{1.18cm}
+    \caption{Event shown in \texttt{DisplayCore}, the 3D event display of
+    ICEDUST (see Chapter~\ref{ch:software}).}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.55\textwidth}
+    \centering
+    \includegraphics[width=0.99\textwidth]{chapter2/cydet_signal_track_v4.pdf}
+    \caption{CyDet event display showing the timing of hits since conversion.}
+    \end{subfigure}
+    
     \caption{ Conversion electron trajectory as observed by the Cylindrical
     Detector. The effect of stereo angles is visible at the start of the
     trajectory where hits have alternating azimuthal positions around the actual
