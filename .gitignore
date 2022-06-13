@@ -4,12 +4,9 @@ tags
 *.log
 *.out
 *.bbl
-main.pdf
 *.dvi
 *.synctex.gz
 *.run.xml
-single_chapter.pdf
-diagram_scratch.pdf
 *.bcf
 *.blg
 *.lof
@@ -32,4 +29,9 @@ main.synctex.gz
 .gitignore
 .vscode
 
+main.pdf
+single_chapter.pdf
+diagram_scratch.pdf
 chapter1_220423.pdf
+chapter2_220613.pdf
+chapters1234_220613.pdf
