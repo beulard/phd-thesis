@@ -73,19 +73,21 @@ single-event sensitivity (see Section~\ref{sec:SES}) of $3\times 10^{-15}$, a
 factor-100 improvement over SINDRUM II. COMET Phase-II is a planned upgrade to
 Phase-I with higher beam intensity and better background rejection via a longer
 momentum-selecting beamline. Phase-II aims to improve on the single-event
-sensitivity of Phase-I by another factor of $100$ to reach a single-event
+sensitivity of Phase-I by another factor $100$ to reach a single event
 sensitivity of $2.6\times 10^{-17}$.
 
 \subsubsection{Design}
 Figure~\ref{fig:comet_schematic} shows a top-down schematic view of the COMET
 experiment, laying out the different sections that make up the beamline in
 Phase-I and Phase-II. In the latter, the transport solenoid is doubled to allow
-more pions to decay to muons while tightening the momentum selection further. An
-additional curved solenoid, the \emph{electron spectrometer,} further eliminates
-particles whose momenta do not match the \SI{104.97}{\MeV} conversion signature
-after the muon stopping target section, before they enter the detector system.
-While Phase-I will use the StrECAL to study the beam properties, Phase-II will
-use it as the conversion-searching detector system.
+more pions to decay into muons while tightening the momentum selection further.
+An additional curved solenoid, the \emph{electron spectrometer,} further
+eliminates particles whose momenta do not match the \SI{104.97}{\MeV} conversion
+signature before they enter the detector system. While Phase-I will use the
+StrECAL to study the beam properties, Phase-II will use it as the
+conversion-searching detector system.\\
+The following sections describe in more detail each component of the COMET
+beamline.
 
 \begin{figure}
     \centering
@@ -109,31 +111,39 @@ use it as the conversion-searching detector system.
     \label{fig:comet_schematic}
 \end{figure}
 
-The following sections describe in more detail each component of the beamline.
 
 
 \section{Proton beam}\label{sec:COMET_beam}
+
 Muons in the COMET experiment are produced from the decay of pions created in
 proton collisions on a static solid target. The primary proton beam is provided
 by the J-PARC facility. Protons are delivered with an energy of \SI{8}{\GeV},
-picked to maximise the pion yield while minimising the production of
+which is picked to maximise the pion yield while minimising the production of
 anti-protons, a potential background source.
 
+The timeline of a COMET event is shown in Figure~\ref{fig:timing_distributions}.
 The beam has a pulsed time profile: protons are grouped into \SI{100}{\ns}
 bunches, each containing $16\times 10^6$ protons. Bunches are separated by
 \SI{1170}{\ns}. Just after the collision, secondary particles will quickly move
 down the COMET beamline and produce numerous background hits in the detector
 system. This prompt and intense flooding of the detector is called the
-\emph{beam flash}, and typically dies down within a few hundred nanoseconds. The
-\SI{1170}{\ns} time span between two bunches, combined with the fact that muons
-bound by the muon stopping target have a lifetime of \SI{864}{\ns} (see
-Section~\ref{sec:stopping_target}), allows COMET to search for conversion
-electrons from muons that remain bound after the beam flash has ended, and until
-the next collision occurs.
+\emph{beam flash}, and typically dies down within a few hundred nanoseconds.
+Muons bound by the muon stopping target have a lifetime of \SI{864}{\ns} (see
+Section~\ref{sec:stopping_target}). This, combined with the \SI{1170}{\ns} time
+span between two bunches, allows COMET to search for $\mu$--$e$ conversion after
+the beam flash has ended, and until the next collision occurs. 
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.8\textwidth]{chapter2/timing_plot.pdf}
+    \caption{ Timeline of a COMET event. Shortly after the proton collision, the
+        beam flash floods the detector and muons begin to be bound in the muon
+        stopping target. The Phase-I trigger window shown here starts at
+        $t=\SI{700}{\ns}$ and lasts until the next proton collision.  }
+    \label{fig:timing_distributions}
+\end{figure}
 
 % Could also add info on buckets, 4/5 time structure
-
-% Also, timing diagram?
 
 Stray protons arriving in the time between two bunches can contribute to the
 experimental backgrounds by sending particles toward the detector region at
@@ -195,10 +205,10 @@ forward-moving pions.
 \end{figure}
 
 The transport solenoid is a curved pipe connecting the pion-production section
-to the muon stopping section. Its purpose is twofold: it allows a larger
-fraction of pions to decay along the length of the beamline, and the curved
-shape combined with its magnetic field and collimators select negatively charged
-particles of a specific momentum. 
+to the muon stopping section. Its purpose is twofold. Firstly, it allows a
+larger fraction of pions to decay along the length of the beamline. Secondly,
+the curved shape combined with its magnetic field and collimators allows it to
+select negatively charged particles of a specific momentum. 
 
 
 The magnetic field of a curved solenoid is slightly stronger on the inside of
@@ -308,7 +318,7 @@ Tracker to reconstruct trajectories and estimate particle momenta via
 time-of-flight information.
 
 The ECAL is a crystal electromagnetic calorimeter which supplements the Straw
-Tracker in measuring energy and thus identifying electrons. The ECAL uses
+Tracker in measuring energy and thus in identifying electrons. The ECAL uses
 lutetium-yttrium oxyorthosilicate (LYSO) as its scintillating crystals and
 avalanche photodiodes to collect the emitted photons.
 
@@ -344,14 +354,14 @@ simulated conversion electron inside the CyDet system.
 
 \subsubsection{Cylindrical Drift Chamber}
 The CDC is a drift chamber used to track charged particles emanating from the
-muon stopping target. It has an inner radius of \SI{50}{\cm}, which, combined
-with the longitudinal magnetic field, prevents charged particles produced in the
-muon beam collision and whose transverse momentum is smaller than
-\SI{60}{\MeV/\clight} from reaching it. In order to achieve the sensitivity goal
-for Phase-I, the CDC has a momentum resolution better than
-\SI{200}{\keV/\clight} in order to differentiate between conversion electrons
-and electrons from the high-energy tails of the decay-in-orbit and radiative
-muon capture spectra. 
+muon stopping target. In order to suppress hits from beam particles, the CDC is
+wrapped around the beam pipe and has an inner radius of \SI{50}{\cm}. Combined
+with the \SI{1}{\tesla} longitudinal magnetic field, this prevents charged
+particles with a transverse momentum less than \SI{60}{\MeV/\clight} from
+reaching the chamber. In order to achieve the sensitivity goal for Phase-I, the
+CDC has a momentum resolution better than \SI{200}{\keV/\clight} in order to
+differentiate between conversion electrons and electrons from the high-energy
+tails of the decay-in-orbit and radiative muon capture spectra. 
 
 % Geometry
 The CDC contains 4986 \emph{sense wires} strung out longitudinally in 20
@@ -445,12 +455,13 @@ conversion electron going through the Cylindrical Detector.
 
 % Timing
 The expected timing of conversion electrons is directly correlated to the time
-distribution of muons bound inside the stopping target. In Phase-I, in order to
-suppress prompt backgrounds from the beam flash, the detector is tuned to only
-start triggering on events that occur at least $t=\SI{700}{\ns}$ after each
-proton collision. This trigger window also reduces the signal acceptance by
-a factor of 0.7 because the majority of bound muons (which have a lifetime of
-\SI{864}{\ns}) will have undergone decay or capture before the window starts.
+distribution of muons bound inside the stopping target, shown in
+Figure~\ref{fig:timing_distributions}. In Phase-I, in order to suppress prompt
+backgrounds from the beam flash, the detector is tuned to only start triggering
+on events that occur at least $t=\SI{700}{\ns}$ after each proton collision.
+This trigger window also reduces the signal acceptance by a factor of 0.7
+because the majority of bound muons (which have a lifetime of \SI{864}{\ns})
+will have undergone decay or capture before the window starts.
 
 In Phase-I, signal-like trajectories in the CDC are subject to quality cuts in
 order to avoid misidentifying backgrounds. These cuts ensure that the trajectory
@@ -464,7 +475,7 @@ acceptance of conversion signals by another factor of 0.3.
 \section{Experimental backgrounds}\label{sec:backgrounds}
 
 Intrinsic backgrounds from muon decay-in-orbit and nuclear muon capture can
-mimic the conversion signal, as was discussed in Section~\ref{sec:sm_backgrounds}.
+mimic the conversion signal, as discussed in Section~\ref{sec:sm_backgrounds}.
 The COMET experiment is also affected by experimental backgrounds caused by the
 intense beam, as well as cosmic ray-induced events.
 
@@ -479,7 +490,7 @@ electrons during the trigger window.
 When a stray proton hits the pion-production target late, secondaries may
 quickly travel to the detector region and produce a signal-like electron, which
 can also be mistaken for the conversion signal. This is the main reason for requiring
-the strict extinction factor of Equation~\ref{eq:extinction} from the J-PARC
+the strict extinction factor $R_\mathrm{extinction}$ of Equation~\ref{eq:extinction} from the J-PARC
 proton beam.
 
 Finally, cosmic rays could be a major source of background events. The
