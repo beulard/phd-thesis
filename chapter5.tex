@@ -202,3 +202,49 @@ assumed to have a rate of zero.
 % Do we talk about the PUMAS, GOUPIL setup?
 % ICEDUST integration?
 % Maybe in appendix
+
+% Validations
+
+\begin{figure}
+    \centering
+    \begin{subfigure}[t]{0.49\textwidth}
+        \centering
+        \includegraphics[width=0.95\textwidth]{chapter5/comparison_besstev.pdf}
+        \caption{
+            Comparison to data from the BESS-TeV spectrometer,
+            which measured the flux of atmospheric muons at a vertical zenith
+            angle in Manitoba, Canada~\cite{besstev}. }
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[t]{0.49\textwidth}
+        \centering
+        \includegraphics[width=0.95\textwidth]{chapter5/comparison_kieldesy.pdf}
+        \caption{ 
+            Comparison to the Kiel-DESY spectrometer observation of the
+            atmospheric muon flux at a zenith angle of $\SI{75}{\degree} \pm
+            \SI{7}{\degree}$~\cite{kieldesy} in Hamburg, Germany.}
+    \end{subfigure}
+    \caption{
+        Validations of the backward MC results using experimental observations of the
+        atmospheric muon flux by two independent experiments. Events from the
+        backward MC simulation are selected to reflect the observational setup of
+        the corresponding experiment, namely the respective incident angle at
+        which muons were measured. Note that the backward MC data is obtained in
+        a realistic simulation of the COMET experiment, taking into account the
+        surrounding material and magnetic field, as well as the topography
+        around of the J-PARC location.
+    }
+    \label{fig:bmc_validations}
+\end{figure}
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.5\textwidth]{chapter5/rate_vs_p.pdf}
+    \caption{
+        Average rate of inbound atmospheric muons over each face of the CRV as a
+        function of momentum. Figures in parentheses in the legend are the
+        integrated average rate over each face. In total, a rate of
+        \SI{3.47}{\kHz} is expected.
+    }
+    \label{fig:avg_rate_per_face}
+\end{figure}
