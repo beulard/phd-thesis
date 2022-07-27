@@ -167,7 +167,6 @@ Figure~\ref{fig:comet_geometries} shows the simulation geometries for the two co
 
 % In the simulation, a single proton is sampled from the beam histogram for each event, which differs from the real situation in that the actual beam is arranged into bunches, each containing about 16 million protons. Hence we assume that proton collisions in a bunch are independent of each other, and we merge POT events into bunch events by overlaying the produced trajectories and hits. This task is handled by the \texttt{SimHitMerger} program after \SimG has finished simulating single-proton events. The time structure of the proton bunch is modelled as a square wave with a width of \SI{100}{\ns}. To simulate this structure, a time shift is sampled uniformly between -50 and \SI{50}{\ns} for each POT event and applied to every trajectory and hit.
 
-% \hl{Refer to, or show a time structure diagram}
 % ----------
 
 \subsection{Physics}
