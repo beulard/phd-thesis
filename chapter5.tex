@@ -2,31 +2,35 @@
 Simulation]{Estimating the Cosmic Background Rate \\with Backward Monte Carlo
 Simulation}\label{ch:cosmics}
 
-\begin{markdown}
+% \begin{markdown}
 
-1. Intro to BMC: relation to adjoint MC (find refs), maybe diagram
+% 1. Intro to BMC: relation to adjoint MC (find refs), maybe diagram
 
-2. Physics: how we use BMC to determine rates of cosmic events: equations for
-flux, sampling PDF, BMC weights, topography map of J-PARC
+% 2. Physics: how we use BMC to determine rates of cosmic events: equations for
+% flux, sampling PDF, BMC weights, topography map of J-PARC
 
-3. Integration into ICEDUST: implementation of sampling methods, event loop, output to
-oaRooTracker format
-+ `https://gitlab.in2p3.fr/comet/ICEDUST_packages/-/merge_requests/534`
-+ `https://gitlab.in2p3.fr/comet/ICEDUST_packages/-/wikis/Backward-Monte-Carlo-sampling-with-SimBackwardMC#rate-calculation`
+% 3. Integration into ICEDUST: implementation of sampling methods, event loop, output to
+% oaRooTracker format
+% + `https://gitlab.in2p3.fr/comet/ICEDUST_packages/-/merge_requests/534`
+% + `https://gitlab.in2p3.fr/comet/ICEDUST_packages/-/wikis/Backward-Monte-Carlo-sampling-with-SimBackwardMC#rate-calculation`
 
-3. Actual estimation of background rate in Phase-I, maybe just quoting V's
-result
+% 3. Actual estimation of background rate in Phase-I, maybe just quoting V's
+% result
 
----
+% ---
 
-\end{markdown}
+% \end{markdown}
 
 % Intro
 Cosmic ray-induced events represent a significant part of the expected
-background in the COMET experiment, as discussed in
+backgrounds in the COMET experiment, as discussed in
 Section~\ref{sec:backgrounds}. Cosmic muons irradiate the Earth at irregular
-intervals and have a wide energy range, hence some fraction of them will be able
-to mimic the conversion signal by entering the COMET detector system. 
+intervals and have a wide energy spectrum, hence some fraction of them will be
+able to mimic the conversion signal by entering the COMET detector system. In
+this chapter, we discuss how backward Monte Carlo simulation helps to
+efficiently estimate the background rate from cosmic ray-induced events.
+
+\section{Backward Monte Carlo simulation}
 
 Estimating the rate at which cosmic muons might produce signal-like events is
 computationally expensive through standard Monte Carlo simulation methods. This
@@ -36,21 +40,22 @@ events generated from an atmospheric source will miss the detector completely
 and not contribute in the estimation of the background rate, resulting in wasted
 computation time.
 
-A reverse (or adjoint) Monte Carlo simulation is one where the flow of particle
+A backward (or adjoint) Monte Carlo simulation is one where the flow of particle
 transport is reversed, i.e.\ events are generated in the sensitive detector
 volume and propagated backward in time until they reach the source. This method
 was initially used in 1967 to estimate gamma-ray and neutron radiation doses in
 nuclear reactors~\cite{doi:10.13182/NSE68-A19235,doi:10.13182/NSE69-A19116}.
-More recently, reverse MC has also been integrated into Geant4
+More recently, backward MC has also been integrated into Geant4
 simulations~\cite{DESORGHER2010247} for dosimetry in space, reversing the
 electromagnetic physics of electrons, protons and ions.
 
 In the case of muons, a backward transport method was developed by Niess et
 al.~\cite{Niess_Barnoud_Carloganu_Menedeu_2018} in the context of muon
-tomography, and it was later adapted to the COMET experiment in order to refine
-estimations of the background rate from cosmic rays. This chapter discusses the
-backward MC method for cosmic muons, how it is applied to COMET and the
-resulting rate estimations in COMET Phase-I.
+tomography. It was later adapted to the COMET experiment in order to refine
+estimations of the background rate from cosmic rays. 
+% This chapter discusses the
+% backward MC method for cosmic muons, how it is applied to COMET and the
+% resulting rate estimations in COMET Phase-I.
 
 \begin{figure}
     \centering
@@ -65,17 +70,23 @@ resulting rate estimations in COMET Phase-I.
         \includegraphics[width=0.75\textwidth]{chapter5/bmc_setup_backward.pdf}
         \caption{Backward MC.}
     \end{subfigure}
-    \caption{Comparison of the forward and reverse (or adjoint, or backward) configurations of Monte Carlo simulation, in the case where a small detector volume is surrounded by a comparatively large particle source. Reversing the flow of particle transport means that fewer particles contribute nothing toward the rate estimation, assuming events are sampled carefully in the backward MC case.}
+    \caption{
+        Comparison of the forward and reverse (also called adjoint or backward)
+        configurations of Monte Carlo simulation, in the case where a small
+        detector volume is surrounded by a comparatively large particle source.
+        Reversing the flow of particle transport means that sampled events are
+        more likely to contribute toward the rate estimation.
+    }
     \label{fig:bmc_configuration}
 \end{figure}
 
-\section{Backward Monte Carlo simulation}
+%\subsection{Method}
 In standard Monte Carlo simulations, events are generated by a source and
 propagated forward in time according to their equations of motion and
 interaction cross-sections within any surrounding medium. In a situation where
 the source is large compared to the sensitive detector volume, as illustrated in
 Figure~\ref{fig:bmc_configuration}, events have a high probability to miss the
-detector and contribute nothing in the desired computation.
+detector and contribute nothing toward the result.
 
 In backward MC, events are generated according to an arbitrary probability
 density function (PDF) around the detector volume. The overall sampling PDF is
@@ -84,9 +95,9 @@ distributions, i.e.\
 \begin{align}\label{eq:sampling_pdf}
 p(\bm{x}, \bm{p}, E) = p(\bm{x}) \ \times\  p(\bm{p}) \ \times\  p(E),
 \end{align}
-where $p$ denotes a PDF whose integral is 1, $\bm{x}$ denotes position, $\bm{p}$
-direction and $E$ energy. If more than one particle type is considered, the
-discrete distribution of particles can also enter
+where $p$ denotes an arbitrary PDF whose integral is 1, $\bm{x}$ denotes
+position, $\bm{p}$ direction and $E$ energy. If more than one particle type is
+considered, the discrete distribution of particles can also enter
 Equation~\ref{eq:sampling_pdf}. In our case, both cosmic muons and anti-muons
 are relevant, and they are sampled identically in equal proportions.
 
@@ -145,7 +156,7 @@ obtained results are consistent with forward Monte Carlo\sepfootnote{A}.
 
 
 
-\section{Cosmic background rates in COMET Phase-I}
+\section{Application to COMET Phase-I}
 % Here, talk about the COMET setup: 
 % + We want to estimate the rate of background events caused by 
 %   muons+secondaries hitting the detector
@@ -161,10 +172,10 @@ obtained results are consistent with forward Monte Carlo\sepfootnote{A}.
 % + Once this is done, we use the results from backward propagation to estimate
 %   rate of background-inducing cosmic muons, qed.
 In the COMET Phase-I experiment, the cosmic ray veto (CRV) described in
-Section~\ref{sec:crv} will enclose the Cylindrical Detector in order to identify
-events caused by cosmic muons. Backward Monte Carlo simulation can be used to
-estimate how many background events originating from cosmic rays will occur over
-the experiment's run time. 
+Section~\ref{sec:crv} will enclose the Cylindrical Detector in order to help
+identify events caused by cosmic muons. Backward Monte Carlo simulation can be
+used to estimate how many background events originating from cosmic rays will
+occur over the experiment's run time. 
 
 \subsection{Event sampling}
 In the context of Phase-I, we define a sampling envelope around the CRV, where
@@ -205,6 +216,7 @@ assumed to have a rate of zero.
 
 % Validations
 
+\subsection{Validation}
 \begin{figure}
     \centering
     \begin{subfigure}[t]{0.49\textwidth}
