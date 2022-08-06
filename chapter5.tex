@@ -24,17 +24,18 @@ Simulation}\label{ch:cosmics}
 % Intro
 Cosmic ray-induced events represent a significant part of the expected
 backgrounds in the COMET experiment, as discussed in
-Section~\ref{sec:backgrounds}. Cosmic muons irradiate the Earth at irregular
-intervals and have a wide energy spectrum, hence some fraction of them will be
-able to mimic the conversion signal by entering the COMET detector system. In
-this chapter, we discuss how backward Monte Carlo simulation helps to
-efficiently estimate the background rate from cosmic ray-induced events.
+Section~\ref{sec:backgrounds}. Cosmic rays interact with Earth's atmosphere to
+produce secondaries with a wide energy spectrum. Some fraction of these
+particles will be able to mimic the conversion signal by entering the COMET
+detector system. In this chapter, we discuss how backward Monte Carlo simulation
+helps to efficiently estimate the background rate from events originating from
+atmospheric muons.
 
-\section{Backward Monte Carlo simulation}
+\section{Backward Monte Carlo simulation}\label{sec:bmc_method}
 
-Estimating the rate at which cosmic muons might produce signal-like events is
+Estimating the rate at which atmospheric muons might produce signal-like events is
 computationally expensive through standard Monte Carlo simulation methods. This
-is due to the fact that the source of cosmic muons, i.e.\ the atmosphere, has a
+is due to the fact that the source of atmospheric muons, i.e.\ the atmosphere, has a
 much greater spatial extent than the active detector region. Hence, most cosmic
 events generated from an atmospheric source will miss the detector completely
 and not contribute in the estimation of the background rate, resulting in wasted
@@ -98,7 +99,7 @@ p(\bm{x}, \bm{p}, E) = p(\bm{x}) \ \times\  p(\bm{p}) \ \times\  p(E),
 where $p$ denotes an arbitrary PDF whose integral is 1, $\bm{x}$ denotes
 position, $\bm{p}$ direction and $E$ energy. If more than one particle type is
 considered, the discrete distribution of particles can also enter
-Equation~\ref{eq:sampling_pdf}. In our case, both cosmic muons and anti-muons
+Equation~\ref{eq:sampling_pdf}. In our case, both atmospheric muons and anti-muons
 are relevant, and they are sampled identically in equal proportions.
 
 \sepfootnotecontent{A}{Reference~\cite{DESORGHER2010247} also provides a more
@@ -154,6 +155,13 @@ obtained results are consistent with forward Monte Carlo\sepfootnote{A}.
 
 
 
+% \section{ICEDUST integration}
+
+% - New SimBackwardMC package.
+
+% - PUMAS~\cite{pumas} as an external, with goupil stuff to handle topography,
+% geomag field, etc.
+
 
 
 \section{Application to COMET Phase-I}
@@ -171,18 +179,44 @@ obtained results are consistent with forward Monte Carlo\sepfootnote{A}.
 %   tracks.
 % + Once this is done, we use the results from backward propagation to estimate
 %   rate of background-inducing cosmic muons, qed.
+Backward MC simulation was used to estimate the cosmic background rate in COMET
+Phase-I. This section describes the simulation setup, validations of the method
+using experimental data and outcomes of the study.
+
+\subsection{Geometry}
 In the COMET Phase-I experiment, the cosmic ray veto (CRV) described in
 Section~\ref{sec:crv} will enclose the Cylindrical Detector in order to help
-identify events caused by cosmic muons. Backward Monte Carlo simulation can be
-used to estimate how many background events originating from cosmic rays will
-occur over the experiment's run time. 
+identify events caused by atmospheric muons. The CRV uses a glass resistive
+plate chamber (GRPC) as the active detector on the upstream-facing side, and
+plastic scintillator counters on the other faces. Two holes are present in the
+CRV, one in the upstream face and one in the downstream face. These holes allow
+atmospheric muons to sneak into the CyDet unnoticed and potentially produce
+signal-like tracks, contributing to the background rate.
+
+The simulation geometry used in this study is shown in
+Figure~\ref{fig:bmc_geometry}. 
+
+\begin{figure}
+    \centering
+    \begin{subfigure}{0.45\textwidth}
+        \includegraphics[width=0.95\textwidth]{chapter5/geometry.png}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}{0.45\textwidth}
+        \includegraphics[width=0.95\textwidth]{chapter5/crv_geom.png}
+    \end{subfigure}
+    \caption{Cutaway view of the geometry used in the cosmic background study.}
+    \label{fig:bmc_geometry}
+\end{figure}
 
 \subsection{Event sampling}
-In the context of Phase-I, we define a sampling envelope around the CRV, where
-muons and anti-muons will be generated and backward-propagated. Muons and
-anti-muons are sampled uniformly over this envelope, a box which is decomposed
-into six planes. The direction is distributed according to Lambert's cosine law,
-i.e.\ 
+
+\subsubsection{CRV envelope sample}
+As discussed in Section~\ref{sec:bmc_method}, events must be generated around
+our volume of interest, the Cylindrical Detector. We define a sampling
+envelope around the CRV, where muons (and anti-muons) will be generated and
+backward-propagated. Events are sampled uniformly over this
+envelope. Their direction is sampled according to Lambert's cosine law, i.e.\ 
 $$
 p(\bm{p}) = 
     \frac{1}{N_{\bm{p}}} \ \hat{\bm{p}} \cdot \hat{\bm{n}} = 
@@ -191,41 +225,85 @@ $$
 where $\theta$ is the angle between $\bm{p}$ and the normal to the plane
 $\hat{\bm{n}}$. $N_{\bm{p}}$ is the normalisation term satisfying 
 $\int p(\bm{p}) \: \textnormal{d}\bm{p} = 1$.
-The energy distribution is an inverse law, i.e.\ 
+The energy of the generated muons is sampled according to an inverse law, i.e.\ 
 $$
 p(E) = \frac{1}{N_E}  \frac{1}{E},
 $$
 where $N_E$ is the normalisation factor. 
-This sampling PDF allows us to generate muons and anti-muons uniformly around the
-detector system, favouring low energy events since they are more common. Once
-the backward MC has been run, we can use this PDF to recover the average rate
-for each event according to Equation~\ref{eq:avg_rate}.
+This sampling PDF allows us to generate muons all around the detector system,
+favouring low energy events since they are typically more likely. 
+% Once the
+% backward MC has been run, we can use this PDF to recover the average rate for
+% each event according to Equation~\ref{eq:avg_rate}.
 
-\subsection{Cosmic muon flux}
-Estimating rates also requires us to know the directional flux at the source. We
+\subsubsection{CRV openings sample}
+In order to focus on the events that might sneak into the detector unnoticed by
+the CRV, a sample is produced with events generated only on the holes on either
+side of the CRV. The energy and direction are sampled identically to the first
+sample.
+
+% This sample allows us to increase the statistics of events which do not hit the
+% CRV before 
+
+
+\subsection{Atmospheric muon flux}
+Estimating rates requires knowledge of the directional flux at the source. We
 use tabulated flux data from a CORSIKA~\cite{corsika} simulation as an efficient
-way to query the flux as a function of energy and direction. The flux data was
-computed \SI{1600}{\metre} above sea level for energies between \SI{10}{\keV}
-and \SI{10}{\TeV}, and separately for muons and anti-muons. In the backward MC,
-any event which is unable to travel back to this infinite source plane is
-assumed to have a rate of zero.
+way to query the flux as a function of energy and direction. The flux data,
+shown in Figure~\ref{fig:corsika_flux_distribution}, was estimated
+\SI{1600}{\metre} above sea level for energies between \SI{10}{\MeV} and
+\SI{10}{\TeV}, separately for muons and anti-muons. In the backward MC, any
+event which is unable to travel back to this infinite source plane is assumed to
+have a rate of zero.
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.6\textwidth]{chapter5/flux_distribution.pdf}
+    \caption{ Spectrum of the atmospheric muon flux (multiplied by
+        $E_\mu^{2.7}$) calculated at an altitude of 1600m using a CORSIKA
+        simulation. This spectrum, tabulated in both energy and zenith angle, is
+        used as the flux source in the COMET Phase-I backward MC. Here, it is
+        compared with the parametrisation of the muon flux at sea level from Guan
+        et al.~\cite{gccly}. }
+    \label{fig:corsika_flux_distribution}
+\end{figure}
 
 % Do we talk about the PUMAS, GOUPIL setup?
 % ICEDUST integration?
 % Maybe in appendix
 
-% Validations
+\subsection{Validations}
+The flux of atmospheric muons incident on the CRV envelope estimated via
+backward MC is validated with respect to two measurements of the cosmic flux at
+sea level: one by the BESS-TeV spectrometer~\cite{besstev} and one by the
+Kiel-DESY spectrometer~\cite{kieldesy}. 
+After generating events on the CRV envelope, the flux for each event is
+estimated by backward-sampling the source flux. In order to match
+the experimental setup to which we compare, MC events are selected based
+on their direction at the envelope boundary. 
 
-\subsection{Validation}
+\begin{itemize}
+\item In the case of BESS-TeV, only muons incident at an almost vertical zenith
+angle $\theta_z$ were measured. In our comparison, we select events using the
+same cut as in their analysis, namely $\cos \theta_z > 0.98$.
+
+\item In the case of Kiel-DESY, the detector measures muons in a $\theta_z =
+\SI{75}{\degree} \pm \SI{7}{\degree}, \phi = \SI{288}{\degree} \pm
+\SI{20}{\degree}$ window, where $\phi$ is the azimuthal angle. Only MC events
+that satisfy these constraints are selected for this comparison.
+\end{itemize}
+Figure~\ref{fig:bmc_validations} shows the comparisons between the backward
+MC-estimated flux and experimental data.
+
 \begin{figure}
     \centering
     \begin{subfigure}[t]{0.49\textwidth}
         \centering
         \includegraphics[width=0.95\textwidth]{chapter5/comparison_besstev.pdf}
-        \caption{
-            Comparison to data from the BESS-TeV spectrometer,
-            which measured the flux of atmospheric muons at a vertical zenith
-            angle in Manitoba, Canada~\cite{besstev}. }
+        \caption{ Comparison to BESS-TeV spectrometer data of the flux of
+            atmospheric muons at a near-vertical zenith angle in Manitoba,
+            Canada~\cite{besstev}. }
+        \label{fig:bmc_validations_bess}
     \end{subfigure}
     \hfill
     \begin{subfigure}[t]{0.49\textwidth}
@@ -235,19 +313,18 @@ assumed to have a rate of zero.
             Comparison to the Kiel-DESY spectrometer observation of the
             atmospheric muon flux at a zenith angle of $\SI{75}{\degree} \pm
             \SI{7}{\degree}$~\cite{kieldesy} in Hamburg, Germany.}
+        \label{fig:bmc_validations_kiel}
     \end{subfigure}
-    \caption{
-        Validations of the backward MC results using experimental observations of the
-        atmospheric muon flux by two independent experiments. Events from the
-        backward MC simulation are selected to reflect the observational setup of
-        the corresponding experiment, namely the respective incident angle at
-        which muons were measured. Note that the backward MC data is obtained in
-        a realistic simulation of the COMET experiment, taking into account the
-        surrounding material and magnetic field, as well as the topography
-        around of the J-PARC location.
-    }
+    \caption{ Validations of the backward MC-estimated flux with
+        experimental observations of the atmospheric muon flux by two
+        independent experiments. Events from the backward MC simulation are
+        selected to reflect the observational setup of the corresponding
+        experiment, namely the respective incident angle at which muons were
+        measured. }
     \label{fig:bmc_validations}
 \end{figure}
+
+\subsection{Absolute rate}
 
 \begin{figure}
     \centering
@@ -260,3 +337,5 @@ assumed to have a rate of zero.
     }
     \label{fig:avg_rate_per_face}
 \end{figure}
+
+\subsection{Conversion backgrounds}
