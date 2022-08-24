@@ -19,6 +19,8 @@
 \usepackage{xspace}
 \usepackage{tikz-feynman}
 
+%\usepackage[toc,page]{appendix}
+
 % Biblatex
 \usepackage[sorting=none]{biblatex}
 \bibliography{bibliography}
@@ -110,7 +112,7 @@ Imperial College London \par
 
 \tableofcontents
 \printglossary[type=\acronymtype]
-\clearpage
+\cleardoublepage
 
 \pagenumbering{arabic}
 
@@ -123,8 +125,9 @@ Imperial College London \par
 
 \include{conclusion}
 
+\clearpage
 \appendix
-\chapter{Appendix A}
+\include{appendixA.tex}
 
 \printbibliography
 
