@@ -1,9 +1,141 @@
-\chapter{Sensitivity and background study}
+\chapter{COMET Phase-I sensitivity and backgrounds}
+
+With the framework to simulate backgrounds from atmospheric muons in place, we
+can now combine the results into a complete sensitivity and background
+simulation study for COMET Phase-I. In this chapter, we discuss our method to
+produce a signal sample and a muon decay-in-orbit sample, and present our
+resulting expectations of the performance of Phase-I.
+
+\section{Simulation samples}
+Three simulation samples are produced in this study. A $\mu$--$e$ conversion
+sample, a DIO sample and an atmospheric muon sample (identical to that of
+Chapter~\ref{ch:cosmics}). 
+
+\subsection{$\mu$--$e$ conversion signal}
+The signal sample is fairly straightforward to produce. We initially generate
+primary electrons with energy $E=\SI{104.97}{\MeV}$ uniformly inside the
+stopping target disks. Their initial direction is isotropically distributed, as
+would be the case in the conversion process. The uniform position distribution
+in each disk is not realistic, hence the events will be weighted according to a
+realistic beam simulation where the position of muons stopping in the disks was
+determined. In total, $N_\mathrm{signal} = 2\times 10^6$ events are simulated
+for the signal sample.
+
+% After applying geom cut of CTH trigger, how many remain?
+
+\begin{figure}
+    \centering
+    
+    \caption{Conversion signal event in the CyDet system.}
+    \label{fig:signal_in_cydet}
+\end{figure}
 
 
-\hl{Plan: draw sections}
+\subsection{Muon decay-in-orbit background}
+\begin{figure}
+    \centering
+    
+    \caption{DIO-induced background with momentum  $p=\SI{1}{\MeV/\clight}$.}
+    \label{fig:muon_dio_in_cydet}
+\end{figure}
 
-\hl{Key figures}
+\subsection{Atmospheric muon background}
+\begin{figure}
+    \centering
+    
+    \caption{Cosmic ray-induced background with momentum $p=\SI{1}{\MeV/\clight}$.}
+    \label{fig:cosmic_bg_in_cydet}
+\end{figure}
+
+The time distribution of signal, DIO and atmospheric events is not realistically
+simulated in this study. Instead, we apply an average timing window efficiency
+weight to all events in order to estimate the total count integrated over
+data-acquisition time.
+
+\section{Single event sensitivity}
+The single event sensitivity (SES) is defined as the value of the $\mu$--$e$
+conversion branching ratio required for the experiment to observe one signal
+event. It can be expressed in terms of the experimental acceptance $A_{\mu-e}$ and the
+total number of muons stopped in the stopping target $N_\mu$:
+\begin{equation}
+    \mathrm{SES} = \frac{1}{N_\mu\,A_{\mu-e}\,\mathcal{B}_\mathrm{capture}\,f_\mathrm{coherent}},
+\end{equation}
+where $\mathcal{B}_\mathrm{capture} = 0.61$ is the branching ratio of nuclear
+muon capture and $f_\mathrm{coherent} = 0.9$ is the fraction of conversions
+expected to leave the nucleus in its ground state.
+
+% Is it worth ELI5 here?
+% The net signal acceptance $A_{\mu-e}$ is the product of various factors stemming
+% from the experiment's design and inefficiencies in the processing,
+% reconstruction and selection of candidate events. 
+
+% How do we approach the fact that CTH geom has changed so our geom acceptance
+% is lower?
+In this study, the CTH trigger mechanism was simulated by finding
+events involving a fourfold coincidence. The fraction of signal events which
+induce a trigger is defined as the geometrical acceptance $A_\mathrm{geom}$.
+In our simulation setup, the CTH design contains 64 counters per layer and two
+layers in either module (256 counters in total). Our estimated geometrical
+acceptance is
+$$
+A_\mathrm{geom} \equiv \frac{\text{fourfold coincidences}}{N_\mathrm{signal}} = \SI{21}{\percent}.
+$$
+In comparison, the COMET Phase-I TDR~\cite{the_comet_collaboration_comet_2020}
+cites $A_\mathrm{geom} = \SI{26}{\percent}$ with the previous design of the CTH,
+which had 48 counters per layer. This reduced acceptance lowers the sensitivity
+of the experiment. In this study, none of the other experimental aspects that
+contribute to the net acceptance were changed, hence we use the other factors of
+$A_{\mu-e}$ from the TDR, and only replace the value of $A_\mathrm{geom}$ with
+the newly estimated one. Values of the acceptance coefficients used in our study
+are shown in Table~\ref{tab:ses_efficiency_factors}. The net signal acceptance
+using these factors is $A_{\mu-e} = 0.032$.
+
+The number of muons stopped in the stopping target, $N_\mu$, is a function of
+the COMET beam power, the target material, the design of the
+transport system, and the total data-acquisition time. 
+The target material sets the yield of
+backward-going pions which will decay to muons of the right momentum to come at
+rest in the muon stopping target. This, combined with the transport system,
+determines the yield of stopped muons per proton collision $R_{\mu/p} \equiv
+\frac{\text{muons stopped}}{\text{proton on target}}$. Here, we use the
+MC5 dataset, a sample of $10^9$ POT collisions, to estimate $R_{\mu/p}=4.86
+\times 10^{-4}$.
+The beam power and data-acquisition time together determine the total number of proton
+collisions that will occur. COMET Phase-I requires $N_\mathrm{POT} = 3.15 \times
+10^{19}$ collisions in order to reach its sensitivity goal, corresponding to a
+data-acquisition time of $T=146$ days.
+These figures allow us to estimate the total number of stopped muons
+$$N_\mu = R_{\mu/p} \times N_\mathrm{POT} = 1.56\times 10^{16},$$
+which can now be used to estimate the SES:
+\begin{equation}\label{eq:my_ses}
+\mathrm{SES}
+=\frac{1}{N_\mu\,A_{\mu-e}\,\mathcal{B}_\mathrm{capture}\,f_\mathrm{coherent}}
+= 3.81\times10^{-15}.
+\end{equation}
+This value is slightly worse than the TDR estimation,
+$\mathrm{SES}_\mathrm{TDR}=3\times 10^{-15}$, because of our lower geometrical
+acceptance by the CTH mentioned previously.
+
+\begin{table}
+    \centering\begin{tabular}{l|ccc}
+        \toprule
+        a&b&c&d\\\midrule
+        a&b&c&d\\
+        \bottomrule
+    \end{tabular}
+    \caption{ Acceptance coefficients used to estimate the single event
+    sensitivity in Equation~\ref{eq:my_ses}. These also apply to the
+    decay-in-orbit background rate estimation. }
+    \label{tab:ses_efficiency_factors}
+\end{table}
 
 
-\section{Atmospheric $\mu^+$ backgrounds}
+\section{Momentum spectrum}
+
+\section{Discussion}
+
+\subsection{Atmospheric $\mu^+$ backgrounds}
+
+\subsection{CRV efficiency}
+
+\subsection{Particle identification}
