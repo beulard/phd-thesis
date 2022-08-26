@@ -54,8 +54,12 @@ electromagnetic physics of electrons, protons and ions.
 
 In the case of muons, a backward transport method was developed by Niess et
 al.~\cite{Niess_Barnoud_Carloganu_Menedeu_2018} in the context of muon
-tomography. It was later adapted to the COMET experiment in order to refine
-estimations of the background rate from cosmic rays. 
+tomography. The software package handling the backward simulation,
+PUMAS~\cite{NIESS2022108438}, was later adapted to the COMET experiment in order
+to refine estimations of the background rate from cosmic rays.
+Appendix~\ref{app:bmc_integration} describes how PUMAS was integrated into the
+ICEDUST code base to enable this and future studies of the atmospheric muon
+background in COMET.
 
 \begin{figure}
     \centering
@@ -347,17 +351,20 @@ Figure~\ref{fig:bmc_validations_kiel} shows the comparison of the flux spectra.
 The fact that both comparisons are in reasonable agreement with the backward
 simulation results increases our confidence in the method. Here, we have shown
 that the backward MC method can effectively compute the flux of events at sea
-level using knowledge of the flux at an altitude of \SI{1600}{\metre}.
+level using knowledge of the flux at an altitude of \SI{1600}{\metre}. Note that
+our simulation setup differs from either experiment by the amount of material
+present between the detector and the atmospheric source. Hence, an imperfect
+agreement is expected and the discrepancies visible in either comparison were not
+investigated in detail.
 
-\subsection{Absolute rate}
+\subsection{Absolute rate estimation}
 From the estimated flux, one can compute the absolute rate using
 Equation~\ref{eq:avg_rate}. Figure~\ref{fig:avg_rate_per_face} shows the
 atmospheric muon rate as a function of momentum on each face of the CRV. The top
 face is the most exposed, with an integrated rate of \SI{1.97}{\kHz}. Over the
-whole surface, the estimated event rate is \SI{3.47}{\kHz}.
-
-This estimation of the rate counts all events inbound on the CRV, regardless of
-whether they enter the CDC or CTH. 
+whole surface, the estimated event rate is \SI{3.47}{\kHz}. This estimation of
+the rate accounts for all events inbound on the CRV, regardless of whether or
+not they enter the CDC or CTH. 
 
 
 \begin{figure}
@@ -366,7 +373,7 @@ whether they enter the CDC or CTH.
     \caption{
         Average rate of inbound atmospheric muons over each face of the CRV as a
         function of momentum. Figures in parentheses in the legend are the
-        integrated average rate over each face.
+        integrated rate averaged over each face.
     }
     \label{fig:avg_rate_per_face}
 \end{figure}
@@ -381,7 +388,7 @@ criteria.
 We simulate the reconstruction of tracks in the CDC by fitting a helix through
 the positions of hits. In this step, the true hit positions given by the
 \texttt{SimG4} Monte Carlo are used. The fit returns the momentum of the
-reconstructed trajectory, which is used later on to select signal-like events.
+reconstructed trajectory, which is used to select signal-like events.
 
 \subsubsection{Event selection}
 The event selection criteria are as follows:
@@ -395,55 +402,74 @@ The event selection criteria are as follows:
     \item Momentum window: the reconstructed momentum must lie between
     \SI{55}{\MeV/\clight} and \SI{155}{\MeV/\clight}.
 \end{itemize}
+These criteria reduce the number of events whose flux will be sampled by the
+backward MC, which is crucial to limit the usage of computational resources. In
+addition, we obtain a reasonably-sized sample from which we can study the shape
+and properties of background events.
 
 \subsubsection{Backward sampling}
-The flux is sampled through backward MC simulation for all events that pass the
-above selection criteria. The backward propagation and flux sampling is
-performed $N=5000$ times for each event. The flux for each event is the average
-over these $N$ trials, as discussed in Section~\ref{sec:bmc_method}.
-
-\subsubsection{Results}
-The average rate of atmospheric muon-induced events that pass the selection
-criteria is \hl{correct} \SI{100}{\Hz}. In COMET Phase-I, signal events are also
-selected based on strict momentum and timing windows, as well as quality cuts.
-Table~\ref{tab:bmc_bg_efficiencies} shows the efficiency factors applied to our
-estimated rate to account for the Phase-I signal acceptance criteria.
-Figure~\ref{fig:bmc_rate_vs_momentum} shows the estimated background event rate as a
-function of the reconstructed track momentum.
+The flux is sampled by backward MC simulation for all events that pass the above
+selection criteria. The backward propagation and flux sampling is performed
+$N=5000$ times for each event. The flux for each event is the average over these
+$N$ trials, as discussed in Section~\ref{sec:bmc_method}. The variation in the
+sampled flux over these $N$ trials is interpreted as the statistical uncertainty
+on the average flux for each event. This uncertainty is shown in the resulting
+plots and figures.
 
 \begin{table}
     \centering
-    \begin{tabular}{cccccc}
-        1&2&3&4&5&6\\
-        1&2&3&4&5&6\\
+    \begin{tabular}{c|ccccc}
+        \toprule
+        Criterion&DAQ&Trigger&Track finding&Track quality cuts&Timing window\\\midrule
+        Value&\SI{90}{\percent}&\SI{90}{\percent}&\SI{99}{\percent}&\SI{69}{\percent}&\SI{30}{\percent}\\
+        \bottomrule
     \end{tabular}
-    \caption{Efficiency factors}
+    \caption{Efficiency factors from the Phase-I
+    TDR~\cite{the_comet_collaboration_comet_2020} applied to obtain the
+    $\mu$--$e$ background rate from atmospheric muons.}
     \label{tab:bmc_bg_efficiencies}
 \end{table}
 
 \begin{figure}
     \centering
-    \begin{subfigure}{0.45\textwidth}
+    \begin{subfigure}[t]{0.48\textwidth}
         \centering
-        %\includegraphics[width=0.6\textwidth]{}
+        \includegraphics[width=0.99\textwidth]{chapter5/bmc_background_rate_no_crv.pdf}
         \caption{Without a veto.}
-        \label{fig:bmc_rate_vs_momentum}
+        \label{fig:bmc_rate_vs_momentum_no_crv}
     \end{subfigure}
     \hfill
-    \begin{subfigure}{0.45\textwidth}
+    \begin{subfigure}[t]{0.48\textwidth}
         \centering
-        %\includegraphics[width=0.6\textwidth]{}
+        \includegraphics[width=0.99\textwidth]{chapter5/bmc_background_rate_with_crv.pdf}
         \caption{Including the effect of the Cosmic Ray Veto detector, assuming
         an efficiency of \SI{99.99}{\percent}.}
         \label{fig:bmc_rate_vs_momentum_crv}
     \end{subfigure}
-    \caption{ $\mu$--$e$ conversion background rates from atmospheric muons
-        estimated via backward MC simulation. }
+    \caption{ 
+        $\mu$--$e$ conversion background rates from atmospheric muons
+        estimated via backward MC simulation. The error bars show the
+        statistical uncertainty on the sampled flux over backward sampling
+        trials. In the presence of the CRV, the background rate is dominated by
+        events where an atmospheric muon sneaks through the openings. }
+        \label{fig:bmc_rate_vs_momentum}
 \end{figure}
 
-We also have to take into account that the CRV will identify a large fraction of
-backgrounds from atmospheric muons. If we assume an identification efficiency of
-\SI{99.99}{\percent}, i.e.\ one event in $10^4$ does not get vetoed by the CRV,
-we obtain the background rates shown in Figure~\ref{fig:bmc_rate_vs_momentum_crv}.
-Note that events sneaking in via the upstream and downstream holes of the CRV
-are not affected by the CRV efficiency factor.
+\subsubsection{Results}
+Figure~\ref{fig:bmc_rate_vs_momentum} shows the estimated background rates as a
+function of the reconstructed momentum of the signal-like track.
+Table~\ref{tab:bmc_bg_efficiencies} shows the efficiency factors applied to our
+estimated rate to account for additional Phase-I signal acceptance criteria. We
+compare the rate in the absence and in the presence of the CRV to demonstrate
+its importance. Without a veto mechanism, the rate over the entire momentum
+range is around \SI{1}{\mHz}, and is lowered to \SI{2}{\micro\hertz} with the
+CRV. 
+% Note that in COMET Phase-I, the momentum window
+% for the $\mu$--$e$ conversion search is $[103.6, 106.0]$\,\si{\MeV/\clight}. The
+% integrated rates shown in Figure~\ref{fig:bmc_rate_vs_momentum} are over the
+% entire momentum range of selected events.
+
+In the next chapter, a complete sensitivity and background study of COMET
+Phase-I, including the results presented here, will be presented. As we will
+discuss, atmospheric muons remain the most important source of backgrounds in
+the $\mu$--$e$ conversion search, even with an optimistically efficient CRV. 

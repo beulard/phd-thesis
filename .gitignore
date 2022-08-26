@@ -13,6 +13,7 @@ tags
 *.lot
 *.toc
 *.synctex
+*.synctex(busy)
 *.swp
 *.fls
 *.fdb_latexmk
@@ -35,4 +36,3 @@ diagram_scratch.pdf
 chapter1_220423.pdf
 chapter2_220613.pdf
 chapters1234_220613.pdf
-main.synctex(busy)
