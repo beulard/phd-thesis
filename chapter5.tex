@@ -49,8 +49,8 @@ illustrated in Figure~\ref{fig:bmc_configuration}. This method
 was initially used in 1967 to estimate gamma-ray and neutron radiation doses in
 nuclear reactors~\cite{doi:10.13182/NSE68-A19235,doi:10.13182/NSE69-A19116}.
 More recently, backward MC has also been integrated into Geant4
-simulations~\cite{DESORGHER2010247} for dosimetry in space, reversing the
-electromagnetic physics of electrons, protons and ions.
+simulations for dosimetry in space, reversing the
+electromagnetic physics of electrons, protons and ions~\cite{DESORGHER2010247}.
 
 In the case of muons, a backward transport method was developed by Niess et
 al.~\cite{Niess_Barnoud_Carloganu_Menedeu_2018} in the context of muon
@@ -92,10 +92,10 @@ background in COMET.
 % Figure~\ref{fig:bmc_configuration}, events have a high probability to miss the
 % % detector and contribute nothing toward the result.
 
-In backward MC, events are generated according to an arbitrary probability
+In a backward MC simulation, events are generated according to an arbitrary probability
 density function (PDF) around the detector volume. The overall sampling PDF is
 typically the composite of a position, direction and energy sampling
-distributions, i.e.\ 
+distribution, i.e.\ 
 \begin{align}\label{eq:sampling_pdf}
 p(\bm{x}, \bm{p}, E) = p(\bm{x}) \ \times\  p(\bm{p}) \ \times\  p(E),
 \end{align}
@@ -103,19 +103,19 @@ where $p$ denotes an arbitrary PDF whose integral is 1, $\bm{x}$ denotes
 position, $\bm{p}$ direction and $E$ energy. If more than one particle type is
 considered, the discrete distribution of particles can also enter
 Equation~\ref{eq:sampling_pdf}. In our case, both atmospheric muons and anti-muons
-are relevant, and they are sampled identically in equal proportions.
+are relevant, so they are sampled identically and in equal proportions.
 
 \sepfootnotecontent{A}{Reference~\cite{DESORGHER2010247} also provides a more
 thorough discussion of adjoint cross-sections, weights, weight corrections and
 source normalisation.}
 
 Each event $i$ is propagated backward using adjoint transport and interaction
-kernels such that the particle undergoes reverse energy loss and various
-discrete processes, while moving backward toward the source. At each step $j$ of
-the propagation, a multiplicative weight $w^i_j$ is computed given the path
-taken and the interactions along it. When the particle reaches the source, the
-directional flux at the source $\phi_\mathrm{s}$ is used as a normalisation
-factor to yield a weighted event flux
+kernels such that the particle undergoes reverse continuous energy loss and
+reverse discrete processes, while moving backward toward the source. At each
+step $j$ of the propagation, a multiplicative weight $w^i_j$ is computed given
+the path taken and the interactions along it. When the particle reaches the
+source, the directional flux at the source $\phi_\mathrm{s}$ is used as a
+normalisation factor to yield a weighted event flux
 $$
 \phi(\bm{x}'_i, \bm{p}'_i, E'_i) = \prod_j w^i_j\ \times\ 
 \phi_\mathrm{s}(\bm{x}'_i, \bm{p}'_i, E'_i),
@@ -128,7 +128,7 @@ inverse of the sampling PDF of Equation~\ref{eq:sampling_pdf} used to generate
 the event initially:
 \begin{align*}
 R\,(\bm{x}_i, \bm{p}_i, E_i, \bm{x}'_i, \bm{p}'_i, E'_i) = 
-    \frac{\phi_i(\bm{x}'_i, \bm{p}'_i, E'_i)}{p(\bm{x}_i, \bm{p}_i, E_i)}.
+    \frac{\phi(\bm{x}'_i, \bm{p}'_i, E'_i)}{p(\bm{x}_i, \bm{p}_i, E_i)}.
 \end{align*}
 Since the rate depends on the position, direction and energy of the particle at
 the source, it is susceptible to variation across backward runs because of the
@@ -142,7 +142,7 @@ repeated $N$ times for each event to find the average rate
 smearing out the dependence on $\bm{x}'$, $\bm{p}'$ and $E'$. Given a large
 enough $N$, i.e.\ a significant enough sample of backward transports, the sum of
 weighted fluxes becomes equivalent to an integration over the possible transport paths
-and interactions, and Reference~\cite{DESORGHER2010247} demonstrates that the
+and interactions. Reference~\cite{DESORGHER2010247} demonstrates that the
 obtained results are consistent with forward Monte Carlo\sepfootnote{A}.
 
 
@@ -184,7 +184,7 @@ obtained results are consistent with forward Monte Carlo\sepfootnote{A}.
 %   rate of background-inducing cosmic muons, qed.
 Backward MC simulation was used to estimate the cosmic background rate in COMET
 Phase-I. This section describes the simulation setup, validations of the method
-using experimental data and results of the study.
+using experimental data, and the results of the study.
 
 \subsection{Geometry}
 The simulation geometry used in the simulation is shown in
@@ -227,8 +227,8 @@ $$
 where $N_{\bm{x}}$ is the normalisation term satisfying 
 $\int p(\bm{x}) \: \textnormal{d}\bm{x} = 1$.
 
-The direction of each primary particle is sampled according to Lambert's cosine
-law, which favours events with a large vertical momentum component:
+The direction is sampled according to Lambert's cosine law, which favours events
+with a large vertical momentum component:
 $$
 p(\bm{p}) = 
     \frac{1}{N_{\bm{p}}} \ (-\hat{\bm{p}}) \cdot \hat{\bm{y}} = 
@@ -237,7 +237,7 @@ $$
 where $\theta_z$ is the angle between $-\bm{p}$ and the vertical axis $\hat{\bm{y}}$
 (or zenith angle), and $N_{\bm{p}}$ is the normalisation factor. 
 
-The energy of the generated muons is sampled according to an inverse law to
+The energy is sampled according to an inverse law to
 favour low-energy events, since they are more likely on average:
 $$
 p(E) = \frac{1}{N_E}  \frac{1}{E},
@@ -265,7 +265,7 @@ energy and direction are sampled identically to the envelope sample.
 Since the position PDF in this sample is concentrated around the holes, we need
 to simulate fewer events in order to find a sneaking signal-like track than with
 the envelope sample. This allows us to obtain reasonable statistics in the
-background rate study while saving on computational costs and storage space.
+background rate study while saving on computational resources and storage space.
 
 
 
@@ -379,16 +379,20 @@ not they enter the CDC or CTH.
 \end{figure}
 
 \subsection{$\mu$--$e$ conversion background rate}
-In order to determine how many signal-like tracks are produced by atmospheric
-muons, we first simulate forward the events generated around the CRV, using
-\texttt{SimG4}. The events can then be selected based on detector acceptance
-criteria.
+In order to determine how frequently signal-like tracks are produced by
+atmospheric muons, we combine forward and backward MC simulations. The forward
+MC allows us to select events based on detector acceptance criteria, such as
+trigger conditions. The backward MC is then used to estimate the rate of
+selected events.
 
 \subsubsection{Track reconstruction}
-We simulate the reconstruction of tracks in the CDC by fitting a helix through
-the positions of hits. In this step, the true hit positions given by the
-\texttt{SimG4} Monte Carlo are used. The fit returns the momentum of the
-reconstructed trajectory, which is used to select signal-like events.
+After the forward MC step, we also simulate the reconstruction of tracks in the
+CDC. The algorithm is a helix fit through the positions of CDC hits. In this step,
+the true hit positions given by the \texttt{SimG4} Monte Carlo are used. The fit
+also returns the momentum of the reconstructed trajectory, which is used in the
+event selection.
+
+% No manual momentum smearing here, since we did helix fit.
 
 \subsubsection{Event selection}
 The event selection criteria are as follows:
@@ -398,7 +402,7 @@ The event selection criteria are as follows:
     \item CDC layers: the track must reach up to the 5th layer of CDC
     wires and no hit should occur on the outermost layer,
     \item Muon stopping target intersection: the fitted track must intersect the
-    muon stopping target,
+    muon stopping target placed in the centre of the CyDet,
     \item Momentum window: the reconstructed momentum must lie between
     \SI{55}{\MeV/\clight} and \SI{155}{\MeV/\clight}.
 \end{itemize}
@@ -416,7 +420,7 @@ sampled flux over these $N$ trials is interpreted as the statistical uncertainty
 on the average flux for each event. This uncertainty is shown in the resulting
 plots and figures.
 
-\begin{table}
+\begin{table}[t]
     \centering
     \begin{tabular}{l|ccccc}
         \toprule
@@ -430,7 +434,7 @@ plots and figures.
     \label{tab:bmc_bg_efficiencies}
 \end{table}
 
-\begin{figure}
+\begin{figure}[t]
     \centering
     \begin{subfigure}[t]{0.48\textwidth}
         \centering
@@ -470,6 +474,6 @@ CRV.
 % entire momentum range of selected events.
 
 In the next chapter, a complete sensitivity and background study of COMET
-Phase-I, including the results presented here, will be presented. As we will
-discuss, atmospheric muons remain the most important source of backgrounds in
-the $\mu$--$e$ conversion search, even with an optimistically efficient CRV. 
+Phase-I, including the results presented here, will be presented. Despite the
+CRV rejecting a large fraction of atmospheric muon backgrounds, they remain the
+most important source of backgrounds in the $\mu$--$e$ conversion search. 

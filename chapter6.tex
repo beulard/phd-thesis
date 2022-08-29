@@ -21,6 +21,8 @@ realistic beam simulation where the position of muons stopping in the disks was
 determined. In total, $N_\mathrm{signal} = 2\times 10^6$ events are simulated
 for the signal sample.
 
+\hl{mention mc5 for position distribution}
+
 % After applying geom cut of CTH trigger, how many remain?
 
 \begin{figure}
@@ -71,24 +73,24 @@ expected to leave the nucleus in its ground state.
 
 % How do we approach the fact that CTH geom has changed so our geom acceptance
 % is lower?
-In this study, the CTH trigger mechanism was simulated by finding
-events involving a fourfold coincidence. The fraction of signal events which
-induce a trigger is defined as the geometrical acceptance $A_\mathrm{geom}$.
-In our simulation setup, the CTH design contains 64 counters per layer and two
-layers in either module (256 counters in total). Our estimated geometrical
-acceptance is
+In this study, the CTH trigger mechanism was simulated by finding events
+involving a fourfold coincidence. The fraction of signal events which induce a
+trigger is defined as the geometrical acceptance $A_\mathrm{geom}$. In our
+simulation setup, the CTH contains 64 counters per layer, two layers
+in each module, one module at the upstream end of the CDC and the other
+downstream (256 counters in total). Our estimated geometrical acceptance is
 $$
 A_\mathrm{geom} \equiv \frac{\text{fourfold coincidences}}{N_\mathrm{signal}} = \SI{21}{\percent}.
 $$
 In comparison, the COMET Phase-I TDR~\cite{the_comet_collaboration_comet_2020}
 cites $A_\mathrm{geom} = \SI{26}{\percent}$ with the previous design of the CTH,
-which had 48 counters per layer. This reduced acceptance lowers the sensitivity
-of the experiment. In this study, none of the other experimental aspects that
-contribute to the net acceptance were changed, hence we use the other factors of
-$A_{\mu-e}$ from the TDR, and only replace the value of $A_\mathrm{geom}$ with
-the newly estimated one. Values of the acceptance coefficients used in our study
-are shown in Table~\ref{tab:ses_efficiency_factors}. The net signal acceptance
-using these factors is $A_{\mu-e} = 0.032$.
+which had 48 counters per layer. This reduced acceptance worsens the sensitivity
+of the experiment slightly. In this study, none of the other experimental
+aspects that contribute to the net acceptance were changed, hence we use the
+other factors of $A_{\mu-e}$ from the TDR, and only replace the value of
+$A_\mathrm{geom}$ with the newly estimated one. Values of the acceptance
+coefficients used in our study are shown in Table~\ref{tab:acceptance}. The net
+signal acceptance using these factors is $A_{\mu-e} = 0.032$.
 
 The number of muons stopped in the stopping target, $N_\mu$, is a function of
 the COMET beam power, the target material, the design of the
@@ -106,7 +108,7 @@ collisions that will occur. COMET Phase-I requires $N_\mathrm{POT} = 3.15 \times
 data-acquisition time of $T=146$ days.
 These figures allow us to estimate the total number of stopped muons
 $$N_\mu = R_{\mu/p} \times N_\mathrm{POT} = 1.56\times 10^{16},$$
-which can now be used to estimate the SES:
+which can be substituted into the SES formula:
 \begin{equation}\label{eq:my_ses}
 \mathrm{SES}
 =\frac{1}{N_\mu\,A_{\mu-e}\,\mathcal{B}_\mathrm{capture}\,f_\mathrm{coherent}}
@@ -114,20 +116,20 @@ which can now be used to estimate the SES:
 \end{equation}
 This value is slightly worse than the TDR estimation,
 $\mathrm{SES}_\mathrm{TDR}=3\times 10^{-15}$, because of our lower geometrical
-acceptance by the CTH mentioned previously.
+acceptance by the new CTH design.
 
-\begin{table}
-    \centering\begin{tabular}{l|ccc}
-        \toprule
-        a&b&c&d\\\midrule
-        a&b&c&d\\
-        \bottomrule
-    \end{tabular}
-    \caption{ Acceptance coefficients used to estimate the single event
-    sensitivity in Equation~\ref{eq:my_ses}. These also apply to the
-    decay-in-orbit background rate estimation. }
-    \label{tab:ses_efficiency_factors}
-\end{table}
+% \begin{table}
+%     \centering\begin{tabular}{l|ccc}
+%         \toprule
+%         a&b&c&d\\\midrule
+%         a&b&c&d\\
+%         \bottomrule
+%     \end{tabular}
+%     \caption{ Acceptance coefficients used to estimate the single event
+%     sensitivity in Equation~\ref{eq:my_ses}. These also apply to the
+%     decay-in-orbit background rate estimation. }
+%     \label{tab:ses_efficiency_factors}
+% \end{table}
 
 
 \section{Momentum spectrum}
