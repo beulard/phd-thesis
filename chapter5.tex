@@ -218,7 +218,7 @@ potentially produce signal-like tracks, contributing to the background rate.
 \subsubsection{CRV envelope sample}
 As discussed in Section~\ref{sec:bmc_method}, events must be generated around
 our volume of interest, the Cylindrical Detector. We define a sampling
-envelope around the CRV, where muons (and anti-muons) will be generated and
+envelope around the CRV, where muons (and anti-muons) are generated and
 backward-propagated. Events are sampled uniformly over this
 envelope, i.e. the position PDF $p(\bm{x})$ is independent of $\bm{x}$:
 $$
@@ -256,11 +256,11 @@ $p(\bm{x}, \bm{p}, E)$ as in Equation~\ref{eq:avg_rate}.
 
 
 \subsubsection{CRV openings sample}
-The backward MC method gives freedom to generate a specialised sample to increase
-statistics in any region of phase-space. In our case, in order to focus on the
-events that might sneak into the detector unnoticed by the CRV, a sample is
-produced with events generated only on the holes on either side of the CRV. The
-energy and direction are sampled identically to the envelope sample.
+The backward MC method gives freedom to generate a specialised sample to
+increase statistics in any region of phase-space. In our case, in order to focus
+on the events that might sneak into the detector system, a sample is produced
+with events generated only on the holes on either side of the CRV. The energy
+and direction are sampled identically to the envelope sample.
 
 Since the position PDF in this sample is concentrated around the holes, we need
 to simulate fewer events in order to find a sneaking signal-like track than with
@@ -378,7 +378,7 @@ not they enter the CDC or CTH.
     \label{fig:avg_rate_per_face}
 \end{figure}
 
-\subsection{$\mu$--$e$ conversion background rate}
+\subsection{\texorpdfstring{$\mu$--$e$}{Muon to electron} conversion background rate}
 In order to determine how frequently signal-like tracks are produced by
 atmospheric muons, we combine forward and backward MC simulations. The forward
 MC allows us to select events based on detector acceptance criteria, such as

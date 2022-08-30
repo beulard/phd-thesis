@@ -170,9 +170,12 @@ Figure~\ref{fig:comet_geometries} shows the simulation geometries for the two co
 % ----------
 
 \subsection{Physics}
-The COMET experiment involves many physical processes to go from the initial proton collision to backgrounds in the detector.
-The MC simulation must faithfully account for any process which could lead to backgrounds if we are to realistically estimate the experiment's sensitivity. 
-Hence, the \SimG simulation associates standard \Geant hadronic and electromagnetic physics lists with custom logic for nuclear muon capture and muon decay-in-orbit.
+The COMET experiment involves many physical processes to go from the initial
+proton collision to backgrounds in the detector. The MC simulation must
+faithfully account for any process which could lead to backgrounds if we are to
+realistically estimate the experiment's performance. Hence, the \SimG simulation
+associates standard \Geant hadronic and electromagnetic physics lists with
+custom logic for nuclear muon capture and muon decay-in-orbit.
 
 To model hadronic interactions, \SimG uses the \texttt{QGSP\_BERT\_HP} reference physics list as the default. In this model, hadron-nucleus interactions between the \SI{8}{\GeV} proton beam and the pion-production target are handled by the Bertini Cascade model~\cite{WRIGHT2015175}.
 
@@ -255,8 +258,14 @@ This is shown in Figure~\ref{fig:sim_cdc_hits}, where the position and granulari
 \end{figure}
 
 
-This new hit class and the associated algorithms were introduced to \SimG in 2019. This hit representation is designed toward gaseous detectors, hence it also applies to the Straw-Tube Tracker of Phase-I and Phase-II. 
-Because of the relatively low density of hit instances along a trajectory, important details of the true energy deposition pattern may be lost. Hence \SimG implements a run-time option to store \emph{auxiliary points} inside each hit instance, which provide a more fine-grained description of the particle's steps inside the cell.
+% This new hit class and the associated algorithms were introduced to \SimG in
+% 2019. 
+This hit representation is designed toward gaseous detectors, hence it
+also applies to the Straw-Tube Tracker of Phase-I and Phase-II. Because of the
+relatively low density of hit instances along a trajectory, important details of
+the true energy deposition pattern may be lost. Hence \SimG implements a
+run-time option to store \emph{auxiliary points} inside each hit instance, which
+provide a more fine-grained description of the particle's steps inside the cell.
 
 % The \texttt{IG4HitGas} class was designed to condense and record energy loss information inside gaseous ionisation detectors in \SimG (e.g. the CDC and Straw-Tube Tracker). Every energy deposit made by a particle inside the same CDC cell is accumulated into a single instance of the class, such that only one hit per cell per particle may exist. While this saves memory and disk space, it limits the amount of detail that can be stored. The recorded information allows for basic detector response simulation, but if more detail is required one can tune the \SimG simulation to store finer details inside each \texttt{IG4HitGas} instance.
 
@@ -380,11 +389,11 @@ The CTH counters flash only in the case of a fourfold coincidence i.e.\ if four
 adjacent counters are struck within a \SI{10}{\ns} window. Fourfold coincidences
 are most often caused accidentally by multiple particles, but occasionally a
 single track will hit four counters. In these occurrences, the track is
-emphasised in the animation and the particle type is displayed, as can be seen
+emphasised in the animation and the particle type is displayed, as shown
 in Figure~\ref{fig:animation:conv}.
 
 Hits in the CDC and CTH fade out over time such that the display does not become
-cluttered, but the fading rate is not representative of the actual time
+too cluttered, but the fading rate is not representative of the actual time
 resolution of the sub-detectors.
 
 % Implementation details

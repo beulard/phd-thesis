@@ -2,28 +2,54 @@
 
 With the framework to simulate backgrounds from atmospheric muons in place, we
 can now combine the results into a complete sensitivity and background
-simulation study for COMET Phase-I. In this chapter, we discuss our method to
-produce a signal sample and a muon decay-in-orbit sample, and present our
-resulting expectations of the performance of Phase-I.
+simulation study for COMET Phase-I. In this chapter, we discuss our simulation
+samples consisting of signal, decay in orbit (DIO), and atmospheric events, and
+present our resulting expectations of the performance of Phase-I.
 
-\section{Simulation samples}
-Three simulation samples are produced in this study. A $\mu$--$e$ conversion
-sample, a DIO sample and an atmospheric muon sample (identical to that of
-Chapter~\ref{ch:cosmics}). 
+\section{Simulation setup}
+Three simulation samples are produced for this study. A $\mu$--$e$ conversion
+sample, a DIO sample and an atmospheric muon sample. All three are simulated in
+the geometrical world shown in Figure~\ref{fig:bmc_geometry}. This geometry
+differs from the outdated TDR design~\cite{the_comet_collaboration_comet_2020}
+by the number of counters in the CTH. Here, each layer of the CTH has 64
+counters instead of the original 48.
 
-\subsection{$\mu$--$e$ conversion signal}
-The signal sample is fairly straightforward to produce. We initially generate
+\subsection{\texorpdfstring{$\mu$--$e$}{Muon to electron} conversion sample} 
+
+The signal sample is the most straightforward to produce. We initially generate
 primary electrons with energy $E=\SI{104.97}{\MeV}$ uniformly inside the
-stopping target disks. Their initial direction is isotropically distributed, as
-would be the case in the conversion process. The uniform position distribution
-in each disk is not realistic, hence the events will be weighted according to a
-realistic beam simulation where the position of muons stopping in the disks was
-determined. In total, $N_\mathrm{signal} = 2\times 10^6$ events are simulated
-for the signal sample.
+stopping target disks. Their direction is isotropically distributed, as would be
+the case in the conversion process. 
 
-\hl{mention mc5 for position distribution}
+The uniform position distribution in each disk is not realistic, because the
+actual distribution depends on where in the stopping target the muons in the
+beam become bound. Hence, the events are weighted according to the MC5
+simulation, where the muon beam was fully simulated from $10^9$ proton-on-target
+collisions, and each stopping position was recorded. The weighting factor is
+determined from the relative probability for a muon to stop at the sampled
+position, which is estimated by histogramming the stopping positions in each
+disk. Figure~\ref{fig:stopping_position_reweighting} shows the sampled uniform
+position distribution and the resulting distribution after weighting.
+In total, $N_\mathrm{signal} = 2\times 10^6$ events are simulated
+to compose the signal sample.
 
 % After applying geom cut of CTH trigger, how many remain?
+
+\begin{figure}
+    \centering
+    \begin{subfigure}{0.46\textwidth}
+        \centering
+        \caption{Pre-weighting.}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}{0.46\textwidth}
+        \centering
+        \caption{Post-weighting.}
+    \end{subfigure}
+    \caption{ Initial position distribution of signal electrons before and after
+        weighting them by the likelihood of a muon being bound in each bin. }
+    \label{fig:stopping_position_reweighting}
+\end{figure}
 
 \begin{figure}
     \centering
@@ -33,7 +59,23 @@ for the signal sample.
 \end{figure}
 
 
-\subsection{Muon decay-in-orbit background}
+\subsection{Muon decay in orbit sample}
+The DIO sample is very similar to the signal sample in that the initial position
+of signal and DIO electrons is identically distributed. Hence, we also sample
+uniformly in the stopping target disks and then weight the events according to
+the MC5 stopping position distribution. Similarly, the direction of DIO
+electrons is sampled isotropically. The energy distribution is thus the only
+difference between the two samples. 
+
+The theoretical energy spectrum of DIO electrons produced in aluminium muonic
+atoms was determined by Czarnecki et al.~\cite{czarnecki}. Their calculated
+spectrum is used to determine an energy weighting factor for simulated DIO
+events. DIO events are first generated with a uniform energy distribution, and
+then weighted according to the relative likelihood for a DIO electron to have
+the sampled energy. Figure~\ref{fig:dio_energy_reweighting} shows the weighted
+energy distribution compared to the theoretical energy spectrum. \hl{FIGURE and
+then adjust text}.
+
 \begin{figure}
     \centering
     
@@ -41,7 +83,7 @@ for the signal sample.
     \label{fig:muon_dio_in_cydet}
 \end{figure}
 
-\subsection{Atmospheric muon background}
+\subsection{Atmospheric muon sample}
 \begin{figure}
     \centering
     
