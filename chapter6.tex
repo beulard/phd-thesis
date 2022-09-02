@@ -127,15 +127,20 @@ The DIO sample is composed of $N_\mathrm{DIO} = 10^7$ events in total.
 
 \subsubsection{Selection}
 The selection of DIO events is identical to the selection of conversion events.
+We require a fourfold coincidence in the CTH, and then apply a Gaussian smear to
+the true momentum of the electron to simulate track reconstruction. The same
+efficiency factors as for signal events are applied.
 
 \subsection{Atmospheric muons}
 
-Atmospheric muons are simulated as explained in
+\subsubsection{Sample}
+
+Atmospheric muon events are simulated as explained in
 Section~\ref{sec:cosmic_event_sampling}. Two samples are produced, one on the
-entire surface of the CRV and one more densely concentrated on its upstream
-and downstream openings. Because of how rarely a sampled atmospheric event
-produces signal-like features, the atmospheric dataset is by far the largest of
-the three, with $1 \times 10^9$ events generated on the envelope and $1.4 \times
+entire surface of the CRV and one more densely concentrated on its upstream and
+downstream openings. Because of how rarely a sampled atmospheric event produces
+signal-like features, the atmospheric dataset is by far the largest of the
+three, with $1 \times 10^9$ events generated on the envelope and $1.4 \times
 10^9$ on the openings.
 
 
@@ -146,6 +151,9 @@ the three, with $1 \times 10^9$ events generated on the envelope and $1.4 \times
     \caption{Cosmic ray-induced background with momentum $p=\SI{1}{\MeV/\clight}$.}
     \label{fig:cosmic_bg_in_cydet}
 \end{figure}
+
+
+\hl{TODO remove below}
 
 The time distribution of signal, DIO and atmospheric events is not realistically
 simulated in this study. Instead, we apply an average timing window efficiency
@@ -158,10 +166,65 @@ distribution is ~uniform, so the factor should just be live time / (live +
 dead time). For signal and DIO, it is dependent upon the time distribution of
 muon bound in the tgt.
 
+\subsubsection{Selection}
+\hl{TODO}
 
-\hl{ Event weighting: how each sample is weighted? e.g. signal -> conversion
-    ratio x B capture x f coherent x N stopped muons, dio -> B_dio x
-    N stopped muons, cosmics -> BMC rate x total DAQ time.}
+
+\subsection{Sample weighting}
+\sepfootnotecontent{fn:conv_br_norm}{The nuclear muon capture branching ratio appears in this
+expression because the branching ratio of $\mu$--$e$ conversion is
+conventionally normalised to $\mathcal{B}_\mathrm{capture}$.}
+
+Because they originate from different processes, the three MC samples must be
+weighted differently in order to determine the absolute contribution from each.
+The conversion and DIO processes both originate from the muons bound in the
+stopping target, hence we can express the total number of expected conversion
+and DIO electrons in terms of the total number of stopped muons $N_\mu$.
+The number of signal electrons, as a function of the conversion branching
+ratio $\mathcal{B}_\mathrm{conversion}$, is:
+$$
+N_{e^-}^\mathrm{conversion} = 
+N_\mu \, \mathcal{B}_\mathrm{conversion} \, 
+\mathcal{B}_\mathrm{capture} \, f_\mathrm{coherent},
+$$
+where $\mathcal{B}_\mathrm{capture} = 0.61$ is the branching ratio of nuclear
+muon capture\sepfootnote{fn:conv_br_norm} and $f_\mathrm{coherent}=0.9$ is the
+fraction of conversions that are coherent. Similarly, the total number of DIO
+electrons can be expressed as:
+$$
+N_{e^-}^\mathrm{DIO} = N_\mu \, \mathcal{B}_\mathrm{DIO},
+$$
+where $\mathcal{B}_\mathrm{DIO} = 1 - \mathcal{B}_\mathrm{capture} -
+\mathcal{B}_\mathrm{conversion} \approx 0.39$ is the branching ratio of DIO.
+
+
+In the case of atmospheric muons, the backward MC procedure yields an absolute
+rate. This rate is multiplied by the total data acquisition (DAQ) time of the
+experiment to obtain the expected background count:
+$$
+N_\mathrm{atmospheric} = R \times T_\mathrm{DAQ},
+$$
+where $R$ is the total atmospheric background rate, and we set
+$T_\mathrm{DAQ}=146$ days, corresponding to $N_\mu = 1.5\times 10^{19}$, in this
+study. 
+
+\subsubsection{Trigger time window efficiencies}
+In order to take into account the trigger timing window, we assume that
+atmospheric muons irradiate the detector with a uniform time distribution.
+Hence, the time window efficiency factor is simply the average fraction of
+time when the trigger is active:
+$$
+\epsilon_\text{time window}^\mathrm{atmospheric} =
+\frac{8}{9}\,\frac{1170 - 700}{1170} = \SI{36}{\percent}
+$$
+assuming the trigger window is between 700 and \SI{1170}{\ns}, and where the
+factor $\frac{8}{9}$ arises from the bunch structure of the J-PARC main ring. In
+contrast, the efficiency factor for conversion and DIO electrons
+$\epsilon_\text{time window}^\text{conversion|DIO} \approx \SI{30}{\percent}$ is
+smaller because the time distribution of bound muons peaks around \SI{300}{\ns},
+before the trigger becomes active (see Figure~\ref{fig:timing_distributions}).
+
+
 
 \section{Single event sensitivity}
 The single event sensitivity (SES) is defined as the value of the $\mu$--$e$
@@ -182,6 +245,10 @@ expected to leave the nucleus in its ground state.
 
 % How do we approach the fact that CTH geom has changed so our geom acceptance
 % is lower?
+
+\hl{ v We've already mentioned trigger selection and acceptance in the Selection
+    subsec of every sample. Cut.}
+    
 In this study, the CTH trigger mechanism was simulated by finding events
 involving a fourfold coincidence. The fraction of signal events which induce a
 trigger is defined as the geometrical acceptance $A_\mathrm{geom}$. In our
@@ -225,7 +292,7 @@ which can be substituted into the SES formula:
 \end{equation}
 This value is slightly worse than the TDR estimation,
 $\mathrm{SES}_\mathrm{TDR}=3\times 10^{-15}$, because of our lower geometrical
-acceptance by the new CTH design.
+acceptance when using the new CTH design.
 
 % \begin{table}
 %     \centering\begin{tabular}{l|ccc}
@@ -241,7 +308,9 @@ acceptance by the new CTH design.
 % \end{table}
 
 
-\section{Momentum spectrum}
+\section{Momentum spectra}
+Discriminating conversion electrons from backgrounds requires a precise
+measurement of the momentum. 
 
 \section{Discussion}
 
