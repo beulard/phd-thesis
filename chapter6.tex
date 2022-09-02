@@ -13,7 +13,10 @@ the geometrical world shown in Figure~\ref{fig:bmc_geometry}. This geometry
 differs from the older TDR design~\cite{the_comet_collaboration_comet_2020} by
 the number of counters in the CTH. Here, each layer of the CTH has 64 counters
 instead of the original 48, which mainly affects the detector's geometrical
-acceptance.
+acceptance. In addition, the outer layer of the CTH is composed of plastic
+scintillator counters rather than the Cherenkov counters, as was originally
+planned. As we will see, this has an important effect on the detector's ability
+to discriminate atmospheric anti-muons from conversion electrons.
 
 \subsection{\texorpdfstring{$\mu$--$e$}{Muon to electron} conversion} 
 
@@ -22,14 +25,14 @@ acceptance.
 The signal sample is the most straightforward to produce. We initially generate
 primary electrons with energy $E=\SI{104.97}{\MeV}$ uniformly inside the
 stopping target disks. Their direction is isotropically distributed, as would be
-the case in the conversion process. 
-A uniform position distribution in each disk is not realistic, because the
-actual distribution depends on where in the stopping target the muons in the
-beam become bound. To correct this, the events are weighted according to the
-stopping positions of muons recorded in the MC5 simulation. The weighting factor
-is determined from the relative probability for a muon to stop at the sampled
-position, which is estimated by histogramming the stopping positions in each
-disk. Figure~\ref{fig:stopping_position_reweighting} shows the sampled uniform
+the case in the conversion process. A uniform position distribution in each disk
+is not realistic, because the actual distribution depends on where in the
+stopping target the muons in the beam become bound. To account for this, the
+events are weighted according to the stopping positions of muons recorded in the
+MC5 simulation. The weighting factor is determined from the relative probability
+for a muon to stop at the sampled position, which is estimated by histogramming
+the stopping positions in each disk.
+Figure~\ref{fig:stopping_position_reweighting} shows the sampled uniform
 position distribution and the resulting distribution after weighting. In total,
 $N_\mathrm{signal} = 2\times 10^6$ events are simulated to compose the signal
 sample.
@@ -69,20 +72,23 @@ $$
 In our simulation setup with the 64-counters-per-layer CTH, our estimated
 geometrical acceptance is $A_\mathrm{geom} = \SI{21}{\percent}$. In comparison,
 the TDR cites $A_\mathrm{geom} = \SI{26}{\percent}$ with the previous design of
-the CTH.
+the CTH. 
+\hl{Figure~X shows a conversion event which passes the
+fourfold coincidence selection criterion.??}
 
 % Reconstruction
 We do not fully simulate the reconstruction of signal electron trajectories in
 the CDC. In order to approximate the effect of reconstruction uncertainties, a
-smearing is applied to the true momentum $p_t$ of each track. For each track,
-the reconstructed momentum is estimated as $p_r = p_t + x$, where $x \sim
-\mathcal{N}(0, \sigma)$, and $\sigma = \SI{200}{\keV/\clight}$ is the expected
-momentum resolution of the CDC.
+smearing is applied to the true momentum of each track. The reconstructed
+momentum is estimated as $p_r = p_t + x$, where $p_t$ is the true momentum of
+the electron as it enters the CDC, $x \sim \mathcal{N}(0, \sigma)$, and $\sigma
+= \SI{200}{\keV/\clight}$ is the expected momentum resolution of the CDC.
 
 % Other acceptance factors (not simulated)
 Other acceptance criteria, such as the trigger timing window and reconstruction
 quality cuts, are not properly simulated in this study. Instead, we apply
 efficiency factors for each of them based on their TDR estimates.
+\hl{Reference a table here?}
 
 
 \subsection{Muon decay in orbit}
@@ -110,7 +116,7 @@ uniform energy distribution, and then weighted according to the relative
 likelihood for a DIO electron to have the sampled energy.
 Figure~\ref{fig:dio_energy_reweighting} shows the weighted energy distribution
 compared to the theoretical energy spectrum. \hl{FIGURE and then adjust text}.
-The DIO sample is composed of $N_\mathrm{DIO} = 5\times 10^6$ events in total.
+The DIO sample is composed of $N_\mathrm{DIO} = 10^7$ events in total.
 
 \begin{figure}
     \centering
@@ -120,9 +126,9 @@ The DIO sample is composed of $N_\mathrm{DIO} = 5\times 10^6$ events in total.
 \end{figure}
 
 \subsubsection{Selection}
-The selection of DIO events is identical
+The selection of DIO events is identical to the selection of conversion events.
 
-\subsection{Atmospheric muon sample}
+\subsection{Atmospheric muons}
 
 Atmospheric muons are simulated as explained in
 Section~\ref{sec:cosmic_event_sampling}. Two samples are produced, one on the
@@ -151,6 +157,11 @@ because they don't have the same time distribution. For cosmics, the time
 distribution is ~uniform, so the factor should just be live time / (live +
 dead time). For signal and DIO, it is dependent upon the time distribution of
 muon bound in the tgt.
+
+
+\hl{ Event weighting: how each sample is weighted? e.g. signal -> conversion
+    ratio x B capture x f coherent x N stopped muons, dio -> B_dio x
+    N stopped muons, cosmics -> BMC rate x total DAQ time.}
 
 \section{Single event sensitivity}
 The single event sensitivity (SES) is defined as the value of the $\mu$--$e$
