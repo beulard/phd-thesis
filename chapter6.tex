@@ -152,22 +152,20 @@ three, with $1 \times 10^9$ events generated on the envelope and $1.4 \times
     \label{fig:cosmic_bg_in_cydet}
 \end{figure}
 
-
-\hl{TODO remove below}
-
-The time distribution of signal, DIO and atmospheric events is not realistically
-simulated in this study. Instead, we apply an average timing window efficiency
-factor to all events in order to estimate the total count integrated over
-data-acquisition time.
-
-The time efficiency factor is not the same for signal, DIO and cosmics,
-because they don't have the same time distribution. For cosmics, the time
-distribution is ~uniform, so the factor should just be live time / (live +
-dead time). For signal and DIO, it is dependent upon the time distribution of
-muon bound in the tgt.
-
 \subsubsection{Selection}
-\hl{TODO}
+As for signal and DIO events, atmospheric events must at least pass the fourfold
+coincidence criterion. Hit information from the CDC is also used to select
+track candidates: the particle must reach at least the 5th innermost layer of
+the CDC but it should not hit the outermost layer. This selects tracks with a
+sufficient transverse momentum to be reconstructed, and rejects tracks that
+either have too large a momentum to be a signal event, or appear to enter the
+CDC from the outside. 
+
+In addition, the hit positions are used to reconstruct the track using a helix
+fit. The fitted trajectory should intersect the muon stopping target to pass the
+selection. The fit estimates the momentum of the particle, which is used in the
+analysis stage. Hence, for this sample, we do not apply a Gaussian smear to the
+true momentum but use the fit's estimated momentum instead.
 
 
 \subsection{Sample weighting}
@@ -308,11 +306,27 @@ acceptance when using the new CTH design.
 % \end{table}
 
 
+
 \section{Momentum spectra}
 Because the signal has a clear mono-energetic signature, a precise measurement
 of the momentum of candidate tracks helps to discriminate signal from
 backgrounds. Figure~\ref{fig:log_spectrum} shows the momentum spectrum
 for candidate conversion, DIO and atmospheric events.
+
+Each momentum spectrum is weighted by the corresponding sample weight to obtain
+the count integrated over the Phase-I data acquisition period. The signal and
+DIO samples are also scaled by the track acceptance factors because
+reconstruction isn't simulated. In the atmospheric sample, since we fit the
+track, we don't apply the momentum smearing, nor the track
+finding and track quality cut efficiency factors (we apply only the trigger/DAQ
+and trigger time window efficiency factors). 
+
+For the atmospheric sample, we also reduce the background rate of certain events
+based on the primary particle ($\mu^-$ or $\mu^+$) and whether they hit the CRV.
+The first stage of the CTH, containing only scintillator counters and no
+Cherenkov counters, is unable to differentiate muons from electrons. Hence,
+signal-like tracks induced by sneaking atmospheric $\mu^+$ are a major source of
+backgrounds in this situation. \hl{Refer to figure}.
 
 \begin{figure}
     \centering
@@ -321,10 +335,42 @@ for candidate conversion, DIO and atmospheric events.
     \label{fig:log_spectrum}
 \end{figure}
 
+
 \section{Discussion}
 
-\subsection{Atmospheric $\mu^+$ backgrounds}
+We investigate the effect of direction identification and CRV efficiency on the
+background rate.
+
+\subsection{Atmospheric $\mu^+$ backgrounds and particle identification}
+Positive muons can produce signal-like tracks in the CyDet by following the
+reverse path of a conversion electron. Why? I have to explain exactly why.
+Candidate signal electron trajectories originate in the muon stopping target,
+produce a helical track in the CDC, and induce a fourfold coincidence in the
+CTH. A $\mu^+$ can generate a background event by first hitting the CTH,
+producing a track in the CDC, and then intersecting the muon stopping target,
+appearing as a conversion track in reverse time ordering.
+
+Question: if a mu+ follows the same time ordering as an e-, what does it look
+like in the CyDet? 1. It curves in the other way as a negative particle in the B
+field. Can that be easily rejected by the detector? At which step?
+
+Paragraph: the stage-1 CTH can't do PID. Explain why, using Cherenkov counter
+properties vs plastic scintillator.
+
+Paragraph: reverse-direction mu+ track can still be identified via
+time-of-flight information. Method was investigated internally by Moritsu, who
+determined that direction identification method can reject 89 percent of
+atmospheric mu+ events with, but reduces the net signal acceptance by a
+factor 0.87.
+
 
 \subsection{CRV efficiency}
+The efficiency of the CRV determines the fraction of atmospheric events which
+can enter the CyDet through the active parts of the CRV while not being vetoed.
+Note that the portion of background events produced by atmospheric muons
+sneaking through the CRV openings is unaffected by how efficient the CRV is.
+These backgrounds can only be reduced by increasing the coverage of the CRV,
+which is inherently limited by the size of the beam pipe.
 
-\subsection{Particle identification}
+
+
