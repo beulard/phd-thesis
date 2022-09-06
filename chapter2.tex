@@ -454,52 +454,17 @@ conversion electron going through the Cylindrical Detector.
 
 
 % Timing
-The expected timing of conversion electrons is directly correlated to the time
+The expected timing of conversion electrons is directly related to the time
 distribution of muons bound inside the stopping target, shown in
 Figure~\ref{fig:timing_distributions}. In Phase-I, in order to suppress prompt
 backgrounds from the beam flash, the detector is tuned to only start triggering
 on events that occur at least $t=\SI{700}{\ns}$ after each proton collision.
-This trigger window also reduces the signal acceptance by a factor of 0.7
-because the majority of bound muons (which have a lifetime of \SI{864}{\ns})
-will have undergone decay or capture before the window starts.
-
-In Phase-I, signal-like trajectories in the CDC are subject to quality cuts in
-order to avoid misidentifying backgrounds. These cuts ensure that the trajectory
-is smooth and long enough to be accurately reconstructed, but they reduce the
-acceptance of conversion signals by another factor of 0.3.
-
-\hl{Quality cuts on what? : Say "reconstructed fit quality" for example.}
-
-
-% Show time distribution of stopped muons?
+This acceptance criterion retains only \SI{30}{\percent} of all signal events
+because the majority of bound muons, having an average lifetime of \SI{864}{\ns},
+will have undergone decay or capture before the start of the window.
 
 
 \section{Experimental backgrounds}\label{sec:backgrounds}
-
-Intrinsic backgrounds from muon decay-in-orbit and nuclear muon capture can
-mimic the conversion signal, as discussed in Section~\ref{sec:sm_backgrounds}.
-The COMET experiment is also affected by experimental backgrounds caused by the
-intense beam, as well as cosmic ray-induced events.
-
-Beam-induced backgrounds include delayed events caused by slow particles and
-products of stray protons arriving between two bunches.
-Antiprotons are the main source of delayed backgrounds due to their slow
-speed relative to pions and muons of the same momentum. They are negatively
-charged so cannot be efficiently selected out by the beamline, hence they can
-collide late with the muon stopping target and produce signal-like secondary
-electrons during the trigger window.
-
-When a stray proton hits the pion-production target late, secondaries may
-quickly travel to the detector region and produce a signal-like electron, which
-can also be mistaken for the conversion signal. This is the main reason for requiring
-the strict extinction factor $R_\mathrm{extinction}$ of Equation~\ref{eq:extinction} from the J-PARC
-proton beam.
-
-Finally, cosmic rays could be a major source of background events. The
-background rate depends heavily on the amount of shielding and material above
-the COMET detector system, as well as the efficiency of the cosmic ray veto. The
-topic of rate estimation for cosmic ray-induced backgrounds is discussed more
-thoroughly in Chapter~\ref{ch:cosmics}.
 
 \begin{table}
     \centering
@@ -516,16 +481,42 @@ thoroughly in Chapter~\ref{ch:cosmics}.
     \label{tab:backgrounds}
 \end{table}
 
+Intrinsic backgrounds from muon decay-in-orbit and nuclear muon capture can
+mimic the conversion signal, as discussed in Section~\ref{sec:sm_backgrounds}.
+The COMET experiment is also affected by experimental backgrounds caused by the
+intense beam, as well as cosmic ray-induced events.
+
+Beam-induced backgrounds include delayed events caused by slow particles and
+products of stray protons arriving between two bunches.
+Antiprotons are the main source of delayed backgrounds due to their slow
+speed relative to pions and muons of the same momentum. They are negatively
+charged so cannot be efficiently selected out by the beamline, hence they can
+collide late with the muon stopping target and produce signal-like secondary
+electrons during the trigger window.
+
+When a stray proton hits the pion-production target late, secondaries may
+quickly travel to the detector region and produce a signal-like electron, which
+can also be mistaken for the conversion signal. This is the main reason for
+requiring the strict extinction factor $R_\mathrm{extinction}$ of
+Equation~\ref{eq:extinction} from the J-PARC proton beam.
+
+Finally, cosmic rays could be a major source of background events. The
+background rate depends heavily on the amount of shielding and material above
+the COMET detector system, as well as the efficiency of the cosmic ray veto. The
+topic of rate estimation for cosmic ray-induced backgrounds is discussed more
+thoroughly in Chapter~\ref{ch:cosmics}.
+
+
 
 Table~\ref{tab:backgrounds} shows the rates estimated in the COMET Phase-I
 technical design report (TDR)~\cite[Section
 10.6]{the_comet_collaboration_comet_2020} for each source of background in the
 $\mu$--$e$ conversion search. The total number of background events over the
-data acquisition run time required to achieve the sensitivity goal is predicted
-to be 0.032 given an extinction factor $R_\mathrm{extinction} = 3 \times
-10^{-11}$. Since this background event count is much smaller than one, the
-observation of a single signal-like electron may indicate that a CLFV process is
-at play, which would further motivate this search through COMET Phase-II and beyond.
+data acquisition run time is predicted to be 0.032 given an extinction factor
+$R_\mathrm{extinction} = 3 \times 10^{-11}$. Since this background event count
+is much smaller than one, the observation of a single signal-like electron may
+suggest that a CLFV process is at play, which would further motivate this search
+through COMET Phase-II and beyond.
 
 
 
@@ -545,28 +536,37 @@ single event sensitivity makes sense if the expected number of background events
 is less than one, which was discussed in the previous section.
 
 The SES is inversely proportional to the net signal acceptance of the detector
-system. The signal acceptance is composed of seven efficiency factors:
+system. The signal acceptance can be broken down into seven efficiency factors:
 geometrical acceptance, trigger efficiency, data acquisition (DAQ) efficiency,
-reconstruction efficiency, track quality cuts, momentum window efficiency and
-trigger time window efficiency. Table~\ref{tab:acceptance} lists these factors as they
-were estimated in the COMET Phase-I TDR~\cite[Section
+track finding efficiency, track reconstruction quality cuts, momentum window
+efficiency and trigger time window efficiency. Table~\ref{tab:acceptance} lists
+these factors as they were estimated in the COMET Phase-I TDR~\cite[Section
 10.1]{the_comet_collaboration_comet_2020}.
+
+% This does not fit here... Should we have a section on acceptance?
+% Events that contain a signal-like track are subject to quality cuts based on how
+% accurately the trajectory was reconstructed. Overall, the track quality cuts retain
+% \SI{70}{\percent} of candidate events.
 
 \begin{table}
     \centering
     \begin{adjustbox}{max width=1.1\textwidth,center}
     \begin{tabular}{l|ccccccc|c}
         \toprule
-        Factor & Geometrical & Trigger & DAQ & Reconstruction & Cuts & Momentum
+        Factor & Geometrical & Trigger & DAQ & Track-finding & Cuts & Momentum
         & Timing & Net
         \\ 
-        Efficiency & 0.26 & 0.9 & 0.9 & 0.99 & 0.7 & 0.93 & 0.3 & 0.041 \\
+        Efficiency & \SI{26}{\percent} & \SI{90}{\percent} & \SI{90}{\percent} &
+        \SI{99}{\percent} & \SI{70}{\percent} & \SI{93}{\percent} &
+        \SI{30}{\percent} & \SI{4.1}{\percent} \\
         \bottomrule
     \end{tabular}
     \end{adjustbox}
     \caption{ Efficiency factors used to determine the signal acceptance in
     COMET Phase-I TDR~\cite{the_comet_collaboration_comet_2020}. The net acceptance
-    is the product of all efficiency factors.}
+    is the product of all efficiency factors. ``Cuts'' refers to track
+    quality cuts, used to reject events with irregular tracks that cannot
+    be accurately fitted and reconstructed.}
     \label{tab:acceptance} 
 \end{table}
 

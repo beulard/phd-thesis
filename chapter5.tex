@@ -411,6 +411,12 @@ backward MC, which is crucial to limit the usage of computational resources. In
 addition, we obtain a reasonably-sized sample from which we can study the shape
 and properties of background events.
 
+Other acceptance criteria and inefficiencies of the CyDet system are taken into
+account by applying multiplicative factors to the estimated background rates.
+Specifically, the data acquisition, triggering and trigger time window
+efficiencies of Table~\ref{tab:acceptance} are used, reducing the overall
+background rate by a factor 0.28.
+
 \subsubsection{Backward sampling}
 The flux is sampled by backward MC simulation for all events that pass the above
 selection criteria. The backward propagation and flux sampling is performed
@@ -420,19 +426,19 @@ sampled flux over these $N$ trials is interpreted as the statistical uncertainty
 on the average flux for each event. This uncertainty is shown in the resulting
 plots and figures.
 
-\begin{table}[t]
-    \centering
-    \begin{tabular}{l|ccccc}
-        \toprule
-        Criterion&DAQ&Trigger&Track finding&Track quality cuts&Timing window\\\midrule
-        Value&\SI{90}{\percent}&\SI{90}{\percent}&\SI{99}{\percent}&\SI{69}{\percent}&\SI{30}{\percent}\\
-        \bottomrule
-    \end{tabular}
-    \caption{Efficiency factors from the Phase-I
-    TDR~\cite{the_comet_collaboration_comet_2020} applied to obtain the
-    $\mu$--$e$ background rate from atmospheric muons.}
-    \label{tab:bmc_bg_efficiencies}
-\end{table}
+% \begin{table}[t]
+%     \centering
+%     \begin{tabular}{l|ccccc}
+%         \toprule
+%         Criterion&DAQ&Trigger&Track finding&Track quality cuts&Timing window\\\midrule
+%         Value&\SI{90}{\percent}&\SI{90}{\percent}&\SI{99}{\percent}&\SI{69}{\percent}&\SI{30}{\percent}\\
+%         \bottomrule
+%     \end{tabular}
+%     \caption{Efficiency factors from the Phase-I
+%     TDR~\cite{the_comet_collaboration_comet_2020} applied to obtain the
+%     $\mu$--$e$ background rate from atmospheric muons.}
+%     \label{tab:bmc_bg_efficiencies}
+% \end{table}
 
 \begin{figure}[t]
     \centering
@@ -461,19 +467,21 @@ plots and figures.
 
 \subsubsection{Results}
 Figure~\ref{fig:bmc_rate_vs_momentum} shows the estimated background rates as a
-function of the reconstructed momentum of the signal-like track.
-Table~\ref{tab:bmc_bg_efficiencies} shows the efficiency factors applied to our
-estimated rate to account for additional Phase-I signal acceptance criteria. We
-compare the rate in the absence and in the presence of the CRV to demonstrate
-its importance. Without a veto mechanism, the rate over the entire momentum
-range is around \SI{1}{\mHz}, and is lowered to \SI{2}{\micro\hertz} with the
-CRV. 
+function of the reconstructed momentum of the signal-like track. We compare the
+rate in the absence and in the presence of the CRV to demonstrate its
+importance. Without a veto mechanism, the rate over the entire momentum range is
+around \SI{1}{\mHz}, and is lowered to \SI{2}{\micro\hertz} with the CRV. The
+spectrum peaks around \SI{105}{\MeV}, the conversion energy, because we have
+selected events that pass the CTH and CDC trigger criteria. Since the CyDet is
+heavily biased toward observing conversion electrons, selected background events
+tend to have a signal-like signature.
 % Note that in COMET Phase-I, the momentum window
 % for the $\mu$--$e$ conversion search is $[103.6, 106.0]$\,\si{\MeV/\clight}. The
 % integrated rates shown in Figure~\ref{fig:bmc_rate_vs_momentum} are over the
 % entire momentum range of selected events.
 
-In the next chapter, a complete sensitivity and background study of COMET
-Phase-I, including the results presented here, will be presented. Despite the
-CRV rejecting a large fraction of atmospheric muon backgrounds, they remain the
-most important source of backgrounds in the $\mu$--$e$ conversion search. 
+In the next chapter, a complete sensitivity and background study for COMET
+Phase-I, including the results discussed here, will be presented. Despite the
+CRV being expected to reject a large fraction of atmospheric muon backgrounds,
+they remain the most important source of backgrounds in the $\mu$--$e$
+conversion search. 

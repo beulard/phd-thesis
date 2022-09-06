@@ -14,9 +14,9 @@ differs from the older TDR design~\cite{the_comet_collaboration_comet_2020} by
 the number of counters in the CTH. Here, each layer of the CTH has 64 counters
 instead of the original 48, which mainly affects the detector's geometrical
 acceptance. In addition, the outer layer of the CTH is composed of plastic
-scintillator counters rather than the Cherenkov counters, as was originally
-planned. As we will see, this has an important effect on the detector's ability
-to discriminate atmospheric anti-muons from conversion electrons.
+scintillator counters rather than the originally planned Cherenkov counters. As
+we shall see, this has an important effect on the detector's ability to
+discriminate atmospheric anti-muons from conversion electrons.
 
 \subsection{\texorpdfstring{$\mu$--$e$}{Muon to electron} conversion} 
 
@@ -27,27 +27,35 @@ primary electrons with energy $E=\SI{104.97}{\MeV}$ uniformly inside the
 stopping target disks. Their direction is isotropically distributed, as would be
 the case in the conversion process. A uniform position distribution in each disk
 is not realistic, because the actual distribution depends on where in the
-stopping target the muons in the beam become bound. To account for this, the
+stopping target the muons in the beam come at rest. To account for this, the
 events are weighted according to the stopping positions of muons recorded in the
 MC5 simulation. The weighting factor is determined from the relative probability
 for a muon to stop at the sampled position, which is estimated by histogramming
 the stopping positions in each disk.
-Figure~\ref{fig:stopping_position_reweighting} shows the sampled uniform
-position distribution and the resulting distribution after weighting. In total,
-$N_\mathrm{signal} = 2\times 10^6$ events are simulated to compose the signal
-sample.
+Figure~\ref{fig:stopping_position_reweighting} shows the initially-sampled
+uniform position distribution, the muon stopping position distribution from MC5,
+and the result of event weighting. In total, $N_\mathrm{signal} =
+2\times 10^6$ events are simulated to compose the signal sample.
 
 % After applying geom cut of CTH trigger, how many remain?
 
 \begin{figure}
     \centering
-    \begin{subfigure}{0.46\textwidth}
+    \begin{subfigure}[t]{0.329\textwidth}
         \centering
+        \includegraphics[width=\textwidth]{chapter6/initial_conversion_position_distribution.pdf}
         \caption{Pre-weighting.}
     \end{subfigure}
     \hfill
-    \begin{subfigure}{0.46\textwidth}
+    \begin{subfigure}[t]{0.329\textwidth}
         \centering
+        \includegraphics[width=\textwidth]{chapter6/stopped_muon_distribution.pdf}
+        \caption{Bound muon position distribution from MC5 used as weight.}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[t]{0.329\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{chapter6/weighted_conversion_position_distribution.pdf}
         \caption{Post-weighting.}
     \end{subfigure}
     \caption{ Initial position distribution of signal electrons before and after
@@ -55,26 +63,19 @@ sample.
     \label{fig:stopping_position_reweighting}
 \end{figure}
 
-\begin{figure}
-    \centering
-    
-    \caption{Conversion signal event in the CyDet system.}
-    \label{fig:signal_in_cydet}
-\end{figure}
 
 \subsubsection{Selection}
-Signal events are selected based on detector acceptance criteria. We first require
-fourfold coincidence in the CTH. The fraction of events remaining
-defines the geometrical acceptance 
+Signal events are selected based on detector acceptance criteria. We first
+require fourfold coincidence in the CTH. Figure~\ref{fig:cydet_signal_event}
+shows an example of a conversion event which passes the trigger criterion. The
+fraction of events remaining defines the geometrical acceptance 
 $$
 A_\mathrm{geom} \equiv  \frac{\text{fourfold coincidences}}{N_\mathrm{signal}}.
 $$
-In our simulation setup with the 64-counters-per-layer CTH, our estimated
-geometrical acceptance is $A_\mathrm{geom} = \SI{21}{\percent}$. In comparison,
-the TDR cites $A_\mathrm{geom} = \SI{26}{\percent}$ with the previous design of
-the CTH. 
-\hl{Figure~X shows a conversion event which passes the
-fourfold coincidence selection criterion.??}
+In this simulation, the estimated geometrical acceptance is $A_\mathrm{geom} =
+\SI{21}{\percent}$. In comparison, the TDR cites $A_\mathrm{geom} =
+\SI{26}{\percent}$ with the previous design of the CTH.
+
 
 % Reconstruction
 We do not fully simulate the reconstruction of signal electron trajectories in
@@ -82,13 +83,22 @@ the CDC. In order to approximate the effect of reconstruction uncertainties, a
 smearing is applied to the true momentum of each track. The reconstructed
 momentum is estimated as $p_r = p_t + x$, where $p_t$ is the true momentum of
 the electron as it enters the CDC, $x \sim \mathcal{N}(0, \sigma)$, and $\sigma
-= \SI{200}{\keV/\clight}$ is the expected momentum resolution of the CDC.
+= \SI{200}{\keV/\clight}$ is the expected momentum resolution of the CDC. Since
+tracks are not properly reconstructed, we do not apply any track quality cuts to
+select events but instead weight the signal sample by the associated efficiency
+factor from Table~\ref{tab:acceptance} to account for the rejection of some events.
 
 % Other acceptance factors (not simulated)
-Other acceptance criteria, such as the trigger timing window and reconstruction
-quality cuts, are not properly simulated in this study. Instead, we apply
-efficiency factors for each of them based on their TDR estimates.
-\hl{Reference a table here?}
+% How do we say: we didn't simulate everything. For the stuff we didn't
+% simulate, we apply TDR efficiency factors to the sample weight to account for them.
+
+In this simulation sample, the initial time for each event does not correspond
+to the realistic time distribution of the $\mu$--$e$ conversion process. Hence,
+events are not selected based on whether they reach the detector within the
+trigger time window, and we weight the sample by the trigger time window
+efficiency factor instead. Similarly, the sample is weighted by the trigger and
+data acquisition efficiency factors to account for the loss of acceptance from
+the hardware.
 
 
 \subsection{Muon decay in orbit}
@@ -102,26 +112,46 @@ difference between the two samples.
 
 \begin{figure}
     \centering
-    
-    \caption{Energy spectrum of DIO electrons from muonic aluminium atoms.}
+    \begin{subfigure}[t]{0.4\textwidth}
+    \includegraphics[width=\textwidth]{chapter6/dio_momentum_distribution_initial.pdf}
+    \caption{Initial sampling.}
+\end{subfigure}
+    \hspace{2cm}
+    \begin{subfigure}[t]{0.4\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{chapter6/dio_momentum_distribution_czarnecki_weighted.pdf}
+        \caption{Weighted with the Czarnecki et al. parametrisation~\cite{czarnecki}.}
+    \end{subfigure}
+    \caption{Momentum spectrum of electrons in the DIO sample.}
     \label{fig:czarnecki_spectrum}
 \end{figure}
 
 The theoretical energy spectrum of DIO electrons produced in aluminium muonic
-atoms was determined by Czarnecki et al.~\cite{czarnecki} and is shown in
-Figure~\ref{fig:czarnecki_spectrum}. Their calculated spectrum is used to
-determine an energy weighting factor for simulated DIO events. In a similar way
-to the position weighting procedure, DIO events are first generated with a
-uniform energy distribution, and then weighted according to the relative
-likelihood for a DIO electron to have the sampled energy.
-Figure~\ref{fig:dio_energy_reweighting} shows the weighted energy distribution
-compared to the theoretical energy spectrum. \hl{FIGURE and then adjust text}.
+atoms was investigated by Czarnecki et al.~\cite{czarnecki}. Here, we use their
+proposed parametrisation of the energy spectrum around the DIO energy endpoint:
+$$
+P(E_e) = a_5 \delta^5 + a_6 \delta^6 + a_7 \delta^7 + a_8 \delta^8,
+$$
+where $\delta \equiv E_\mu  - E_e - \frac{E_e^2}{2 m_\mathrm{Al}}$, $E_\mu =
+\SI{105.194}{\MeV}$, $m_\mathrm{Al} = \SI{25133}{\MeV}$, with the values of the
+four $a$ coefficients they provide. This approximation is valid in the region
+$E_e > \SI{85}{\MeV}$, which is sufficient to covers our whole DIO sample. We
+use this spectrum parametrisation to weight DIO events based on their energy.
+Similarly to the position weighting procedure, DIO events are first generated
+with a uniform energy distribution in the range $p \in [95,
+110]~\si{\MeV/\clight}$, and then weighted according to the probability for a
+DIO electron to have the sampled energy. Figure~\ref{fig:czarnecki_spectrum}
+shows the momentum spectrum of DIO electrons before and after weighting.
+
 The DIO sample is composed of $N_\mathrm{DIO} = 10^7$ events in total.
+Figure~\ref{fig:muon_dio_in_cydet} shows an example of a potential background
+event from DIO where the electron flies into the CyDet system and induces a
+trigger.
 
 \begin{figure}
     \centering
-    
-    \caption{DIO-induced background with momentum  $p=\SI{1}{\MeV/\clight}$.}
+    \includegraphics[width=0.6\textwidth]{chapter6/dio_event_in_cydet.png}
+    \caption{Potential DIO-induced background with momentum $p=\SI{102}{\MeV/\clight}$.}
     \label{fig:muon_dio_in_cydet}
 \end{figure}
 
@@ -129,18 +159,20 @@ The DIO sample is composed of $N_\mathrm{DIO} = 10^7$ events in total.
 The selection of DIO events is identical to the selection of conversion events.
 We require a fourfold coincidence in the CTH, and then apply a Gaussian smear to
 the true momentum of the electron to simulate track reconstruction. The same
-efficiency factors as for signal events are applied.
+efficiency and acceptance factors as for signal events are applied to weight the
+sample and determine the absolute background contribution from the DIO process.
+
 
 \subsection{Atmospheric muons}
 
 \subsubsection{Sample}
 
-Atmospheric muon events are simulated as explained in
+Atmospheric muon events are simulated as discussed in
 Section~\ref{sec:cosmic_event_sampling}. Two samples are produced, one on the
 entire surface of the CRV and one more densely concentrated on its upstream and
 downstream openings. Because of how rarely a sampled atmospheric event produces
-signal-like features, the atmospheric dataset is by far the largest of the
-three, with $1 \times 10^9$ events generated on the envelope and $1.4 \times
+signal-like features, the atmospheric dataset needs to be by far the largest of
+the three, with $1 \times 10^9$ events generated on the envelope and $1.4 \times
 10^9$ on the openings.
 
 
@@ -195,6 +227,9 @@ $$
 where $\mathcal{B}_\mathrm{DIO} = 1 - \mathcal{B}_\mathrm{capture} -
 \mathcal{B}_\mathrm{conversion} \approx 0.39$ is the branching ratio of DIO.
 
+\hl{ Explain how we get the number of DIO electrons in the sampled energy range
+    from the total number of DIO electrons.}
+
 
 In the case of atmospheric muons, the backward MC procedure yields an absolute
 rate. This rate is multiplied by the total data acquisition (DAQ) time of the
@@ -222,6 +257,9 @@ $\epsilon_\text{time window}^\text{conversion|DIO} \approx \SI{30}{\percent}$ is
 smaller because the time distribution of bound muons peaks around \SI{300}{\ns},
 before the trigger becomes active (see Figure~\ref{fig:timing_distributions}).
 
+
+\hl{ Review this and compare with Selection section of Signal sample. Eliminate
+    redundancies.}
 
 
 \section{Single event sensitivity}
