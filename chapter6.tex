@@ -67,7 +67,7 @@ and the result of event weighting. In total, $N_\mathrm{signal} =
 \subsubsection{Selection}
 Signal events are selected based on detector acceptance criteria. We first
 require fourfold coincidence in the CTH. Figure~\ref{fig:cydet_signal_event}
-shows an example of a conversion event which passes the trigger criterion. The
+shows an example of a conversion event which passes this trigger criterion. The
 fraction of events remaining defines the geometrical acceptance 
 $$
 A_\mathrm{geom} \equiv  \frac{\text{fourfold coincidences}}{N_\mathrm{signal}}.
@@ -88,17 +88,14 @@ tracks are not properly reconstructed, we do not apply any track quality cuts to
 select events but instead weight the signal sample by the associated efficiency
 factor from Table~\ref{tab:acceptance} to account for the rejection of some events.
 
-% Other acceptance factors (not simulated)
-% How do we say: we didn't simulate everything. For the stuff we didn't
-% simulate, we apply TDR efficiency factors to the sample weight to account for them.
-
 In this simulation sample, the initial time for each event does not correspond
 to the realistic time distribution of the $\mu$--$e$ conversion process. Hence,
 events are not selected based on whether they reach the detector within the
 trigger time window, and we weight the sample by the trigger time window
 efficiency factor instead. Similarly, the sample is weighted by the trigger and
 data acquisition efficiency factors to account for the loss of acceptance from
-the hardware.
+hardware effects. Table~\ref{tab:acceptance} lists the values of these
+efficiency factors.
 
 
 \subsection{Muon decay in orbit}
@@ -129,13 +126,13 @@ difference between the two samples.
 The theoretical energy spectrum of DIO electrons produced in aluminium muonic
 atoms was investigated by Czarnecki et al.~\cite{czarnecki}. Here, we use their
 proposed parametrisation of the energy spectrum around the DIO energy endpoint:
-$$
+\begin{equation}\label{eq:czarnecki_param}
 P(E_e) = a_5 \delta^5 + a_6 \delta^6 + a_7 \delta^7 + a_8 \delta^8,
-$$
+\end{equation}
 where $\delta \equiv E_\mu  - E_e - \frac{E_e^2}{2 m_\mathrm{Al}}$, $E_\mu =
 \SI{105.194}{\MeV}$, $m_\mathrm{Al} = \SI{25133}{\MeV}$, with the values of the
 four $a$ coefficients they provide. This approximation is valid in the region
-$E_e > \SI{85}{\MeV}$, which is sufficient to covers our whole DIO sample. We
+$E_e > \SI{85}{\MeV}$, which is sufficient to cover our whole DIO sample. We
 use this spectrum parametrisation to weight DIO events based on their energy.
 Similarly to the position weighting procedure, DIO events are first generated
 with a uniform energy distribution in the range $p \in [95,
@@ -145,8 +142,8 @@ shows the momentum spectrum of DIO electrons before and after weighting.
 
 The DIO sample is composed of $N_\mathrm{DIO} = 10^7$ events in total.
 Figure~\ref{fig:muon_dio_in_cydet} shows an example of a potential background
-event from DIO where the electron flies into the CyDet system and induces a
-trigger.
+event from DIO where an electron with an energy close to the conversion energy
+flies into the CyDet system and induces a trigger.
 
 \begin{figure}
     \centering
@@ -158,7 +155,7 @@ trigger.
 \subsubsection{Selection}
 The selection of DIO events is identical to the selection of conversion events.
 We require a fourfold coincidence in the CTH, and then apply a Gaussian smear to
-the true momentum of the electron to simulate track reconstruction. The same
+the true momentum of the electron to approximate track reconstruction. The same
 efficiency and acceptance factors as for signal events are applied to weight the
 sample and determine the absolute background contribution from the DIO process.
 
@@ -168,36 +165,40 @@ sample and determine the absolute background contribution from the DIO process.
 \subsubsection{Sample}
 
 Atmospheric muon events are simulated as discussed in
-Section~\ref{sec:cosmic_event_sampling}. Two samples are produced, one on the
+Section~\ref{sec:cosmic_event_sampling}. Two samples are produced, one around the
 entire surface of the CRV and one more densely concentrated on its upstream and
 downstream openings. Because of how rarely a sampled atmospheric event produces
-signal-like features, the atmospheric dataset needs to be by far the largest of
-the three, with $1 \times 10^9$ events generated on the envelope and $1.4 \times
-10^9$ on the openings.
+signal-like features, the atmospheric dataset is the largest of the three, with
+$1 \times 10^9$ events generated on the envelope and $1.4 \times 10^9$ on the
+openings.
 
 
 
 \begin{figure}
     \centering
-    
-    \caption{Cosmic ray-induced background with momentum $p=\SI{1}{\MeV/\clight}$.}
+    \includegraphics[width=0.6\textwidth]{chapter6/atmospheric_event_in_cydet.png}
+    \caption{Cosmic ray-induced background with momentum
+    $p=\SI{101}{\MeV/\clight}$. \hl{What particle type is it? What true/fitted
+    momentum does it have?}}
     \label{fig:cosmic_bg_in_cydet}
 \end{figure}
 
 \subsubsection{Selection}
 As for signal and DIO events, atmospheric events must at least pass the fourfold
-coincidence criterion. Hit information from the CDC is also used to select
-track candidates: the particle must reach at least the 5th innermost layer of
-the CDC but it should not hit the outermost layer. This selects tracks with a
-sufficient transverse momentum to be reconstructed, and rejects tracks that
-either have too large a momentum to be a signal event, or appear to enter the
-CDC from the outside. 
+coincidence criterion. Unlike signal and DIO events, hit information from the
+CDC is also used to select track candidates. Two criteria apply: the particle
+must reach at least the 5th innermost layer of the CDC, but it should not hit
+the outermost layer. Hence, we select tracks with sufficient transverse
+momentum to be reconstructed, but reject tracks that either have too large a
+momentum to be a signal event, or appear to enter the CDC from the outside. 
 
 In addition, the hit positions are used to reconstruct the track using a helix
 fit. The fitted trajectory should intersect the muon stopping target to pass the
-selection. The fit estimates the momentum of the particle, which is used in the
-analysis stage. Hence, for this sample, we do not apply a Gaussian smear to the
-true momentum but use the fit's estimated momentum instead.
+selection. Figure~\ref{fig:cosmic_bg_in_cydet} shows an example of an
+atmospheric event that would pass this selection. The helix fit estimates the
+momentum of the particle, which is used in the analysis stage. Hence, for this
+sample, we do not apply a Gaussian smear to the true momentum but use the
+estimated momentum from the fit instead.
 
 
 \subsection{Sample weighting}
@@ -206,46 +207,64 @@ expression because the branching ratio of $\mu$--$e$ conversion is
 conventionally normalised to $\mathcal{B}_\mathrm{capture}$.}
 
 Because they originate from different processes, the three MC samples must be
-weighted differently in order to determine the absolute contribution from each.
+individually weighted in order to determine the absolute contribution from each.
 The conversion and DIO processes both originate from the muons bound in the
 stopping target, hence we can express the total number of expected conversion
 and DIO electrons in terms of the total number of stopped muons $N_\mu$.
 The number of signal electrons, as a function of the conversion branching
 ratio $\mathcal{B}_\mathrm{conversion}$, is:
-$$
-N_{e^-}^\mathrm{conversion} = 
+\begin{equation}\label{eq:weight_signal}
+N_\mathrm{conversion} = 
 N_\mu \, \mathcal{B}_\mathrm{conversion} \, 
 \mathcal{B}_\mathrm{capture} \, f_\mathrm{coherent},
-$$
+\end{equation}
 where $\mathcal{B}_\mathrm{capture} = 0.61$ is the branching ratio of nuclear
 muon capture\sepfootnote{fn:conv_br_norm} and $f_\mathrm{coherent}=0.9$ is the
-fraction of conversions that are coherent. Similarly, the total number of DIO
-electrons can be expressed as:
-$$
-N_{e^-}^\mathrm{DIO} = N_\mu \, \mathcal{B}_\mathrm{DIO},
-$$
-where $\mathcal{B}_\mathrm{DIO} = 1 - \mathcal{B}_\mathrm{capture} -
-\mathcal{B}_\mathrm{conversion} \approx 0.39$ is the branching ratio of DIO.
+fraction of conversions that are coherent.
 
-\hl{ Explain how we get the number of DIO electrons in the sampled energy range
-    from the total number of DIO electrons.}
-
+Similarly, the total number of DIO electrons can be expressed as:
+$$
+N_\mathrm{DIO} = N_\mu \, \mathcal{B}_\mathrm{DIO},
+$$
+where $\mathcal{B}_\mathrm{DIO} = 1 - \mathcal{B}_\mathrm{capture} = 0.39$ is
+the branching ratio of DIO. Our simulation sample, however, only covers the part
+of the DIO spectrum where $E_e > \SI{95}{\MeV}$, so we cannot simply use
+$N_\mathrm{DIO}$ as the sample weight. The proper weight is given by 
+\begin{align}\label{eq:weight_dio}
+N_\mathrm{DIO}^{p>\SI{95}{\MeV}} &= N_\mathrm{DIO} \, P(E_e > \SI{95}{\MeV}) \\\nonumber
+&= N_\mathrm{DIO}\,\int_{\SI{95}{\MeV}}^{E_\mathrm{endpoint}} P(E_e)\,dE_e,
+\end{align}
+where $E_\mathrm{endpoint} = \SI{104.973}{\MeV}$ is the energy above which no
+DIO electron can be produced. The integral term in this equation is estimated by
+numerically integrating the Czarnecki parametrisation of
+Equation~\ref{eq:czarnecki_param}.
+%  to obtain $N_\mathrm{DIO}^{p>\SI{95}{\MeV}} = 0.67$ assuming $N_\mu = 1.5e16$.
 
 In the case of atmospheric muons, the backward MC procedure yields an absolute
-rate. This rate is multiplied by the total data acquisition (DAQ) time of the
-experiment to obtain the expected background count:
-$$
-N_\mathrm{atmospheric} = R \times T_\mathrm{DAQ},
-$$
-where $R$ is the total atmospheric background rate, and we set
-$T_\mathrm{DAQ}=146$ days, corresponding to $N_\mu = 1.5\times 10^{19}$, in this
-study. 
+rate $R$ for each event. This rate can simply be integrated over the total
+data acquisition time of the experiment $T_\mathrm{DAQ}$ to obtain the expected
+event count:
+\begin{equation}\label{eq:weight_atmospheric}
+N_\mathrm{atmospheric} = \int_0^{T_\mathrm{DAQ}} R dt = R \times T_\mathrm{DAQ}.
+\end{equation}
+
+In this study, we use the value of $N_\mu = 1.5\times 10^{16}$ estimated in the
+TDR for COMET Phase-I to reach a SES of $3\times 10^{-15}$. This can be
+equivalently expressed as a total run time of $T_\mathrm{DAQ}=142$~days. These
+two values are plugged into
+Equations~\ref{eq:weight_signal},~\ref{eq:weight_dio}
+and~\ref{eq:weight_atmospheric} to weight each sample throughout the analysis.
+
+
+
+%, and we set $T_\mathrm{DAQ}=146$
+%days, corresponding to $N_\mu = 1.5\times 10^{19}$, in this study. 
 
 \subsubsection{Trigger time window efficiencies}
 In order to take into account the trigger timing window, we assume that
 atmospheric muons irradiate the detector with a uniform time distribution.
-Hence, the time window efficiency factor is simply the average fraction of
-time when the trigger is active:
+Hence, the time window efficiency factor is the average fraction of time when
+the trigger is active:
 $$
 \epsilon_\text{time window}^\mathrm{atmospheric} =
 \frac{8}{9}\,\frac{1170 - 700}{1170} = \SI{36}{\percent}
@@ -254,19 +273,17 @@ assuming the trigger window is between 700 and \SI{1170}{\ns}, and where the
 factor $\frac{8}{9}$ arises from the bunch structure of the J-PARC main ring. In
 contrast, the efficiency factor for conversion and DIO electrons
 $\epsilon_\text{time window}^\text{conversion|DIO} \approx \SI{30}{\percent}$ is
-smaller because the time distribution of bound muons peaks around \SI{300}{\ns},
-before the trigger becomes active (see Figure~\ref{fig:timing_distributions}).
+smaller because the time distribution of bound muons is not uniform but peaks
+around \SI{300}{\ns}, before the trigger becomes active (see
+Figure~\ref{fig:timing_distributions}).
 
-
-\hl{ Review this and compare with Selection section of Signal sample. Eliminate
-    redundancies.}
 
 
 \section{Single event sensitivity}
 The single event sensitivity (SES) is defined as the value of the $\mu$--$e$
 conversion branching ratio required for the experiment to observe one signal
-event. It can be expressed in terms of the experimental acceptance $A_{\mu-e}$ and the
-total number of muons stopped in the stopping target $N_\mu$:
+event. It can be expressed in terms of the experimental acceptance $A_{\mu-e}$
+and the total number of muons stopped in the stopping target $N_\mu$:
 \begin{equation}
     \mathrm{SES} = \frac{1}{N_\mu\,A_{\mu-e}\,\mathcal{B}_\mathrm{capture}\,f_\mathrm{coherent}},
 \end{equation}
@@ -274,6 +291,8 @@ where $\mathcal{B}_\mathrm{capture} = 0.61$ is the branching ratio of nuclear
 muon capture and $f_\mathrm{coherent} = 0.9$ is the fraction of conversions
 expected to leave the nucleus in its ground state.
 
+
+\hl{Maybe refer to chapter 2}
 % Is it worth ELI5 here?
 % The net signal acceptance $A_{\mu-e}$ is the product of various factors stemming
 % from the experiment's design and inefficiencies in the processing,
@@ -285,50 +304,58 @@ expected to leave the nucleus in its ground state.
 \hl{ v We've already mentioned trigger selection and acceptance in the Selection
     subsec of every sample. Cut.}
     
-In this study, the CTH trigger mechanism was simulated by finding events
-involving a fourfold coincidence. The fraction of signal events which induce a
-trigger is defined as the geometrical acceptance $A_\mathrm{geom}$. In our
-simulation setup, the CTH contains 64 counters per layer, two layers
-in each module, one module at the upstream end of the CDC and the other
-downstream (256 counters in total). Our estimated geometrical acceptance is
-$$
-A_\mathrm{geom} \equiv \frac{\text{fourfold coincidences}}{N_\mathrm{signal}} = \SI{21}{\percent}.
-$$
-In comparison, the COMET Phase-I TDR~\cite{the_comet_collaboration_comet_2020}
-cites $A_\mathrm{geom} = \SI{26}{\percent}$ with the previous design of the CTH,
-which had 48 counters per layer. This reduced acceptance worsens the sensitivity
-of the experiment slightly. In this study, none of the other experimental
-aspects that contribute to the net acceptance were changed, hence we use the
-other factors of $A_{\mu-e}$ from the TDR, and only replace the value of
-$A_\mathrm{geom}$ with the newly estimated one. Values of the acceptance
-coefficients used in our study are shown in Table~\ref{tab:acceptance}. The net
-signal acceptance using these factors is $A_{\mu-e} = 0.032$.
 
-The number of muons stopped in the stopping target, $N_\mu$, is a function of
-the COMET beam power, the target material, the design of the
-transport system, and the total data-acquisition time. 
-The target material sets the yield of
-backward-going pions which will decay to muons of the right momentum to come at
-rest in the muon stopping target. This, combined with the transport system,
-determines the yield of stopped muons per proton collision $R_{\mu/p} \equiv
-\frac{\text{muons stopped}}{\text{proton on target}}$. Here, we use the
-MC5 dataset, a sample of $10^9$ POT collisions, to estimate $R_{\mu/p}=4.86
-\times 10^{-4}$.
-The beam power and data-acquisition time together determine the total number of proton
-collisions that will occur. COMET Phase-I requires $N_\mathrm{POT} = 3.15 \times
-10^{19}$ collisions in order to reach its sensitivity goal, corresponding to a
-data-acquisition time of $T=146$ days.
-These figures allow us to estimate the total number of stopped muons
-$$N_\mu = R_{\mu/p} \times N_\mathrm{POT} = 1.56\times 10^{16},$$
-which can be substituted into the SES formula:
-\begin{equation}\label{eq:my_ses}
-\mathrm{SES}
-=\frac{1}{N_\mu\,A_{\mu-e}\,\mathcal{B}_\mathrm{capture}\,f_\mathrm{coherent}}
-= 3.81\times10^{-15}.
-\end{equation}
-This value is slightly worse than the TDR estimation,
-$\mathrm{SES}_\mathrm{TDR}=3\times 10^{-15}$, because of our lower geometrical
-acceptance when using the new CTH design.
+Basically: we have lower geometrical acceptance than TDR. Give new/old values of
+net acceptance.
+
+Hence our SES is reduced for the same DAQ time: SES = 3.81e-15.
+
+I also discussed the stopped muon yield per POT. Do we have to talk about that?
+
+% In this study, the CTH trigger mechanism was simulated by finding events
+% involving a fourfold coincidence. The fraction of signal events which induce a
+% trigger is defined as the geometrical acceptance $A_\mathrm{geom}$. In our
+% simulation setup, the CTH contains 64 counters per layer, two layers
+% in each module, one module at the upstream end of the CDC and the other
+% downstream (256 counters in total). Our estimated geometrical acceptance is
+% $$
+% A_\mathrm{geom} \equiv \frac{\text{fourfold coincidences}}{N_\mathrm{signal}} = \SI{21}{\percent}.
+% $$
+% In comparison, the COMET Phase-I TDR~\cite{the_comet_collaboration_comet_2020}
+% cites $A_\mathrm{geom} = \SI{26}{\percent}$ with the previous design of the CTH,
+% which had 48 counters per layer. This reduced acceptance worsens the sensitivity
+% of the experiment slightly. In this study, none of the other experimental
+% aspects that contribute to the net acceptance were changed, hence we use the
+% other factors of $A_{\mu-e}$ from the TDR, and only replace the value of
+% $A_\mathrm{geom}$ with the newly estimated one. Values of the acceptance
+% coefficients used in our study are shown in Table~\ref{tab:acceptance}. The net
+% signal acceptance using these factors is $A_{\mu-e} = 0.032$.
+
+% The number of muons stopped in the stopping target, $N_\mu$, is a function of
+% the COMET beam power, the target material, the design of the
+% transport system, and the total data-acquisition time. 
+% The target material sets the yield of
+% backward-going pions which will decay to muons of the right momentum to come at
+% rest in the muon stopping target. This, combined with the transport system,
+% determines the yield of stopped muons per proton collision $R_{\mu/p} \equiv
+% \frac{\text{muons stopped}}{\text{proton on target}}$. Here, we use the
+% MC5 dataset, a sample of $10^9$ POT collisions, to estimate $R_{\mu/p}=4.86
+% \times 10^{-4}$.
+% The beam power and data-acquisition time together determine the total number of proton
+% collisions that will occur. COMET Phase-I requires $N_\mathrm{POT} = 3.15 \times
+% 10^{19}$ collisions in order to reach its sensitivity goal, corresponding to a
+% data-acquisition time of $T=146$ days.
+% These figures allow us to estimate the total number of stopped muons
+% $$N_\mu = R_{\mu/p} \times N_\mathrm{POT} = 1.56\times 10^{16},$$
+% which can be substituted into the SES formula:
+% \begin{equation}\label{eq:my_ses}
+% \mathrm{SES}
+% =\frac{1}{N_\mu\,A_{\mu-e}\,\mathcal{B}_\mathrm{capture}\,f_\mathrm{coherent}}
+% = 3.81\times10^{-15}.
+% \end{equation}
+% This value is slightly worse than the TDR estimation,
+% $\mathrm{SES}_\mathrm{TDR}=3\times 10^{-15}$, because of our lower geometrical
+% acceptance when using the new CTH design.
 
 % \begin{table}
 %     \centering\begin{tabular}{l|ccc}
