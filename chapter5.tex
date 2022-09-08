@@ -413,9 +413,13 @@ and properties of background events.
 
 Other acceptance criteria and inefficiencies of the CyDet system are taken into
 account by applying multiplicative factors to the estimated background rates.
-Specifically, the data acquisition, triggering and trigger time window
-efficiencies of Table~\ref{tab:acceptance} are used, reducing the overall
-background rate by a factor 0.28.
+Specifically, the hardware efficiency of Table~\ref{tab:acceptance} is used,
+reducing the overall background rate by a factor 0.81. To take into account the
+fact that the Phase-I trigger is only active during the $t \in [700, 1170]\,
+\si{\ns}$ window after each proton pulse, we weight the rate by a factor
+$\epsilon_\text{timing} = \frac{8}{9}\,\frac{1170 - 700}{1170} =
+\SI{36}{\percent}$, where the term $\frac{8}{9}$ arises from the bunch
+structure of the J-PARC main ring.
 
 \subsubsection{Backward sampling}
 The flux is sampled by backward MC simulation for all events that pass the above

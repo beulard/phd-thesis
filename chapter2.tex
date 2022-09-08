@@ -527,12 +527,12 @@ through COMET Phase-II and beyond.
 % doubt that it's a conversion signal.
 
 
-\section{Sensitivity}\label{sec:SES}
+\section{Sensitivity and run time}\label{sec:SES}
 
 The sensitivity of the COMET experiment is conventionally expressed as a
 \emph{single event sensitivity} (SES), which is defined as the value of the
 $\mu$--$e$ conversion branching ratio for which COMET expects to observe one
-event. SES takes into account the net acceptance of signal events by the
+event (smaller is better). SES takes into account the net acceptance of signal events by the
 detector system, however it does not say anything about the experimental
 backgrounds. When using SES as a figure of merit, a study of potential
 background sources is usually necessary to show that the expected number of
@@ -560,7 +560,7 @@ we obtain the single event sensitivity:
 \mathcal{B}_\mathrm{capture} \  f_\mathrm{coherent}}.
 \end{equation}
 In COMET Phase-I, the signal acceptance can be broken down into seven efficiency
-factors: geometrical acceptance, trigger, data acquisition (DAQ), track finding,
+factors: geometrical acceptance, hardware (trigger and data acquisition), track finding,
 track reconstruction quality cuts, momentum window and trigger time window.
 Table~\ref{tab:acceptance} lists these factors as they were estimated in the
 COMET Phase-I TDR~\cite[Section 10.1]{the_comet_collaboration_comet_2020}. 
@@ -568,21 +568,21 @@ COMET Phase-I TDR~\cite[Section 10.1]{the_comet_collaboration_comet_2020}.
 \begin{table}
     \centering
     \begin{adjustbox}{max width=1.1\textwidth,center}
-    \begin{tabular}{l|ccccccc|c}
+    \begin{tabular}{l|cccccc|c}
         \toprule
-        Factor & Geometrical & Trigger & DAQ & Track-finding & Cuts & Momentum
+        Factor & Geometrical & Hardware & Track-finding & Cuts & Momentum
         & Timing & Net
         \\ 
-        Efficiency & \SI{26}{\percent} & \SI{90}{\percent} & \SI{90}{\percent} &
+        Efficiency & \SI{26}{\percent} & \SI{81}{\percent} &
         \SI{99}{\percent} & \SI{70}{\percent} & \SI{93}{\percent} &
         \SI{30}{\percent} & \SI{4.1}{\percent} \\
         \bottomrule
     \end{tabular}
     \end{adjustbox}
-    \caption{ Efficiency factors used to determine the signal acceptance in
-    COMET Phase-I TDR~\cite{the_comet_collaboration_comet_2020}. The net acceptance
-    is the product of all efficiency factors. ``Cuts'' refers to track
-    quality cuts, used to reject events with irregular tracks that cannot
+    \caption{ Efficiency factors used to determine the signal acceptance in the
+    COMET Phase-I TDR~\cite{the_comet_collaboration_comet_2020}. The net
+    acceptance is the product of all efficiency factors. ``Cuts'' refers to
+    track quality cuts, used to reject events with irregular tracks that cannot
     be accurately fitted and reconstructed.}
     \label{tab:acceptance} 
 \end{table}

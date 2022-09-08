@@ -1,4 +1,4 @@
-\chapter{COMET Phase-I sensitivity and backgrounds}
+\chapter{COMET Phase-I Sensitivity and Background Estimates}
 
 With the framework to simulate backgrounds from atmospheric muons in place, we
 can now combine the results into a complete sensitivity and background
@@ -6,7 +6,7 @@ simulation study for COMET Phase-I. In this chapter, we discuss our simulation
 samples consisting of signal, decay in orbit (DIO), and atmospheric events, and
 present our resulting expectations of the performance of Phase-I.
 
-\section{Simulation setup}
+\section{Data samples}
 Three simulation samples are produced for this study. A $\mu$--$e$ conversion
 sample, a DIO sample and an atmospheric muon sample. All three are simulated in
 the geometrical world shown in Figure~\ref{fig:bmc_geometry}. This geometry
@@ -248,17 +248,14 @@ event count:
 N_\mathrm{atmospheric} = \int_0^{T_\mathrm{DAQ}} R dt = R \times T_\mathrm{DAQ}.
 \end{equation}
 
-In this study, we use the value of $N_\mu = 1.5\times 10^{16}$ estimated in the
-TDR for COMET Phase-I to reach a SES of $3\times 10^{-15}$. This can be
-equivalently expressed as a total run time of $T_\mathrm{DAQ}=142$~days. These
-two values are plugged into
+In this study, we use the value of $T_\mathrm{DAQ} = 146$~days required for
+Phase-I to reach its sensitivity goal according to the TDR. This run time
+corresponds to $N_\mu = 1.5 \times 10^{16}$. In the subsequent analysis, we
+substitute these two values into
 Equations~\ref{eq:weight_signal},~\ref{eq:weight_dio}
-and~\ref{eq:weight_atmospheric} to weight each sample throughout the analysis.
+and~\ref{eq:weight_atmospheric} to weight each sample.
 
 
-
-%, and we set $T_\mathrm{DAQ}=146$
-%days, corresponding to $N_\mu = 1.5\times 10^{19}$, in this study. 
 
 \subsubsection{Trigger time window efficiencies}
 In order to take into account the trigger timing window, we assume that
@@ -272,7 +269,7 @@ $$
 assuming the trigger window is between 700 and \SI{1170}{\ns}, and where the
 factor $\frac{8}{9}$ arises from the bunch structure of the J-PARC main ring. In
 contrast, the efficiency factor for conversion and DIO electrons
-$\epsilon_\text{time window}^\text{conversion|DIO} \approx \SI{30}{\percent}$ is
+$\epsilon_\text{time window}^\text{conversion|DIO} = \SI{30}{\percent}$ is
 smaller because the time distribution of bound muons is not uniform but peaks
 around \SI{300}{\ns}, before the trigger becomes active (see
 Figure~\ref{fig:timing_distributions}).
@@ -280,37 +277,33 @@ Figure~\ref{fig:timing_distributions}).
 
 
 \section{Single event sensitivity}
-The single event sensitivity (SES) is defined as the value of the $\mu$--$e$
-conversion branching ratio required for the experiment to observe one signal
-event. It can be expressed in terms of the experimental acceptance $A_{\mu-e}$
-and the total number of muons stopped in the stopping target $N_\mu$:
+As discussed in Section~\ref{sec:SES}, the single event sensitivity (SES) is
+defined as the value of the $\mu$--$e$ conversion branching ratio required for
+the experiment to observe one signal event. It can be expressed in terms of the
+experimental acceptance $A_{\mu-e}$ and the total number of muons stopped in the
+stopping target $N_\mu$:
 \begin{equation}
-    \mathrm{SES} = \frac{1}{N_\mu\,A_{\mu-e}\,\mathcal{B}_\mathrm{capture}\,f_\mathrm{coherent}},
+\mathrm{SES} = 
+\frac{1}{N_\mu\,A_{\mu-e}\,\mathcal{B}_\mathrm{capture}\,f_\mathrm{coherent}},
 \end{equation}
-where $\mathcal{B}_\mathrm{capture} = 0.61$ is the branching ratio of nuclear
-muon capture and $f_\mathrm{coherent} = 0.9$ is the fraction of conversions
-expected to leave the nucleus in its ground state.
+where $\mathcal{B}_\mathrm{capture} = 0.61$ and $f_\mathrm{coherent} = 0.9$.
+
+In this simulation study, we found the geometrical acceptance $A_\mathrm{geom}$
+of the CyDet with the new CTH layout to be reduced from \SI{26}{\percent} to
+\SI{21}{\percent}. Hence, the net signal acceptance $A_{\mu-e}$ decreases from
+\SI{4.1}{\percent} to \SI{3.3}{\percent}. On the other hand, the yield of
+stopped muons per proton collision was also estimated from the MC5 dataset to be
+$R_{\mu / p} = 4.86 \times 10^{-4}$, which is slightly higher than the TDR value
+by a factor $1.03$. Overall, although the total number of bound muons is
+increased for the same run time, it is outweighed by the decrease in acceptance.
+Keeping $T_\mathrm{DAQ}$ fixed at 146 days, we obtain $N_\mu = 1.53 \times
+10^{16}$, hence our estimation of the COMET Phase-I sensitivity is
+$$
+\mathrm{SES} = 3.61 \times 10^{-15}.
+$$
 
 
-\hl{Maybe refer to chapter 2}
-% Is it worth ELI5 here?
-% The net signal acceptance $A_{\mu-e}$ is the product of various factors stemming
-% from the experiment's design and inefficiencies in the processing,
-% reconstruction and selection of candidate events. 
 
-% How do we approach the fact that CTH geom has changed so our geom acceptance
-% is lower?
-
-\hl{ v We've already mentioned trigger selection and acceptance in the Selection
-    subsec of every sample. Cut.}
-    
-
-Basically: we have lower geometrical acceptance than TDR. Give new/old values of
-net acceptance.
-
-Hence our SES is reduced for the same DAQ time: SES = 3.81e-15.
-
-I also discussed the stopped muon yield per POT. Do we have to talk about that?
 
 % In this study, the CTH trigger mechanism was simulated by finding events
 % involving a fourfold coincidence. The fraction of signal events which induce a
@@ -391,15 +384,49 @@ based on the primary particle ($\mu^-$ or $\mu^+$) and whether they hit the CRV.
 The first stage of the CTH, containing only scintillator counters and no
 Cherenkov counters, is unable to differentiate muons from electrons. Hence,
 signal-like tracks induced by sneaking atmospheric $\mu^+$ are a major source of
-backgrounds in this situation. \hl{Refer to figure}.
+backgrounds in this situation. 
+
+Figure~\ref{fig:log_spectra} shows the momentum spectrum of signal, DIO and
+atmospheric events around \SI{105}{\MeV/\clight}.
+Figure~\ref{fig:log_spectrum_nocuts} shows that in the absence of the CRV,
+atmospheric backgrounds overwhelm the detector and outnumber signal events by
+three orders of magnitude. In the presence of the CRV, and assuming an
+efficiency of \SI{99.99}{\percent}, atmospheric backgrounds are suppressed by a
+factor 1000, but they still appear to be more numerous than conversion events in
+the momentum window, as shown in
+Figure~\ref{fig:log_spectrum_cuts_except_directionID}. However, by investigating
+where these background events come from, we will see that there are ways to
+identify some of them and reduce their contribution below the single-event
+threshold.
 
 \begin{figure}
     \centering
-    
-    \caption{Log spectrum.}
-    \label{fig:log_spectrum}
+        
+    \begin{subfigure}[t]{0.49\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{chapter6/thesis_conversion_search_momentum_distribution_nocuts_v5.pdf}
+        \caption{ In the absence of the CRV, ignoring the trigger time window
+            and track quality cuts.}
+        \label{fig:log_spectrum_nocuts}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[t]{0.49\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{chapter6/thesis_conversion_search_momentum_distribution_withcuts_except_directionID.pdf}
+        \caption{ With the trigger time window, track quality cuts, and assuming
+            a \SI{99.99}{\percent} efficient CRV. 
+            %Log spectrum with cuts and CRV except direction ID.}
+        }
+        \label{fig:log_spectrum_cuts_except_directionID}
+    \end{subfigure}
+    \caption{ Momentum spectrum of conversion, DIO and atmospheric events around
+    the conversion energy, integrated over the Phase-I run time $T_\mathrm{DAQ}
+    = 146$~days, assuming $\mathcal{B}_\mathrm{conversion} = 3.61\times
+    10^{-15}$. For atmospheric events, we compare the absence and presence of
+    the CRV in rejecting backgrounds. We also show the effect of the time
+    trigger window and track quality cuts on the signal and DIO contributions. }
+    \label{fig:log_spectra}
 \end{figure}
-
 
 \section{Discussion}
 
