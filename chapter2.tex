@@ -529,24 +529,41 @@ through COMET Phase-II and beyond.
 
 \section{Sensitivity}\label{sec:SES}
 
-The sensitivity of the COMET experiment is expressed as a \emph{single event
-sensitivity} (SES), which indicates the value of the $\mu$--$e$
-conversion branching ratio for which COMET expects to observe one event. Using
-single event sensitivity makes sense if the expected number of background events
-is less than one, which was discussed in the previous section.
+The sensitivity of the COMET experiment is conventionally expressed as a
+\emph{single event sensitivity} (SES), which is defined as the value of the
+$\mu$--$e$ conversion branching ratio for which COMET expects to observe one
+event. SES takes into account the net acceptance of signal events by the
+detector system, however it does not say anything about the experimental
+backgrounds. When using SES as a figure of merit, a study of potential
+background sources is usually necessary to show that the expected number of
+background events is not greater than one. 
 
-The SES is inversely proportional to the net signal acceptance of the detector
-system. The signal acceptance can be broken down into seven efficiency factors:
-geometrical acceptance, trigger efficiency, data acquisition (DAQ) efficiency,
-track finding efficiency, track reconstruction quality cuts, momentum window
-efficiency and trigger time window efficiency. Table~\ref{tab:acceptance} lists
-these factors as they were estimated in the COMET Phase-I TDR~\cite[Section
-10.1]{the_comet_collaboration_comet_2020}.
-
-% This does not fit here... Should we have a section on acceptance?
-% Events that contain a signal-like track are subject to quality cuts based on how
-% accurately the trajectory was reconstructed. Overall, the track quality cuts retain
-% \SI{70}{\percent} of candidate events.
+The total number of coherent $\mu$--$e$ conversions produced by a
+population of $N_\mu$ bound muons can be expressed as
+$$
+N_\mathrm{conversion} = N_\mu \cdot \mathcal{B}_\mathrm{conversion} \cdot
+\mathcal{B}_\mathrm{capture} \cdot f_\mathrm{coherent},
+$$
+where $\mathcal{B}_\mathrm{conversion}$ is the conversion branching ratio
+normalised to the branching ratio of nuclear muon capture
+$\mathcal{B}_\mathrm{capture}$, and $f_\mathrm{coherent}$ is the fraction of
+conversions estimated to occur coherently and leave the nucleus in its ground
+state.
+The number of conversion electrons that will be observed by the detector is then
+$N_\mathrm{obs} = N_\mathrm{conversion}\, A_{\mu-e}$, where $A_{\mu-e}$ is the
+detector's net signal acceptance. If we require $N_\mathrm{obs} = 1$ and
+rearrange to find the corresponding value of $\mathcal{B}_\mathrm{conversion}$,
+we obtain the single event sensitivity:
+\begin{equation}\label{eq:ses}
+\mathrm{SES} \, \equiv \, \mathcal{B}_\mathrm{conversion}^{N_\mathrm{obs}=1}
+ = \, \frac{1}{N_\mu \  A_{\mu-e} \  
+\mathcal{B}_\mathrm{capture} \  f_\mathrm{coherent}}.
+\end{equation}
+In COMET Phase-I, the signal acceptance can be broken down into seven efficiency
+factors: geometrical acceptance, trigger, data acquisition (DAQ), track finding,
+track reconstruction quality cuts, momentum window and trigger time window.
+Table~\ref{tab:acceptance} lists these factors as they were estimated in the
+COMET Phase-I TDR~\cite[Section 10.1]{the_comet_collaboration_comet_2020}. 
 
 \begin{table}
     \centering
@@ -570,21 +587,15 @@ these factors as they were estimated in the COMET Phase-I TDR~\cite[Section
     \label{tab:acceptance} 
 \end{table}
 
-From the total number of stopped muons $N_\mu$ and net signal acceptance
-$A_{\mu-e}$ of the detector system, the single event sensitivity of COMET can be
-expressed as
-\begin{equation}
-    \mathrm{SES} = \frac{1}{N_\mu \  A_{\mu-e} \  
-    \mathcal{B}_\mathrm{capture} \  f_\mathrm{coherent}}
-\end{equation}
-where $\mathcal{B}_\mathrm{capture}$ is the branching ratio of nuclear muon capture,
-and $f_\mathrm{coherent}$ is the fraction of conversions estimated to occur
-coherently and leave the nucleus in its ground state.
-
-
-
-COMET Phase-I with the Cylindrical Detector is expected to reach a SES of $3
-\times 10^{-15}$. Given the values listed in the Phase-I TDR: $A_{\mu-e} =
-0.041$, $\mathcal{B}_\mathrm{capture} = 0.61$ and $f_\mathrm{coherent} = 0.9$,
-reaching the sensitivity goal requires $N_\mu = 1.5 \times 10^{16}$ stopped
-muons, equivalent to a data acquisition period of 146 days.
+From the net signal acceptance $A_{\mu-e} = \SI{4.1}{\percent}$, we can now
+estimate the total data acquisition run time required to reach the sensitivity
+goal of the experiment, $\mathrm{SES} = 3\times 10^{-15}$, using
+Equation~\ref{eq:ses}. The required number of bound muons is thus $N_\mu = 1.5
+\times 10^{16}$. This quantity can be related to the total run time $T$ via the
+proton beam current $I_p = \SI{0.4}{\micro\ampere}$ and the yield of stopped
+muons per collision $R_{\mu / p} = 4.7\times 10^{-4}$:
+$$
+N_\mu = T \cdot \frac{I_p}{e} \cdot R_{\mu / p}.
+$$
+This equation is rearranged for $T$ to yield $T = 146$~days of data acquisition
+for a Phase-I SES of $3 \times 10^{-15}$.
