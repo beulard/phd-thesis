@@ -14,7 +14,7 @@ differs from the older TDR design~\cite{the_comet_collaboration_comet_2020} by
 the number of counters in the CTH. Here, each layer of the CTH has 64 counters
 instead of the original 48, which mainly affects the detector's geometrical
 acceptance. In addition, the outer layer of the CTH is composed of plastic
-scintillator counters rather than the originally planned Cherenkov counters. As
+scintillation counters rather than the originally planned Cherenkov counters. As
 we shall see, this has an important effect on the detector's ability to
 discriminate atmospheric anti-muons from conversion electrons.
 
@@ -179,7 +179,8 @@ openings.
     \includegraphics[width=0.6\textwidth]{chapter6/atmospheric_event_in_cydet.png}
     \caption{Cosmic ray-induced background with momentum
     $p=\SI{101}{\MeV/\clight}$. \hl{What particle type is it? What true/fitted
-    momentum does it have?}}
+    momentum does it have? Where does it enter, first interact to create this
+    signal-like track?}}
     \label{fig:cosmic_bg_in_cydet}
 \end{figure}
 
@@ -200,8 +201,14 @@ momentum of the particle, which is used in the analysis stage. Hence, for this
 sample, we do not apply a Gaussian smear to the true momentum but use the
 estimated momentum from the fit instead.
 
+\subsubsection{Rate estimation}
+As discussed in Section~\ref{sec:bmc_conversion_bg_rate}, the rate for each selected
+event is estimated by backward MC simulation. The backward propagation and flux
+sampling is repeated 5000 times for every event, which yields an average flux
+and a statistical error shown in the results.
 
-\subsection{Sample weighting}
+
+\subsection{Sample weighting}\label{sec:sample_weighting}
 \sepfootnotecontent{fn:conv_br_norm}{The nuclear muon capture branching ratio appears in this
 expression because the branching ratio of $\mu$--$e$ conversion is
 conventionally normalised to $\mathcal{B}_\mathrm{capture}$.}
@@ -248,6 +255,8 @@ event count:
 N_\mathrm{atmospheric} = \int_0^{T_\mathrm{DAQ}} R dt = R \times T_\mathrm{DAQ}.
 \end{equation}
 
+\hl{v This is still a lie... We say otherwise two paragraphs below.}
+
 In this study, we use the value of $T_\mathrm{DAQ} = 146$~days required for
 Phase-I to reach its sensitivity goal according to the TDR. This run time
 corresponds to $N_\mu = 1.5 \times 10^{16}$. In the subsequent analysis, we
@@ -282,10 +291,10 @@ defined as the value of the $\mu$--$e$ conversion branching ratio required for
 the experiment to observe one signal event. It can be expressed in terms of the
 experimental acceptance $A_{\mu-e}$ and the total number of muons stopped in the
 stopping target $N_\mu$:
-\begin{equation}
+\begin{equation*}
 \mathrm{SES} = 
 \frac{1}{N_\mu\,A_{\mu-e}\,\mathcal{B}_\mathrm{capture}\,f_\mathrm{coherent}},
-\end{equation}
+\end{equation*}
 where $\mathcal{B}_\mathrm{capture} = 0.61$ and $f_\mathrm{coherent} = 0.9$.
 
 In this simulation study, we found the geometrical acceptance $A_\mathrm{geom}$
@@ -303,101 +312,14 @@ $$
 $$
 
 
+\section{Analysis}
 
+After applying the efficiency factors and weighting each sample by the total
+number of expected events as per Section~\ref{sec:sample_weighting}, we are able
+to determine the absolute contribution from each source over a given data
+acquisition period.
 
-% In this study, the CTH trigger mechanism was simulated by finding events
-% involving a fourfold coincidence. The fraction of signal events which induce a
-% trigger is defined as the geometrical acceptance $A_\mathrm{geom}$. In our
-% simulation setup, the CTH contains 64 counters per layer, two layers
-% in each module, one module at the upstream end of the CDC and the other
-% downstream (256 counters in total). Our estimated geometrical acceptance is
-% $$
-% A_\mathrm{geom} \equiv \frac{\text{fourfold coincidences}}{N_\mathrm{signal}} = \SI{21}{\percent}.
-% $$
-% In comparison, the COMET Phase-I TDR~\cite{the_comet_collaboration_comet_2020}
-% cites $A_\mathrm{geom} = \SI{26}{\percent}$ with the previous design of the CTH,
-% which had 48 counters per layer. This reduced acceptance worsens the sensitivity
-% of the experiment slightly. In this study, none of the other experimental
-% aspects that contribute to the net acceptance were changed, hence we use the
-% other factors of $A_{\mu-e}$ from the TDR, and only replace the value of
-% $A_\mathrm{geom}$ with the newly estimated one. Values of the acceptance
-% coefficients used in our study are shown in Table~\ref{tab:acceptance}. The net
-% signal acceptance using these factors is $A_{\mu-e} = 0.032$.
-
-% The number of muons stopped in the stopping target, $N_\mu$, is a function of
-% the COMET beam power, the target material, the design of the
-% transport system, and the total data-acquisition time. 
-% The target material sets the yield of
-% backward-going pions which will decay to muons of the right momentum to come at
-% rest in the muon stopping target. This, combined with the transport system,
-% determines the yield of stopped muons per proton collision $R_{\mu/p} \equiv
-% \frac{\text{muons stopped}}{\text{proton on target}}$. Here, we use the
-% MC5 dataset, a sample of $10^9$ POT collisions, to estimate $R_{\mu/p}=4.86
-% \times 10^{-4}$.
-% The beam power and data-acquisition time together determine the total number of proton
-% collisions that will occur. COMET Phase-I requires $N_\mathrm{POT} = 3.15 \times
-% 10^{19}$ collisions in order to reach its sensitivity goal, corresponding to a
-% data-acquisition time of $T=146$ days.
-% These figures allow us to estimate the total number of stopped muons
-% $$N_\mu = R_{\mu/p} \times N_\mathrm{POT} = 1.56\times 10^{16},$$
-% which can be substituted into the SES formula:
-% \begin{equation}\label{eq:my_ses}
-% \mathrm{SES}
-% =\frac{1}{N_\mu\,A_{\mu-e}\,\mathcal{B}_\mathrm{capture}\,f_\mathrm{coherent}}
-% = 3.81\times10^{-15}.
-% \end{equation}
-% This value is slightly worse than the TDR estimation,
-% $\mathrm{SES}_\mathrm{TDR}=3\times 10^{-15}$, because of our lower geometrical
-% acceptance when using the new CTH design.
-
-% \begin{table}
-%     \centering\begin{tabular}{l|ccc}
-%         \toprule
-%         a&b&c&d\\\midrule
-%         a&b&c&d\\
-%         \bottomrule
-%     \end{tabular}
-%     \caption{ Acceptance coefficients used to estimate the single event
-%     sensitivity in Equation~\ref{eq:my_ses}. These also apply to the
-%     decay-in-orbit background rate estimation. }
-%     \label{tab:ses_efficiency_factors}
-% \end{table}
-
-
-
-\section{Momentum spectra}
-Because the signal has a clear mono-energetic signature, a precise measurement
-of the momentum of candidate tracks helps to discriminate signal from
-backgrounds. Figure~\ref{fig:log_spectrum} shows the momentum spectrum
-for candidate conversion, DIO and atmospheric events.
-
-Each momentum spectrum is weighted by the corresponding sample weight to obtain
-the count integrated over the Phase-I data acquisition period. The signal and
-DIO samples are also scaled by the track acceptance factors because
-reconstruction isn't simulated. In the atmospheric sample, since we fit the
-track, we don't apply the momentum smearing, nor the track
-finding and track quality cut efficiency factors (we apply only the trigger/DAQ
-and trigger time window efficiency factors). 
-
-For the atmospheric sample, we also reduce the background rate of certain events
-based on the primary particle ($\mu^-$ or $\mu^+$) and whether they hit the CRV.
-The first stage of the CTH, containing only scintillator counters and no
-Cherenkov counters, is unable to differentiate muons from electrons. Hence,
-signal-like tracks induced by sneaking atmospheric $\mu^+$ are a major source of
-backgrounds in this situation. 
-
-Figure~\ref{fig:log_spectra} shows the momentum spectrum of signal, DIO and
-atmospheric events around \SI{105}{\MeV/\clight}.
-Figure~\ref{fig:log_spectrum_nocuts} shows that in the absence of the CRV,
-atmospheric backgrounds overwhelm the detector and outnumber signal events by
-three orders of magnitude. In the presence of the CRV, and assuming an
-efficiency of \SI{99.99}{\percent}, atmospheric backgrounds are suppressed by a
-factor 1000, but they still appear to be more numerous than conversion events in
-the momentum window, as shown in
-Figure~\ref{fig:log_spectrum_cuts_except_directionID}. However, by investigating
-where these background events come from, we will see that there are ways to
-identify some of them and reduce their contribution below the single-event
-threshold.
+\subsection{Momentum spectrum} %??
 
 \begin{figure}
     \centering
@@ -405,35 +327,107 @@ threshold.
     \begin{subfigure}[t]{0.49\textwidth}
         \centering
         \includegraphics[width=\textwidth]{chapter6/thesis_conversion_search_momentum_distribution_nocuts_v5.pdf}
-        \caption{ In the absence of the CRV, ignoring the trigger time window
-            and track quality cuts.}
+        \caption{ In the absence of event rejection by the CRV, the CTH trigger, and the timing window. }
         \label{fig:log_spectrum_nocuts}
     \end{subfigure}
     \hfill
     \begin{subfigure}[t]{0.49\textwidth}
         \centering
         \includegraphics[width=\textwidth]{chapter6/thesis_conversion_search_momentum_distribution_withcuts_except_directionID.pdf}
-        \caption{ With the trigger time window, track quality cuts, and assuming
-            a \SI{99.99}{\percent} efficient CRV. 
-            %Log spectrum with cuts and CRV except direction ID.}
+        \caption{ With a \SI{99.99}{\percent}-efficient CRV. 
         }
         \label{fig:log_spectrum_cuts_except_directionID}
     \end{subfigure}
     \caption{ Momentum spectrum of conversion, DIO and atmospheric events around
     the conversion energy, integrated over the Phase-I run time $T_\mathrm{DAQ}
     = 146$~days, assuming $\mathcal{B}_\mathrm{conversion} = 3.61\times
-    10^{-15}$. For atmospheric events, we compare the absence and presence of
-    the CRV in rejecting backgrounds. We also show the effect of the time
-    trigger window and track quality cuts on the signal and DIO contributions. }
+    10^{-15}$. Error bars on the atmospheric event bins show the statistical
+    uncertainty from the backward MC flux estimation.
+    % For atmospheric events, we compare the absence and presence of
+    % the CRV in rejecting backgrounds. We also show the effect of the time
+    % trigger window and track quality cuts on the signal and DIO contributions. 
+    }
     \label{fig:log_spectra}
 \end{figure}
 
-\section{Discussion}
+
+The absolute event counts from conversion, DIO and atmospheric muon events are
+plotted as a function of the reconstructed track momentum in
+Figure~\ref{fig:log_spectra}. Note again that for conversion and DIO, $p$ is the
+smeared momentum of the electron as it enters the CDC, whereas we use the
+momentum reconstructed via a helix fit for atmospheric muon events.
+
+
+In order to determine the effect of the CRV on the atmospheric background, as in
+Figure~\ref{fig:log_spectrum_cuts_except_directionID}, we apply a weight to each
+event based on whether it passed through the active material of the CRV. For
+events that produce hits in the CRV, the weight is the assumed inefficiency of
+the CRV, $\epsilon_\mathrm{CRV} = 1 - \SI{99.99}{\percent} = 10^{-4}$. Events
+that sneak into the detector are given a weight of 1 since the CRV cannot veto
+them. Similarly, to simulate the absence of the CRV, as in
+Figure~\ref{fig:log_spectrum_nocuts}, all atmospheric muon events have a weight
+of 1, corresponding to a \SI{0}{\percent}-efficient CRV.
+
+
+
+\sepfootnotecontent{fn:bg_study_rmc}{ We chose not to show the RMC spectrum in
+    our plots because the contribution from RMC is smaller than that of DIO by a
+    factor of 5~\cite{the_comet_collaboration_comet_2020}.}
+
+
+
+% However, by investigating where
+% these background events come from, we will see that there are ways to identify
+% some of them and reduce their contribution below the single-event threshold.
+
+The reconstructed momentum of the candidate track is one of the most important
+criteria in discriminating signal electrons from DIO or
+RMC\sepfootnote{fn:bg_study_rmc} electrons, because the energy spectra of the
+latter two fall off sharply close to the conversion energy. In Phase-I, the
+momentum window within which an event is counted is $p \in [103.6,
+106.0]\,\si{\MeV/\clight}$. This cut eliminates the overwhelming majority of DIO
+and RMC backgrounds. However, atmospheric background events appear to be uniformly
+distributed in this region, making the cut ineffective in rejecting them. 
+
+Figure~\ref{fig:log_spectrum_nocuts} shows that in the absence of the CRV,
+atmospheric backgrounds overwhelm the detector and outnumber conversion events
+by three orders of magnitude in the momentum window. In the presence of the CRV,
+and assuming an efficiency of \SI{99.99}{\percent}
+(Figure~\ref{fig:log_spectrum_cuts_except_directionID}), atmospheric backgrounds
+are suppressed by a factor $10^3$. However, their integrated count still exceeds
+one, making the $\mu$--$e$ conversion search impossible unless there is an
+additional way to identify them.
+
+
+% This is like a hard conclusion to swallow, should go at the end of the section
+% so we can move straight to the ways in which we can try to identify atmos.
+
+
+% For the atmospheric sample, we also reduce the background rate of certain events
+% based on the primary particle ($\mu^-$ or $\mu^+$) and whether they hit the CRV.
+% The first stage of the CTH, containing only scintillation counters and no
+% Cherenkov counters, is unable to differentiate muons from electrons. Hence,
+% signal-like tracks induced by sneaking atmospheric $\mu^+$ are a major source of
+% backgrounds in this situation. 
+
+
+
+
+
+
+\subsection{Particle identification}
+%\subsection{Atmospheric \texorpdfstring{$\mu^+$}{anti-muon} backgrounds and particle identification}
+
+In Figure~\ref{fig:log_spectrum_cuts_except_directionID}, we assumed that the
+CyDet has no way of discriminating between electrons, muons, and anti-muons.
+This is partly true since the first stage of the CTH will be composed of only
+scintillation counters. These cannot help to identify the particle type like
+Cherenkov counters, which are planned to replace one layer of scintillators in
+the second stage of the CTH.
 
 We investigate the effect of direction identification and CRV efficiency on the
 background rate.
 
-\subsection{Atmospheric $\mu^+$ backgrounds and particle identification}
 Positive muons can produce signal-like tracks in the CyDet by following the
 reverse path of a conversion electron. Why? I have to explain exactly why.
 Candidate signal electron trajectories originate in the muon stopping target,
@@ -456,13 +450,27 @@ atmospheric mu+ events with, but reduces the net signal acceptance by a
 factor 0.87.
 
 
+
 \subsection{CRV efficiency}
-The efficiency of the CRV determines the fraction of atmospheric events which
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.5\textwidth]{chapter6/bg_count_vs_crv_efficiency.pdf}
+    \caption{ Integrated atmospheric background count as a function of the CRV
+        efficiency. The lower bound arises from sneaking events which cannot be
+        identified by the CRV. More accurate particle identification by the
+        CyDet helps to reduce this sneaking component, e.g.\ by discriminating
+        muons from electrons.}
+    \label{fig:bg_count_vs_crv_efficiency}
+\end{figure}
+
+The CRV efficiency determines the fraction of atmospheric events which
 can enter the CyDet through the active parts of the CRV while not being vetoed.
+Although we have assumed so far that the CRV is \SI{99.99}{\percent}
+efficient, it will not necessarily be the case in practice.
+
 Note that the portion of background events produced by atmospheric muons
 sneaking through the CRV openings is unaffected by how efficient the CRV is.
 These backgrounds can only be reduced by increasing the coverage of the CRV,
-which is inherently limited by the size of the beam pipe.
-
-
-
+which has inherent limitations since the beam must enter on one side and exit
+on the other.
