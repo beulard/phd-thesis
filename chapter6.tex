@@ -147,8 +147,21 @@ flies into the CyDet system and induces a trigger.
 
 \begin{figure}
     \centering
-    \includegraphics[width=0.6\textwidth]{chapter6/dio_event_in_cydet.png}
-    \caption{Potential DIO-induced background with momentum $p=\SI{102}{\MeV/\clight}$.}
+    %\includegraphics[width=0.6\textwidth]{chapter6/dio_event_in_cydet.png}
+    % Event 469 in first DIO_95 root file
+    \begin{subfigure}{0.522\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{chapter6/dio_track_zy.pdf}
+        \caption{$z$--$r$ projection, where $r = \sqrt{x^2+y^2}$.}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}{0.467\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{chapter6/dio_track_xy.pdf}
+        \caption{$x$--$y$ projection.}
+    \end{subfigure}
+    \caption{ Potential DIO-induced background with momentum
+        $p=\SI{103.7}{\MeV/\clight}$.}
     \label{fig:muon_dio_in_cydet}
 \end{figure}
 
@@ -173,15 +186,29 @@ $1 \times 10^9$ events generated on the envelope and $1.4 \times 10^9$ on the
 openings.
 
 
-
 \begin{figure}
     \centering
-    \includegraphics[width=0.6\textwidth]{chapter6/atmospheric_event_in_cydet.png}
-    \caption{Cosmic ray-induced background with momentum
-    $p=\SI{101}{\MeV/\clight}$. \hl{What particle type is it? What true/fitted
-    momentum does it have? Where does it enter, first interact to create this
-    signal-like track?}}
-    \label{fig:cosmic_bg_in_cydet}
+    %\includegraphics[width=0.6\textwidth]{chapter6/sneaking_mu-_event_0.png}
+    \begin{subfigure}{0.56\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{chapter6/mu-_track_zy.pdf}
+        \caption{$z$--$r$ projection, where $r = \sqrt{x^2+y^2}$.}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}{0.43\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{chapter6/mu-_track_xy.pdf}
+        \caption{$x$--$y$ projection.}
+    \end{subfigure}
+    % Event 22855 in run 7833 
+    % (select_sneaking_DSoffset_7000-7999_checkveto+cdc.root.json)
+    % Fitted momentum: 105.5 MeV/c
+    \caption{ Sneaking atmospheric $\mu^-$ background with a reconstructed
+        momentum $p=\SI{103.5}{\MeV/\clight}$. It enters through the downstream
+        opening of the CRV and scatters in the aluminium CTH support structure.
+        Then, it flies close to the muon stopping target, produces a track in
+        the CDC and a fourfold coincidence in the CTH. }
+    \label{fig:cosmic_muon_bg_in_cydet}
 \end{figure}
 
 \subsubsection{Selection}
@@ -195,7 +222,7 @@ momentum to be a signal event, or appear to enter the CDC from the outside.
 
 In addition, the hit positions are used to reconstruct the track using a helix
 fit. The fitted trajectory should intersect the muon stopping target to pass the
-selection. Figure~\ref{fig:cosmic_bg_in_cydet} shows an example of an
+selection. Figure~\ref{fig:cosmic_muon_bg_in_cydet} shows an example of an
 atmospheric event that would pass this selection. The helix fit estimates the
 momentum of the particle, which is used in the analysis stage. Hence, for this
 sample, we do not apply a Gaussian smear to the true momentum but use the
@@ -362,17 +389,18 @@ In order to determine the effect of the CRV on the atmospheric background, as in
 Figure~\ref{fig:log_spectrum_cuts_except_directionID}, we apply a weight to each
 event based on whether it passed through the active material of the CRV. For
 events that produce hits in the CRV, the weight is the assumed inefficiency of
-the CRV, $\epsilon_\mathrm{CRV} = 1 - \SI{99.99}{\percent} = 10^{-4}$. Events
-that sneak into the detector are given a weight of 1 since the CRV cannot veto
-them. Similarly, to simulate the absence of the CRV, as in
-Figure~\ref{fig:log_spectrum_nocuts}, all atmospheric muon events have a weight
-of 1, corresponding to a \SI{0}{\percent}-efficient CRV.
+the CRV: $1 - (\SI{99.99}{\percent}) = 10^{-4}$. Events that sneak into the
+detector are given a weight of 1 since the CRV cannot veto them. Similarly, to
+simulate the absence of the CRV, as in Figure~\ref{fig:log_spectrum_nocuts}, all
+atmospheric muon events have a weight of 1, corresponding to a
+\SI{0}{\percent}-efficient CRV.
 
 
 
-\sepfootnotecontent{fn:bg_study_rmc}{ We chose not to show the RMC spectrum in
-    our plots because the contribution from RMC is smaller than that of DIO by a
-    factor of 5~\cite{the_comet_collaboration_comet_2020}.}
+\sepfootnotecontent{fn:bg_study_rmc}{ We chose not to show the radiative muon
+    capture spectrum in our plots because the contribution from RMC is smaller
+    than that of DIO by a factor of 5~\cite{the_comet_collaboration_comet_2020}.
+}
 
 
 
@@ -380,14 +408,14 @@ of 1, corresponding to a \SI{0}{\percent}-efficient CRV.
 % these background events come from, we will see that there are ways to identify
 % some of them and reduce their contribution below the single-event threshold.
 
-The reconstructed momentum of the candidate track is one of the most important
-criteria in discriminating signal electrons from DIO or
-RMC\sepfootnote{fn:bg_study_rmc} electrons, because the energy spectra of the
-latter two fall off sharply close to the conversion energy. In Phase-I, the
-momentum window within which an event is counted is $p \in [103.6,
-106.0]\,\si{\MeV/\clight}$. This cut eliminates the overwhelming majority of DIO
-and RMC backgrounds. However, atmospheric background events appear to be uniformly
-distributed in this region, making the cut ineffective in rejecting them. 
+The momentum of the candidate track is one of the most important criteria in
+distinguishing signal electrons from DIO or RMC\sepfootnote{fn:bg_study_rmc}
+electrons, because the energy spectra of the latter two fall off sharply close
+to the conversion energy. In Phase-I, the momentum window within which an event
+is counted is $p \in [103.6, 106.0]\,\si{\MeV/\clight}$. This cut eliminates the
+overwhelming majority of DIO and RMC backgrounds. However, atmospheric
+background events appear to be uniformly distributed in this region, making the
+cut ineffective in rejecting them. 
 
 Figure~\ref{fig:log_spectrum_nocuts} shows that in the absence of the CRV,
 atmospheric backgrounds overwhelm the detector and outnumber conversion events
@@ -418,12 +446,45 @@ additional way to identify them.
 \subsection{Particle identification}
 %\subsection{Atmospheric \texorpdfstring{$\mu^+$}{anti-muon} backgrounds and particle identification}
 
+
+\begin{figure}
+    \centering
+    %\includegraphics[width=0.6\textwidth]{chapter6/sneaking_mu+_event_2.png}
+    \begin{subfigure}{0.56\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{chapter6/mu+_track_zy.pdf}
+        \caption{$z$--$r$ projection, where $r = \sqrt{x^2+y^2}$.}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}{0.43\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{chapter6/mu+_track_xy.pdf}
+        \caption{$x$--$y$ projection.}
+    \end{subfigure}
+    % Event 22855 in run 7833 
+    % (select_sneaking_DSoffset_7000-7999_checkveto+cdc.root.json)
+    % Fitted momentum: 90.3 MeV/c
+    \caption{ Sneaking atmospheric $\mu^+$ background. It enters through the
+        upstream opening of the CRV and scatters in the aluminium CTH support
+        structure before inducing a fourfold coincidence in the CTH, producing a
+        signal-like track in the CDC, and flying through the muon stopping
+        target. The anti-muon thus appears as a time-reversed signal event. In
+        the absence of particle identification by the CTH, only time-of-flight
+        information from the CDC and CTH can help to identify this kind of
+        background. }
+    \label{fig:cosmic_antimuon_bg_in_cydet}
+\end{figure}
+
 In Figure~\ref{fig:log_spectrum_cuts_except_directionID}, we assumed that the
 CyDet has no way of discriminating between electrons, muons, and anti-muons.
 This is partly true since the first stage of the CTH will be composed of only
 scintillation counters. These cannot help to identify the particle type like
 Cherenkov counters, which are planned to replace one layer of scintillators in
-the second stage of the CTH.
+the second stage of the CTH. 
+% Cherenkov counters identify particle types via the Cherenkov threshold of the
+% material. By carefully choosing the index of refraction of the material, it is
+% possible to differentiate an electron from a muon with the same momentum,
+% because the lighter electron will 
 
 We investigate the effect of direction identification and CRV efficiency on the
 background rate.
