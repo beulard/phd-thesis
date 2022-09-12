@@ -13,10 +13,11 @@ the geometrical world shown in Figure~\ref{fig:bmc_geometry}. This geometry
 differs from the older TDR design~\cite{the_comet_collaboration_comet_2020} by
 the number of counters in the CTH. Here, each layer of the CTH has 64 counters
 instead of the original 48, which mainly affects the detector's geometrical
-acceptance. In addition, the outer layer of the CTH is composed of plastic
-scintillation counters rather than the originally planned Cherenkov counters. As
-we shall see, this has an important effect on the detector's ability to
-discriminate atmospheric anti-muons from conversion electrons.
+acceptance. In addition, we use the first-stage layout of the CTH, where both
+layers are composed entirely of plastic scintillation counters. In contrast, the
+final stage will have Cherenkov counters in the outer layer. As we shall see,
+this has an important impact on the detector's ability to discriminate
+atmospheric muons from conversion electrons.
 
 \subsection{\texorpdfstring{$\mu$--$e$}{Muon to electron} conversion} 
 
@@ -85,13 +86,14 @@ momentum is estimated as $p_r = p_t + x$, where $p_t$ is the true momentum of
 the electron as it enters the CDC, $x \sim \mathcal{N}(0, \sigma)$, and $\sigma
 = \SI{200}{\keV/\clight}$ is the expected momentum resolution of the CDC. Since
 tracks are not properly reconstructed, we do not apply any track quality cuts to
-select events but instead weight the signal sample by the associated efficiency
-factor from Table~\ref{tab:acceptance} to account for the rejection of some events.
+select events but instead weight the signal sample by the associated acceptance
+factor from Table~\ref{tab:acceptance} to account for the rejection of some
+events.
 
 In this simulation sample, the initial time for each event does not correspond
 to the realistic time distribution of the $\mu$--$e$ conversion process. Hence,
 events are not selected based on whether they reach the detector within the
-trigger time window, and we weight the sample by the trigger time window
+trigger time window, but we weight the sample by the trigger time window
 efficiency factor instead. Similarly, the sample is weighted by the trigger and
 data acquisition efficiency factors to account for the loss of acceptance from
 hardware effects. Table~\ref{tab:acceptance} lists the values of these
@@ -224,11 +226,11 @@ momentum to be a signal event, or appear to enter the CDC from the outside.
 
 In addition, the hit positions are used to reconstruct the track using a helix
 fit. The fitted trajectory should intersect the muon stopping target to pass the
-selection. Figure~\ref{fig:cosmic_muon_bg_in_cydet} shows an example of an
-atmospheric event that would pass this selection. The helix fit estimates the
-momentum of the particle, which is used in the analysis stage. Hence, for this
-sample, we do not apply a Gaussian smear to the true momentum but use the
-estimated momentum from the fit instead.
+selection. Figure~\ref{fig:cosmic_muon_bg_in_cydet} shows an example of such an
+atmospheric event. The helix fit estimates the momentum of the particle, which
+is used in the analysis stage. Hence, for this sample, we do not apply a
+Gaussian smear to the true momentum but use the estimated momentum from the fit
+instead.
 
 \subsubsection{Rate estimation}
 As discussed in Section~\ref{sec:bmc_conversion_bg_rate}, the rate for each selected
@@ -357,16 +359,16 @@ acquisition period.
         \centering
         \includegraphics[width=\textwidth]{
             chapter6/thesis_conversion_search_momentum_distribution_nocuts_v5.pdf}
-        \caption{ In the absence of event rejection by the CRV, \hl{not true} the CTH trigger,
-            and the timing window. }
+            \caption{ Without $\mu^\pm$ identification by the CRV, timing window
+            cuts or track quality cuts. }
         \label{fig:log_spectrum_nocuts}
     \end{subfigure}
     \hfill
     \begin{subfigure}[t]{0.49\textwidth}
         \centering
         \includegraphics[width=\textwidth]{chapter6/thesis_conversion_search_momentum_distribution_withcuts_except_directionID.pdf}
-        \caption{ With a \SI{99.99}{\percent}-efficient CRV. 
-        }
+        \caption{ With \SI{99.99}{\percent} $\mu^\pm$ rejection by the CRV,
+        timing and track quality cuts. }
         \label{fig:log_spectrum_cuts_except_directionID}
     \end{subfigure}
     \caption{ Momentum spectrum of conversion, DIO and atmospheric events around
@@ -417,9 +419,9 @@ distinguishing signal electrons from DIO or RMC\sepfootnote{fn:bg_study_rmc}
 electrons, because the energy spectra of the latter two fall off sharply close
 to the conversion energy. In Phase-I, the momentum window within which an event
 is counted is $p \in [103.6, 106.0]\,\si{\MeV/\clight}$. This cut eliminates the
-overwhelming majority of DIO and RMC backgrounds. However, atmospheric
-background events appear to be uniformly distributed in this range, making the
-cut ineffective in rejecting them. 
+majority of DIO and RMC backgrounds. However, atmospheric background events
+appear to be uniformly distributed in this range, making the cut ineffective in
+rejecting them. 
 
 Figure~\ref{fig:log_spectrum_nocuts} shows that in the absence of the CRV,
 atmospheric backgrounds overwhelm the detector and outnumber conversion events
@@ -514,18 +516,19 @@ from the CDC to the CTH. Therefore, in the absence of a particle-identifying
 CTH, one can only rely on timing information to identify this kind of background
 event.
 
-The identification of atmospheric $\mu^+$-induced backgrounds via time-of-flight
-information was studied for COMET Phase-I. The principle is to
-determine the direction of the track using timing information from the CDC and
-CTH. Depending on the direction of the particle, hits in the CDC will either
-occur earlier or later than hits in the CTH. Each track is fitted under two
-hypotheses: either the particle is a negative electron flying from the muon
-stopping target to the CTH via the CDC, or it is a positive muon doing the same
-in reverse. The quality of the resulting fit depends on the hypothesis, and thus
-the difference in quality between the two fits can be used to distinguish
-electrons from anti-muons. An early simulation study of this method indicates
-that \SI{89}{\percent} of $\mu^+$-induced backgrounds can be rejected using
-timing information, while preserving \SI{87}{\percent} of signal events~\cite{moritsu}. 
+In order to lower the atmospheric background rate, the identification of
+atmospheric $\mu^+$-induced backgrounds via time-of-flight information was
+studied for COMET Phase-I. The principle is to determine the direction of the
+track using timing information from the CDC and CTH. Depending on the direction
+of the particle, hits in the CDC will either occur earlier or later than hits in
+the CTH. Each track is fitted under two hypotheses: either the particle is a
+negative electron flying from the muon stopping target to the CTH via the CDC,
+or it is a positive muon doing the same in reverse. The quality of the resulting
+fit depends on the hypothesis, and thus the difference in quality between the
+two fits can be used to distinguish electrons from anti-muons. An early
+simulation study of this method indicates that \SI{89}{\percent} of
+$\mu^+$-induced backgrounds can be rejected using timing information, while
+preserving \SI{87}{\percent} of signal events~\cite{moritsu}. 
 
 In Figure~\ref{fig:spectrum_with_direction_id}, we use this result to show the
 effect of $\mu^+$ identification on the background spectrum. The integrated
@@ -585,7 +588,44 @@ atmospheric muon events, this will not necessarily be realised in practice.
 Figure~\ref{fig:bg_count_vs_crv_efficiency} shows the background event count as
 a function of the CRV efficiency. An efficient CRV helps to reject the vast
 majority of atmospheric backgrounds. An efficiency of at least
-\SI{99.9}{\percent} seems necessary to suppress the background count to less
+\SI{99.9}{\percent} seems necessary to suppress the background counts to fewer
 than one. Beyond \SI{99.99}{\percent}, the contribution from sneaking events
-becomes significant, and reducing the background rate is better tackled by means of
-particle identification, such as with the Cherenkov CTH layer.
+becomes significant, and reducing the background rate is better tackled by means
+of particle identification, such as with the Cherenkov CTH layer.
+
+\subsection{Summary}
+
+\begin{table}
+    \centering\begin{tabular}{l|cc}
+        \toprule
+        \diagbox[width=4cm]{PID}{$\epsilon_\mathrm{CRV}$} & \SI{99.9}{\percent} & \SI{99.99}{\percent}\\\midrule
+        None & 3.22 & 2.29 \\
+        \SI{89}{\percent} $\mu^+$ (direction) & 1.10 & 0.48 \\
+        \SI{99}{\percent} $\mu^\pm$ (Cherenkov) & 0.57 & {\bfseries 0.08} \\\bottomrule
+    \end{tabular}
+    \caption{ Summary of atmospheric background counts for
+    $T_\mathrm{DAQ}=146$~days under different scenarios for particle
+    identification (PID) and CRV efficiency ($\epsilon_\mathrm{CRV}$).}
+    \label{tab:bg_summary}
+\end{table}
+
+Table~\ref{tab:bg_summary} summarises the atmospheric background event counts
+for $T_\mathrm{DAQ}=146$~days under various run conditions. Obviously, one major
+aspect of identifying atmospheric muons is the CRV, and the background rate
+greatly depends on its efficiency.
+
+The problem caused by sneaking muons is more subtle. However, it can still plague
+the conversion search by producing $\mathcal{O}(1)$ signal-like events during
+data acquisition. The most frequent sneaking backgrounds are produced by
+anti-muons disguising as negative particles by flying from the detector to the
+muon stopping target. These events can, however, be distinguished from
+conversion electrons via a direction identification technique using timing
+information from the CDC and CTH. Being able to identify \SI{89}{\percent} of
+$\mu^+$-induced events in this manner reduces the background counts to 1.10 with
+a \SI{99.9}{\percent}-efficient CRV or 0.48 with a
+\SI{99.99}{\percent}-efficient CRV. 
+
+Eventually, when the CTH reaches its final stage with an outer Cherenkov layer,
+muons will be more effectively distinguished from electrons. If the CTH allows us
+to reject \SI{99}{\percent} of all $\mu^\pm$ events, the background count could
+be as low as 0.08, with a \SI{99.99}{\percent}-efficient CRV.
