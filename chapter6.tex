@@ -143,7 +143,7 @@ shows the momentum spectrum of DIO electrons before and after weighting.
 The DIO sample is composed of $N_\mathrm{DIO} = 10^7$ events in total.
 Figure~\ref{fig:muon_dio_in_cydet} shows an example of a potential background
 event from DIO where an electron with an energy close to the conversion energy
-flies into the CyDet system and induces a trigger.
+flies into the CyDet system and activates the trigger.
 
 \begin{figure}
     \centering
@@ -204,10 +204,12 @@ openings.
     % (select_sneaking_DSoffset_7000-7999_checkveto+cdc.root.json)
     % Fitted momentum: 105.5 MeV/c
     \caption{ Sneaking atmospheric $\mu^-$ background with a reconstructed
-        momentum $p=\SI{103.5}{\MeV/\clight}$. It enters through the downstream
-        opening of the CRV and scatters in the aluminium CTH support structure.
-        Then, it flies close to the muon stopping target, produces a track in
-        the CDC and a fourfold coincidence in the CTH. }
+        momentum $p=\SI{103.5}{\MeV/\clight}$. The muon enters through the
+        downstream opening of the CRV and scatters in the aluminium CTH support
+        structure. Then, it produces a track in the CDC and a fourfold
+        coincidence in the CTH. Importantly, the trajectory crosses the muon
+        stopping target, making it more difficult to distinguish from the
+        conversion signal. }
     \label{fig:cosmic_muon_bg_in_cydet}
 \end{figure}
 
@@ -282,14 +284,14 @@ event count:
 N_\mathrm{atmospheric} = \int_0^{T_\mathrm{DAQ}} R dt = R \times T_\mathrm{DAQ}.
 \end{equation}
 
-\hl{v This is still a lie... We say otherwise two paragraphs below.}
-
-In this study, we use the value of $T_\mathrm{DAQ} = 146$~days required for
-Phase-I to reach its sensitivity goal according to the TDR. This run time
-corresponds to $N_\mu = 1.5 \times 10^{16}$. In the subsequent analysis, we
-substitute these two values into
-Equations~\ref{eq:weight_signal},~\ref{eq:weight_dio}
-and~\ref{eq:weight_atmospheric} to weight each sample.
+In the TDR, COMET Phase-I was estimated to reach its sensitivity goal for
+$T_\mathrm{DAQ} = 146$~days. In this study, we keep this value fixed to be able
+to compare our sensitivity and background estimates with the original study.
+%This run time
+%corresponds to $N_\mu = 1.5 \times 10^{16}$. In the subsequent analysis, we
+%substitute these two values into
+%Equations~\ref{eq:weight_signal},~\ref{eq:weight_dio}
+%and~\ref{eq:weight_atmospheric} to weight each sample.
 
 
 
@@ -328,25 +330,25 @@ In this simulation study, we found the geometrical acceptance $A_\mathrm{geom}$
 of the CyDet with the new CTH layout to be reduced from \SI{26}{\percent} to
 \SI{21}{\percent}. Hence, the net signal acceptance $A_{\mu-e}$ decreases from
 \SI{4.1}{\percent} to \SI{3.3}{\percent}. On the other hand, the yield of
-stopped muons per proton collision was also estimated from the MC5 dataset to be
-$R_{\mu / p} = 4.86 \times 10^{-4}$, which is slightly higher than the TDR value
-by a factor $1.03$. Overall, although the total number of bound muons is
-increased for the same run time, it is outweighed by the decrease in acceptance.
-Keeping $T_\mathrm{DAQ}$ fixed at 146 days, we obtain $N_\mu = 1.53 \times
-10^{16}$, hence our estimation of the COMET Phase-I sensitivity is
+stopped muons per proton collision was estimated from the MC5 dataset to be
+$R_{\mu / p} = 4.86 \times 10^{-4}$, which is slightly higher than the TDR
+value. Overall, although the total number of bound muons is increased for the
+same run time, it is outweighed by the decrease in acceptance. Keeping
+$T_\mathrm{DAQ}$ fixed at 146 days, we obtain $N_\mu = 1.53 \times 10^{16}$,
+hence our estimation of the COMET Phase-I sensitivity is
 $$
 \mathrm{SES} = 3.61 \times 10^{-15}.
 $$
 
 
-\section{Analysis}
+\section{Signal and background event counts}
 
 After applying the efficiency factors and weighting each sample by the total
 number of expected events as per Section~\ref{sec:sample_weighting}, we are able
 to determine the absolute contribution from each source over a given data
 acquisition period.
 
-\subsection{Momentum spectrum} %??
+\subsection{Momentum spectrum}
 
 \begin{figure}
     \centering
@@ -414,7 +416,7 @@ electrons, because the energy spectra of the latter two fall off sharply close
 to the conversion energy. In Phase-I, the momentum window within which an event
 is counted is $p \in [103.6, 106.0]\,\si{\MeV/\clight}$. This cut eliminates the
 overwhelming majority of DIO and RMC backgrounds. However, atmospheric
-background events appear to be uniformly distributed in this region, making the
+background events appear to be uniformly distributed in this range, making the
 cut ineffective in rejecting them. 
 
 Figure~\ref{fig:log_spectrum_nocuts} shows that in the absence of the CRV,
@@ -485,9 +487,6 @@ the second stage of the CTH.
 % material. By carefully choosing the index of refraction of the material, it is
 % possible to differentiate an electron from a muon with the same momentum,
 % because the lighter electron will 
-
-We investigate the effect of direction identification and CRV efficiency on the
-background rate.
 
 Positive muons can produce signal-like tracks in the CyDet by following the
 reverse path of a conversion electron. Why? I have to explain exactly why.
