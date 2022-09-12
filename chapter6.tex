@@ -131,11 +131,11 @@ P(E_e) = a_5 \delta^5 + a_6 \delta^6 + a_7 \delta^7 + a_8 \delta^8,
 \end{equation}
 where $\delta \equiv E_\mu  - E_e - \frac{E_e^2}{2 m_\mathrm{Al}}$, $E_\mu =
 \SI{105.194}{\MeV}$, $m_\mathrm{Al} = \SI{25133}{\MeV}$, with the values of the
-four $a$ coefficients they provide. This approximation is valid in the region
-$E_e > \SI{85}{\MeV}$, which is sufficient to cover our whole DIO sample. We
-use this spectrum parametrisation to weight DIO events based on their energy.
-Similarly to the position weighting procedure, DIO events are first generated
-with a uniform energy distribution in the range $p \in [95,
+four $a$ coefficients provided by the authors. This approximation is valid in
+the region $E_e > \SI{85}{\MeV}$, which is sufficient to cover our whole DIO
+sample. We use this spectrum parametrisation to weight DIO events based on their
+energy. Similarly to the position weighting procedure, DIO events are first
+generated with a uniform energy distribution in the range $p \in [95,
 110]~\si{\MeV/\clight}$, and then weighted according to the probability for a
 DIO electron to have the sampled energy. Figure~\ref{fig:czarnecki_spectrum}
 shows the momentum spectrum of DIO electrons before and after weighting.
@@ -281,7 +281,7 @@ rate $R$ for each event. This rate can simply be integrated over the total
 data acquisition time of the experiment $T_\mathrm{DAQ}$ to obtain the expected
 event count:
 \begin{equation}\label{eq:weight_atmospheric}
-N_\mathrm{atmospheric} = \int_0^{T_\mathrm{DAQ}} R dt = R \times T_\mathrm{DAQ}.
+N_\mathrm{atmospheric} = \int_0^{T_\mathrm{DAQ}} R\,dt = R \times T_\mathrm{DAQ}.
 \end{equation}
 
 In the TDR, COMET Phase-I was estimated to reach its sensitivity goal for
@@ -355,8 +355,10 @@ acquisition period.
         
     \begin{subfigure}[t]{0.49\textwidth}
         \centering
-        \includegraphics[width=\textwidth]{chapter6/thesis_conversion_search_momentum_distribution_nocuts_v5.pdf}
-        \caption{ In the absence of event rejection by the CRV, the CTH trigger, and the timing window. }
+        \includegraphics[width=\textwidth]{
+            chapter6/thesis_conversion_search_momentum_distribution_nocuts_v5.pdf}
+        \caption{ In the absence of event rejection by the CRV, \hl{not true} the CTH trigger,
+            and the timing window. }
         \label{fig:log_spectrum_nocuts}
     \end{subfigure}
     \hfill
@@ -470,45 +472,93 @@ additional way to identify them.
         upstream opening of the CRV and scatters in the aluminium CTH support
         structure before inducing a fourfold coincidence in the CTH, producing a
         signal-like track in the CDC, and flying through the muon stopping
-        target. The anti-muon thus appears as a time-reversed signal event. In
-        the absence of particle identification by the CTH, only time-of-flight
-        information from the CDC and CTH can help to identify this kind of
-        background. }
+        target. The anti-muon thus appears as a time-reversed signal-like event.
+        }
     \label{fig:cosmic_antimuon_bg_in_cydet}
 \end{figure}
 
-In Figure~\ref{fig:log_spectrum_cuts_except_directionID}, we assumed that the
-CyDet has no way of discriminating between electrons, muons, and anti-muons.
-This is partly true since the first stage of the CTH will be composed of only
-scintillation counters. These cannot help to identify the particle type like
-Cherenkov counters, which are planned to replace one layer of scintillators in
-the second stage of the CTH. 
-% Cherenkov counters identify particle types via the Cherenkov threshold of the
-% material. By carefully choosing the index of refraction of the material, it is
-% possible to differentiate an electron from a muon with the same momentum,
-% because the lighter electron will 
 
-Positive muons can produce signal-like tracks in the CyDet by following the
-reverse path of a conversion electron. Why? I have to explain exactly why.
-Candidate signal electron trajectories originate in the muon stopping target,
-produce a helical track in the CDC, and induce a fourfold coincidence in the
-CTH. A $\mu^+$ can generate a background event by first hitting the CTH,
-producing a track in the CDC, and then intersecting the muon stopping target,
-appearing as a conversion track in reverse time ordering.
+So far, we have assumed that the CyDet system has no way of discriminating
+between electrons, muons, and anti-muons. However, this is only partly true. At
+a momentum of \SI{105}{\MeV/\clight}, an electron has a velocity close to the speed of
+light, whereas a muon travels only at around $0.7 c$. This allows the two to be
+distinguished when they pass through a Cherenkov detector with the right index
+of refraction. The final stage of the CTH will have Cherenkov counters on the
+outer layer, allowing electrons to be discriminated from muons. However, the
+first stage of the CTH will be composed of only scintillation counters. Hence,
+initially, the CTH by itself will not suffice in identifying atmospheric muon
+backgrounds. We now investigate the signatures of atmospheric muons that sneak
+into the CyDet system without being vetoed by the CRV, and try to determine how
+impactful identifying the particle type is in lowering the background rate.
 
-Question: if a mu+ follows the same time ordering as an e-, what does it look
-like in the CyDet? 1. It curves in the other way as a negative particle in the B
-field. Can that be easily rejected by the detector? At which step?
 
-Paragraph: the stage-1 CTH can't do PID. Explain why, using Cherenkov counter
-properties vs plastic scintillator.
 
-Paragraph: reverse-direction mu+ track can still be identified via
-time-of-flight information. Method was investigated internally by Moritsu, who
-determined that direction identification method can reject 89 percent of
-atmospheric mu+ events with, but reduces the net signal acceptance by a
-factor 0.87.
+Negative atmospheric muons typically produce signal-like tracks in the CyDet by
+scattering off a dense supporting element, and then mimicking the path of a
+conversion electron emanating from the muon stopping target, as illustrated in
+Figure~\ref{fig:cosmic_muon_bg_in_cydet}. Without a Cherenkov-counter layer in
+the CTH, it is very difficult to identify this type of background. However, our
+results indicate that these occur 5 to 10 times less frequently than backgrounds
+from positive atmospheric muons.
 
+Positive atmospheric muons can induce backgrounds by following the reverse path
+of a conversion electron. An anti-muon in the longitudinal magnetic field would
+usually gyrate in the opposite way to a negative particle, and hence the track
+fitting algorithm should easily determine that it has the wrong charge. However,
+if the anti-muon travels from the CTH to the muon stopping target instead of the
+opposite, it then follows a time-reversed signal-like trajectory which seems to
+gyrate identically to a negative particle produced in the disks, as illustrated
+in Figure~\ref{fig:cosmic_antimuon_bg_in_cydet}. The only difference between
+this trajectory and that of a negative particle is the order in which it flies
+from the CDC to the CTH. Therefore, in the absence of a particle-identifying
+CTH, one can only rely on timing information to identify this kind of background
+event.
+
+The identification of atmospheric $\mu^+$-induced backgrounds via time-of-flight
+information was studied for COMET Phase-I. The principle is to
+determine the direction of the track using timing information from the CDC and
+CTH. Depending on the direction of the particle, hits in the CDC will either
+occur earlier or later than hits in the CTH. Each track is fitted under two
+hypotheses: either the particle is a negative electron flying from the muon
+stopping target to the CTH via the CDC, or it is a positive muon doing the same
+in reverse. The quality of the resulting fit depends on the hypothesis, and thus
+the difference in quality between the two fits can be used to distinguish
+electrons from anti-muons. An early simulation study of this method indicates
+that \SI{89}{\percent} of $\mu^+$-induced backgrounds can be rejected using
+timing information, while preserving \SI{87}{\percent} of signal events~\cite{moritsu}. 
+
+In Figure~\ref{fig:spectrum_with_direction_id}, we use this result to show the
+effect of $\mu^+$ identification on the background spectrum. The integrated
+background event count from atmospheric muons is reduced to 0.48 in the momentum
+window. Figure~\ref{fig:spectrum_with_cherenkov_pid} shows the effect of a
+particle-identifying Cherenkov layer in the CTH, assuming an efficiency of
+\SI{99}{\percent} and no negative effect on signal acceptance. The background
+count falls to 0.08 for one signal event.
+
+\begin{figure}
+    \centering
+    \begin{subfigure}{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{chapter6/thesis_conversion_search_momentum_distribution_withcuts_with_mu+_ID_dp=0.1_v3.pdf}
+        \caption{With track direction identification: \SI{89}{\percent} of
+        $\mu^+$-induced backgrounds are rejected and \SI{87}{\percent} of signal events
+        are preserved.}
+        \label{fig:spectrum_with_direction_id}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{chapter6/thesis_conversion_search_momentum_distribution_withcuts_with_mu+-.pdf}
+        \caption{With particle type identification by the Cherenkov layer of the
+        CTH, assuming a $\mu^{\pm}$ rejection efficiency of \SI{99}{\percent}.}
+        \label{fig:spectrum_with_cherenkov_pid}
+    \end{subfigure}
+        
+    \caption{Signal and background event counts versus reconstructed track
+    momentum, over $T_\mathrm{DAQ}=146$~days and assuming
+    $\mathcal{B}_\mathrm{conversion} = 3.61\times 10^{-15}$. }
+    \label{fig:lin_spectra}
+\end{figure}
 
 
 \subsection{CRV efficiency}
@@ -516,21 +566,26 @@ factor 0.87.
 \begin{figure}
     \centering
     \includegraphics[width=0.5\textwidth]{chapter6/bg_count_vs_crv_efficiency.pdf}
-    \caption{ Integrated atmospheric background count as a function of the CRV
-        efficiency. The lower bound arises from sneaking events which cannot be
-        identified by the CRV. More accurate particle identification by the
-        CyDet helps to reduce this sneaking component, e.g.\ by discriminating
-        muons from electrons.}
+    \caption{ Integrated atmospheric background count versus CRV inefficiency
+        (note the reversed horizontal axis), assuming no Cherenkov CTH layer and
+        \SI{89}{\percent} $\mu^+$ rejection rate by direction identification.
+        The lower bound arises from sneaking events, which are not detected by
+        the CRV. 
+        % More accurate particle identification by the CyDet helps to
+        % reduce this sneaking component, e.g.\ by discriminating muons from
+        % electrons.
+        }
     \label{fig:bg_count_vs_crv_efficiency}
 \end{figure}
 
-The CRV efficiency determines the fraction of atmospheric events which
-can enter the CyDet through the active parts of the CRV while not being vetoed.
-Although we have assumed so far that the CRV is \SI{99.99}{\percent}
-efficient, it will not necessarily be the case in practice.
-
-Note that the portion of background events produced by atmospheric muons
-sneaking through the CRV openings is unaffected by how efficient the CRV is.
-These backgrounds can only be reduced by increasing the coverage of the CRV,
-which has inherent limitations since the beam must enter on one side and exit
-on the other.
+The CRV efficiency determines the fraction of atmospheric events which can enter
+the CyDet through the active parts of the CRV while not being vetoed. Although
+we have assumed so far that the CRV successfully rejects \SI{99.99}{\percent} of
+atmospheric muon events, this will not necessarily be realised in practice.
+Figure~\ref{fig:bg_count_vs_crv_efficiency} shows the background event count as
+a function of the CRV efficiency. An efficient CRV helps to reject the vast
+majority of atmospheric backgrounds. An efficiency of at least
+\SI{99.9}{\percent} seems necessary to suppress the background count to less
+than one. Beyond \SI{99.99}{\percent}, the contribution from sneaking events
+becomes significant, and reducing the background rate is better tackled by means of
+particle identification, such as with the Cherenkov CTH layer.
