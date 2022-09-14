@@ -1,0 +1,80 @@
+\chapter{Discussion}
+
+This thesis presents two main original contributions: we designed and built a
+fake MC data generator using machine learning, and we estimated the rate of
+atmospheric muon backgrounds in the COMET Phase-I $\mu$--$e$ conversion search
+using a backward MC simulation technique.
+
+\section{Data augmentation with machine learning}
+% Summary
+\subsection{Summary}
+The CDC GAN, discussed in Chapter~\ref{ch:gan}, provides a way to produce
+synthetic Monte Carlo data in the Cylindrical Drift Chamber. The design of this
+pair of neural networks is based on Generative Adversarial Networks, a technique
+widely used in HEP and in other domains to produce fake samples by learning from
+a dataset of real samples. The CDC GAN is trained on a dataset of MC-simulated
+hits, using the WGAN-GP algorithm. Its discriminator and generator are
+convolutional neural networks that can process ordered sequences of hits, which
+allows the GAN to learn both from per-hit features and from the relations
+between multiple consecutive hits. 
+Once trained, the GAN is evaluated in multiple ways. First, the distributions of
+the synthetic data are compared to those of the training dataset. Then, quality
+metrics are investigated, which typically involve an external performance criterion
+implemented by a third neural network trained independently.
+
+% Interpretation
+%\subsection{Interpretation}
+After training, the CDC GAN provides a way to produce original hit data $10^7$
+times more quickly than by means of traditional MC simulation. We can therefore
+generate large samples of background events very efficiently. This can be
+useful, for instance, in studies which require a pure signal sample to be
+overlaid onto an ambient background. Alternatively, GAN-generated data can serve
+as a part of a mock dataset, which combines all sources of backgrounds into one
+large-scale sample, of a size comparable to the amount of data collected during
+the experiment.
+
+
+% Implications (relevance vs literature)
+The CDC GAN % is specific to the CDC, but the methods used can be
+% generalised to other detector systems in COMET as well as other experiments.
+
+% Maybe talk about:
+One of the difficulties in designing the GAN was in determining the best way
+to handle the discrete feature, wire index. For the CDC GAN, we chose to
+represent the wire index as a one-hot encoded vector. However, other methods
+were investigated, such as using the actual or transformed wire positions, or
+using a trainable embedding matrix to make the GAN learn its preferred
+representation of the geometry.
+
+
+
+% Limitations
+\subsection{Limitations}
+% + CDC GAN can only produce a part of the whole: noise-like hit data only.
+The CDC GAN is only trained on a selected part of the CDC hit data.
+Reconstructible tracks, defined by their momentum $p>\SI{50}{\MeV/\clight}$, are
+removed from the training dataset of the GAN in order to prevent it from
+generating signal-like events. This is done because the GAN generates unlabelled
+hits, and does not provide truth information such as parent particle and
+momentum, which is required to perform, for instance, background contamination
+studies.
+Only hits from particles that have a momentum lower than \SI{50}{\MeV/\clight}
+are learned from. Although this is preferable to avoid biasing samples, it
+prevents us from using the GAN to generate an entire mock dataset: the GAN must
+be complemented by real MC hits of reconstructible tracks.
+In addition, the CDC GAN fails to take into account timing: it is trained on all
+hit data from a beam MC simulation, which is mostly made up of hits from the
+prompt products of the collision. Therefore, it would not be fit to generate a
+sample of hits in the trigger time window, and another model trained on this
+subset of hits would need to be trained.
+
+% + Evaluating the quality of generated samples, in absolute terms or in physical
+%   termsis difficult.
+
+
+% Recommendations
+% + Design algorithm not for efficiency, but for faithfulness.
+
+\subsection{Mock data production}
+
+\section{Atmospheric muon backgrounds}
