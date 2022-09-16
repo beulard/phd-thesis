@@ -1,4 +1,5 @@
 \chapter{COMET Phase-I Sensitivity and Background Estimates}
+\label{ch:phase-I_study}
 
 With the framework to simulate backgrounds from atmospheric muons in place, we
 can now combine the results into a complete sensitivity and background
@@ -205,13 +206,13 @@ openings.
     % Event 22855 in run 7833 
     % (select_sneaking_DSoffset_7000-7999_checkveto+cdc.root.json)
     % Fitted momentum: 105.5 MeV/c
-    \caption{ Sneaking atmospheric $\mu^-$ background with a reconstructed
-        momentum $p=\SI{103.5}{\MeV/\clight}$. The muon enters through the
-        downstream opening of the CRV and scatters in the aluminium CTH support
-        structure. Then, it produces a track in the CDC and a fourfold
-        coincidence in the CTH. Importantly, the trajectory crosses the muon
-        stopping target, making it more difficult to distinguish from the
-        conversion signal. }
+    \caption[Sneaking atmospheric $\mu^-$ background]{ Sneaking atmospheric
+        $\mu^-$ background with a reconstructed momentum
+        $p=\SI{103.5}{\MeV/\clight}$. The muon enters through the downstream
+        opening of the CRV and scatters in the aluminium CTH support structure.
+        Then, it produces a track in the CDC and a fourfold coincidence in the
+        CTH. Importantly, the trajectory crosses the muon stopping target,
+        making it more difficult to distinguish from the conversion signal. }
     \label{fig:cosmic_muon_bg_in_cydet}
 \end{figure}
 
@@ -371,11 +372,12 @@ acquisition period.
         timing and track quality cuts. }
         \label{fig:log_spectrum_cuts_except_directionID}
     \end{subfigure}
-    \caption{ Momentum spectrum of conversion, DIO and atmospheric events around
-    the conversion energy, integrated over the Phase-I run time $T_\mathrm{DAQ}
-    = 146$~days, assuming $\mathcal{B}_\mathrm{conversion} = 3.61\times
-    10^{-15}$. Error bars on the atmospheric event bins show the statistical
-    uncertainty from the backward MC flux estimation.
+    \caption[Momentum spectrum of conversion, DIO and atmospheric events around
+    the conversion energy]{ Momentum spectrum of conversion, DIO and atmospheric
+    events around the conversion energy, integrated over the Phase-I run time
+    $T_\mathrm{DAQ} = 146$~days, assuming $\mathcal{B}_\mathrm{conversion} =
+    3.61\times 10^{-15}$. Error bars on the atmospheric event bins show the
+    statistical uncertainty from the backward MC flux estimation.
     % For atmospheric events, we compare the absence and presence of
     % the CRV in rejecting backgrounds. We also show the effect of the time
     % trigger window and track quality cuts on the signal and DIO contributions. 
@@ -470,12 +472,12 @@ additional way to identify them.
     % Event 22855 in run 7833 
     % (select_sneaking_DSoffset_7000-7999_checkveto+cdc.root.json)
     % Fitted momentum: 90.3 MeV/c
-    \caption{ Sneaking atmospheric $\mu^+$ background. It enters through the
-        upstream opening of the CRV and scatters in the aluminium CTH support
-        structure before inducing a fourfold coincidence in the CTH, producing a
-        signal-like track in the CDC, and flying through the muon stopping
-        target. The anti-muon thus appears as a time-reversed signal-like event.
-        }
+    \caption[Sneaking atmospheric $\mu^+$ background event]{ Sneaking
+        atmospheric $\mu^+$ background. It enters through the upstream opening
+        of the CRV and scatters in the aluminium CTH support structure before
+        inducing a fourfold coincidence in the CTH, producing a signal-like
+        track in the CDC, and flying through the muon stopping target. The
+        anti-muon thus appears as a time-reversed signal-like event. }
     \label{fig:cosmic_antimuon_bg_in_cydet}
 \end{figure}
 
@@ -569,7 +571,7 @@ count falls to 0.08 for one signal event.
 \begin{figure}
     \centering
     \includegraphics[width=0.5\textwidth]{chapter6/bg_count_vs_crv_efficiency.pdf}
-    \caption{ Integrated atmospheric background count versus CRV inefficiency
+    \caption[Integrated atmospheric background count versus CRV inefficiency]{ Integrated atmospheric background count versus CRV inefficiency
         (note the reversed horizontal axis), assuming no Cherenkov CTH layer and
         \SI{89}{\percent} $\mu^+$ rejection rate by direction identification.
         The lower bound arises from sneaking events, which are not detected by
