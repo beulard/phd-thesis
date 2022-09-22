@@ -35,8 +35,8 @@
 % \end{markdown}
 
 % Description and goals
-COMET (COherent Muon-to-Electron Transition) is a future muon-beam experiment
-designed to search for the muon-to-electron conversion
+COMET (COherent Muon to Electron Transition) is a future muon-beam experiment
+designed to search for the muon to electron conversion
 process~\cite{the_comet_collaboration_comet_2020}. It is currently under
 construction at the Japan Proton Accelerator Research Complex (J-PARC) facility
 in Tokai, Japan. The goal of COMET is to be \numprint{10000} times more
@@ -104,7 +104,7 @@ beamline.
         \caption{Phase-II.}
     \end{subfigure}
     \caption{ Schematic top-down view of the COMET experiment. The beam pipe is
-    represented in gray, and the light red rectangles along the beamline
+    represented in grey, and the light red rectangles along the beamline
     represent the solenoids that generate the magnetic field. Curved solenoids
     additionally help to select charge and momentum, as discussed in
     Section~\ref{sec:curved_solenoids}.}
@@ -296,6 +296,16 @@ search.
 
 \section{Detector systems}
 \subsection{StrECAL}
+
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.8\textwidth]{chapter2/strecal_recolor.png}
+    \caption{ Cutaway view of the StrECAL detector. The Straw Tracker stations
+    are shown in blue and the ECAL in yellow.  }
+    \label{fig:strecal}
+\end{figure}
+
 The StrECAL combines a straw-tube tracking detector with an electromagnetic
 calorimeter for energy measurement. In COMET Phase-I, the StrECAL will serve as
 a beam characterisation apparatus. It will be placed directly at the end of the
@@ -323,24 +333,8 @@ lutetium-yttrium oxyorthosilicate (LYSO) as its scintillating crystals and
 avalanche photodiodes to collect the emitted photons.
 
 
-\begin{figure}
-    \centering
-    \includegraphics[width=0.8\textwidth]{chapter2/strecal_recolor.png}
-    \caption{ Cutaway view of the StrECAL detector. The Straw Tracker stations
-    are shown in blue and the ECAL in yellow.  }
-    \label{fig:strecal}
-\end{figure}
 
 \subsection{CyDet}
-The Cylindrical Detector (CyDet) consists of a Cylindrical Drift Chamber (CDC)
-for tracking and a Cylindrical Trigger Hodoscope (CTH) for triggering on
-specific event signatures. The CyDet surrounds the muon stopping target and sits
-within the detector solenoid which generates a \SI{1}{\tesla} longitudinal
-magnetic field. This configuration, shown in Figure~\ref{fig:cydet}, is designed
-to eliminate backgrounds from the beam itself as well as low-momentum products
-of the collision while maximising the acceptance of conversion electrons.
-Figure~\ref{fig:cydet_signal_event} additionally shows the signature of a
-simulated conversion electron inside the CyDet system.
 
 \begin{figure}
     \centering
@@ -351,6 +345,17 @@ simulated conversion electron inside the CyDet system.
         centre of the detector system. }
     \label{fig:cydet}
 \end{figure}
+
+The Cylindrical Detector (CyDet) consists of a Cylindrical Drift Chamber (CDC)
+for tracking and a Cylindrical Trigger Hodoscope (CTH) for triggering on
+specific event signatures. The CyDet surrounds the muon stopping target and sits
+within the detector solenoid which generates a \SI{1}{\tesla} longitudinal
+magnetic field. This configuration, shown in Figure~\ref{fig:cydet}, is designed
+to eliminate backgrounds from the beam itself as well as low-momentum products
+of the collision while maximising the acceptance of conversion electrons.
+Figure~\ref{fig:cydet_signal_event} additionally shows the signature of a
+simulated conversion electron inside the CyDet system.
+
 
 \subsubsection{Cylindrical Drift Chamber}
 The CDC is a drift chamber used to track charged particles emanating from the
@@ -369,7 +374,7 @@ concentric layers. The wires in each layer are rotated slightly off of the
 longitudinal axis, and the rotation is alternatively clockwise and
 anti-clockwise from one layer to the next. This special property, called the
 \emph{stereo angle}, allows the drift chamber to stereoscopically reconstruct,
-within \SI{3}{mm}, the longitudinal position of a particle~\cite{ewen_thesis}. 
+within \SI{3}{\mm}, the longitudinal position of a particle~\cite{ewen_thesis}. 
 
 
 % Operating principle

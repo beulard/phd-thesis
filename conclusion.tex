@@ -1,2 +1,72 @@
 \chapter{Conclusion}
 
+% Muon and LFV
+Since the discovery of the muon in 1937, our understanding of its properties has
+been steadily evolving. Today, although it fits nicely into the Standard Model
+of particle physics, some questions are still standing, and recent tensions
+observed between theory and experiment are suggesting that the SM does not give
+a complete picture of the muon's underlying nature. 
+% The context of this thesis
+% lies in the current efforts to determine whether charged lepton flavour is
+% violated. 
+\hl{HERE}
+% Bit weird. Maybe need a way to link the two sentences? (above and below)
+In particular, the observation of neutrino-less muon to electron
+conversion would yield clear evidence of charged lepton flavour violation,
+because such a process ought to be suppressed beyond experimental sensitivities
+according to theoretical constraints.
+
+% COMET
+The COMET Phase-I experiment will soon start its data acquisition run toward the
+search for muon to electron conversion in aluminium. It is expected to be a
+hundred times more sensitive to $\mu$--$e$ conversion than the previous best
+measurement by SINDRUM II. To achieve this sensitivity, COMET Phase-I will
+produce an intense pulsed muon beam directed toward an aluminium target to
+create muonic aluminium atoms, from which conversion electrons may emerge. The
+Cylindrical Detector, which surrounds the muon stopping target, is designed to
+clearly identify conversion electrons while rejecting as many experimental
+backgrounds as possible. 
+
+% Software & sim
+In order to cover the needs of the experiment in terms of simulation,
+calibration, reconstruction, data formats and data analysis, the COMET
+collaboration develops a comprehensive set of software utilities named ICEDUST.
+The work presented throughout this thesis relies heavily on Monte Carlo (MC) data
+produced by {\sc Geant4} simulations of Phase-I using ICEDUST.
+% Here is a good place to kind of introduce the problem of producing large-scale
+% datasets and estimating atmospheric backgrounds
+MC simulations allow us to study the experiment's outcomes and to optimise its
+design before assembly. However, they are computationally expensive and
+typically only allow us to simulate a small fraction of the amount of data
+expected to be collected. Additionally, traditional MC sampling is particularly
+inefficient when the source of events is far from the detector system, as is the
+case when considering cosmic ray-induced backgrounds. This thesis aims to
+address these two limitations by partially circumventing the brute force MC
+method.
+
+% GAN
+We investigate a novel approach to the mass-production of simulation data based
+on Generative Adversarial Networks. We propose a neural network generator of
+hits for the Cylindrical Drift Chamber, which can produce synthetic energy
+deposits in the detector at a rate $10^6$ times higher than the ICEDUST
+simulation. The machine learning model is trained on a sample of simulated hits
+and learns from their features and relationships. The trained model allows us to
+generate only a subset of the hits produced by MC simulation, but far more
+efficiently than was previously achievable. This work and its future evolutions
+will enable the production of mock datasets, which can be used by the
+collaboration in anticipation of data acquisition runs.
+%A future generative model might expand on this work by 
+
+% BMC & background study
+Additionally, we present a study of the pervasiveness of backgrounds caused by
+cosmic ray-induced atmospheric muons in the COMET Phase-I muon to electron
+conversion search. We use a backward Monte Carlo simulation method to
+efficiently estimate the flux of atmospheric muons near the detector system. We
+then perform a full analysis of the event count contributions from $\mu$--$e$
+conversion, muon decay-in-orbit, and atmospheric muons. Our findings suggest
+that an efficient rejection of atmospheric backgrounds by the Cosmic Ray Veto,
+combined with particle-type identification by the Cylindrical Detector, are
+necessary for the Phase-I search to succeed.
+
+
+% Wrap up: what do my results mean for COMET!!!

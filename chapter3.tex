@@ -73,15 +73,32 @@ step.
 \end{figure}
 
 \subsection{Data format}
-A key design principle of ICEDUST is to define a common format adopted by both real and simulated data, such that the pipeline of calibration, reconstruction and analysis can be thoroughly tested with only simulation data, in advance of the data acquisition stage. 
-This offline data format is called \oaEvent. Based on the ROOT~\cite{BRUN199781} serialisation system, \oaEvent defines a file format where data is laid out as a sequence of events, shown schematically in Figure~\ref{fig:oaEvent}. Each event object contains an arborescence of data containers, each of which holds an array of some given data type (e.g.\ detector hits, calibrated energy deposits, reconstructed tracks, etc.).
+A key design principle of ICEDUST is to define a common format adopted by both
+real and simulated data, such that the pipeline of calibration, reconstruction
+and analysis can be thoroughly tested with only simulation data, in advance of
+the data acquisition stage. This offline data format is called \oaEvent. Based
+on the ROOT~\cite{BRUN199781} serialisation system, \oaEvent defines a file
+format where data is laid out as a sequence of events, shown schematically in
+Figure~\ref{fig:oaEvent}. Each event object contains an arborescence of data
+containers, each of which holds an array of some given data type (e.g.\ detector
+hits, calibrated energy deposits, reconstructed tracks, etc.).
 
-From Phase-I onward, data will be collected using the MIDAS data acquisition system, hence the online on-disk format is based on MIDAS data banks. ICEDUST provides a direct translation from this format to \oaEvent via the \texttt{oaRawEvent} and \texttt{oaUnpack} packages. Once translated, the data can flow through the calibration, reconstruction and analysis stages.
+From Phase-I onward, data will be collected using the MIDAS data acquisition
+system, hence the online on-disk format is based on MIDAS data banks. ICEDUST
+provides a direct translation from this format to \oaEvent via the
+\texttt{oaRawEvent} and \texttt{oaUnpack} packages. Once translated, the data
+can flow through the calibration, reconstruction and analysis stages.
 
-%Prior to calibration, the resulting data will typically represent uncalibrated, digitised detector hits or waveforms. 
+%Prior to calibration, the resulting data will typically represent uncalibrated,
+%digitised detector hits or waveforms. 
 
-%The term ``event'' here is purposefully abstract, as the information held in each event can vary. In simulations, an event can describe the outcome of a single proton-on-target (POT) collision, or the outcome of a full proton bunch ($16\times10^6$ POT). 
-%In data-taking runs, the definition of event will typically be dictated by the data acquisition system.  % So?
+%The term ``event'' here is purposefully abstract, as the information held in
+%each event can vary. In simulations, an event can describe the outcome of a
+%single proton-on-target (POT) collision, or the outcome of a full proton bunch
+%($16\times10^6$ POT). 
+
+%In data-taking runs, the definition of event will typically be dictated by the
+%data acquisition system.  % So?
 
 
 
@@ -93,48 +110,103 @@ From Phase-I onward, data will be collected using the MIDAS data acquisition sys
 \subsection{Simulation pipeline}
 Simulations of the COMET experiment can be split into four steps:
 \begin{enumerate}
-    \item {\bf Event generation} takes place at the level of individual protons. A proton beam profile is drawn ahead of time using a specialised Turtle~\cite{Carey1974DecayT} simulation of the beamline. The position and momentum of the protons are histogrammed at a short distance ahead of the pion-production target. Protons are sampled from the resulting distribution to generate events, and the outcome from each primary proton is referred to as a proton-on-target (POT) event.
-    \item {\bf Particle tracking} is the step-by-step propagation of particles through the geometry and electromagnetic fields of the experimental setup. The primary proton will usually produce many secondary particles in the collision, some of which might propagate to the detector region. Simulated energy deposits in the active detector volumes are recorded for the detector response simulation stage.
-    \item {\bf Event bunching} allows us to model the simultaneous arrival of a proton bunch into the setup. In the real beamline, millions of protons are bunched into a short \SI{{\sim} 100}{\ns} time interval, and two consecutive bunches are separated by about \SI{1.2}{\micro\second}. In order to simulate this time structure, a time offset is applied to each POT event, after which the events are merged into bunches. Following this, individual bunch events can be further merged into \emph{bunch trains} to obtain an entire sequence and account for potential pileup.
-    \item {\bf Detector response simulation} translates the true energy deposits simulated in the particle tracking stage into detector-specific hits. It takes into account the way in which charge or light is collected by the detector, and can apply smearing to the observed energy and timing. This step effectively reverses the calibration process by transforming energy deposits into uncalibrated, digitised hits and waveforms.
+    \item {\bf Event generation} takes place at the level of individual protons.
+    A proton beam profile is drawn ahead of time using a specialised
+    Turtle~\cite{Carey1974DecayT} simulation of the beamline. The position and
+    momentum of the protons are histogrammed at a short distance ahead of the
+    pion-production target. Protons are sampled from the resulting distribution
+    to generate events, and the outcome from each primary proton is referred to
+    as a proton-on-target (POT) event.
+    \item {\bf Particle tracking} is the step-by-step propagation of particles
+    through the geometry and electromagnetic fields of the experimental setup.
+    The primary proton will usually produce many secondary particles in the
+    collision, some of which might propagate to the detector region. Simulated
+    energy deposits in the active detector volumes are recorded for the detector
+    response simulation stage.
+    \item {\bf Event bunching} allows us to model the simultaneous arrival of a
+    proton bunch into the setup. In the real beamline, millions of protons are
+    bunched into a short \SI{{\sim} 100}{\ns} time interval, and two consecutive
+    bunches are separated by about \SI{1.2}{\micro\second}. In order to simulate
+    this time structure, a time offset is applied to each POT event, after which
+    the events are merged into bunches. Following this, individual bunch events
+    can be further merged into \emph{bunch trains} to obtain an entire sequence
+    and account for potential pileup.
+    \item {\bf Detector response simulation} translates the true energy deposits
+    simulated in the particle tracking stage into detector-specific hits. It
+    takes into account the way in which charge or light is collected by the
+    detector, and can apply smearing to the observed energy and timing. This
+    step effectively reverses the calibration process by transforming energy
+    deposits into uncalibrated, digitised hits and waveforms.
 \end{enumerate}
-% ^ OK
-Once all four stages of the simulation pipeline are complete, the result should closely resemble real data post-translation from MIDAS to \oaEvent. This implies that it should be able to naturally flow through the calibration, reconstruction and analysis stages. At each stage, the information may be compared with the truth information available from the particle tracking stage in order to refine each process. This exercise should also outline the performance of the offline data-processing pipeline and hence provide an estimate of the computational requirements of the experiment.
+
+Once all four stages of the simulation pipeline are complete, the result should
+closely resemble real data post-translation from MIDAS to \oaEvent. This implies
+that it should be able to naturally flow through the calibration, reconstruction
+and analysis stages. At each stage, the information may be compared with the
+truth information available from the particle tracking stage in order to refine
+each process. This exercise should also outline the performance of the offline
+data-processing pipeline and hence provide an estimate of the computational
+requirements of the experiment.
 
 
 \subsection{Intermediate simulation file format}
 \label{subsec:RT}
-The \texttt{oaRooTracker} package defines another ROOT-based file format used by the simulation to save and retrieve particle states. The typical use case is for a simulation to record particles that have reached a key geometrical element (e.g.\ the detector region) to build up a sample of interesting events. The saved particle states can then be used as input to subsequent simulations, easing the need for a full simulation run every time a change is made to the geometry or physics models.
+The \texttt{oaRooTracker} package defines another ROOT-based file format used by
+the simulation to save and retrieve particle states. The typical use case is for
+a simulation to record particles that have reached a key geometrical element
+(e.g.\ the detector region) to build up a sample of interesting events. The
+saved particle states can then be used as input to subsequent simulations,
+easing the need for a full simulation run every time a change is made to the
+geometry or physics models.
 
-In addition, from a large enough sample of particles recorded at some key volume boundary, the flux distribution of inbound particles can be estimated. Events can then be sampled from this distribution to increase the statistics inside the volume of interest. 
+In addition, from a large enough sample of particles recorded at some key volume
+boundary, the flux distribution of inbound particles can be estimated. Events
+can then be sampled from this distribution to increase the statistics inside the
+volume of interest. 
 
 % RooTracker files
-%The simulation software provides utility to record particles that reach certain key points in the geometry, such as the transport solenoid or the detector region. Virtual monitors are volumes that can be placed in the geometry to record the passage of particles, in the form of virtual hits or into a separate file. The file format used to save particle states is called \texttt{RooTracker}. It stores the kinematics of simulated particles and can thus be used as input to another simulation run. % and?
+%The simulation software provides utility to record particles that reach certain
+%key points in the geometry, such as the transport solenoid or the detector
+%region. Virtual monitors are volumes that can be placed in the geometry to
+%record the passage of particles, in the form of virtual hits or into a separate
+%file. The file format used to save particle states is called
+%\texttt{RooTracker}. It stores the kinematics of simulated particles and can
+%thus be used as input to another simulation run. % and?
 
 \section{Monte Carlo simulation in ICEDUST}
 \label{sec:mc_sim}
-Monte Carlo (MC) simulation is the process through which hypothetical particles are realistically propagated through an experimental setup, with the aim of evaluating the experiment's performance and to prepare for its realisation. Currently in COMET, MC simulations are heavily used to further optimise the experiment's design and to develop reconstruction and analysis algorithms.
+Monte Carlo (MC) simulation is the process through which hypothetical particles
+are realistically propagated through an experimental setup, with the aim of
+evaluating the experiment's performance and to prepare for its realisation.
+Currently, in COMET, MC simulations are heavily used to further optimise the
+experiment's design and to develop reconstruction and analysis algorithms.
 
-Monte Carlo simulation in high energy physics can be described as the stepwise propagation (tracking) of particles through matter and electromagnetic fields. Starting from initial conditions of position and momentum, a particle advances in space and time according to the laws of relativistic kinematics. It can change velocity or direction, and produce secondary particles via interactions with the local medium and field. The tracking of a particle ends when it decays, gets absorbed by some material, or exits the simulation space.
+Monte Carlo simulation in high energy physics can be described as the stepwise
+propagation (tracking) of particles through matter and electromagnetic fields.
+Starting from initial conditions of position and momentum, a particle advances
+in space and time according to the laws of relativistic kinematics. It can
+change velocity or direction, and produce secondary particles via interactions
+with the local medium and field. The tracking of a particle ends when it decays,
+gets absorbed by some material, or exits the simulation space.
 
-Interactions and decays occur stochastically according to measured cross-sections and lifetimes. Depending on the type of interaction, secondary particles may be emitted. In this case, the position and momentum of secondaries are stored in memory until the tracking of the primary particle is finished. The list of secondaries is then iterated through, propagating each one in turn. Since secondaries may produce their own secondaries, this process continues recursively until all products of the original primary particle have been accounted for.
-% ^OK
+Interactions and decays occur stochastically according to measured
+cross-sections and lifetimes. Depending on the type of interaction, secondary
+particles may be emitted. In this case, the position and momentum of secondaries
+are stored in memory until the tracking of the primary particle is finished. The
+list of secondaries is then iterated through, propagating each one in turn.
+Since secondaries may produce their own secondaries, this process continues
+recursively until all products of the original primary particle have been
+accounted for.
 
-In ICEDUST, particle tracking, event bunching and detector response simulation are handled in separate packages.
-Particle tracking can be performed using four different engines: Geant4~\cite{AGOSTINELLI2003250}, FLUKA~\cite{FLUKA}, MARS15~\cite{MARS15} and PHITS~\cite{PHITS}. The corresponding ICEDUST packages are \SimG, \texttt{SimFLUKA}, \texttt{SimMARS}, and \texttt{SimPHITS}, respectively.
-Event bunching is handled by the \texttt{SimHitMerger} package, and \texttt{SimDetectorResponse} performs detector response simulation.
+In ICEDUST, particle tracking, event bunching and detector response simulation
+are handled in separate packages. Particle tracking can be performed using four
+different engines: Geant4~\cite{AGOSTINELLI2003250}, FLUKA~\cite{FLUKA},
+MARS15~\cite{MARS15} and PHITS~\cite{PHITS}. The corresponding ICEDUST packages
+are \SimG, \texttt{SimFLUKA}, \texttt{SimMARS}, and \texttt{SimPHITS},
+respectively. Event bunching is handled by the \texttt{SimHitMerger} package,
+and \texttt{SimDetectorResponse} performs detector response simulation.
 
 \subsection{Geometry}
-The \SimG package contains the most detailed and up-to-date definitions of the COMET simulation geometries.
-The various components that make up a simulation world are defined with constructive solid geometry, using the standard \Geant geometry classes. In addition, \SimG extends the \Geant macro language to allow geometrical parameters to be defined in macro files. The position, dimensions, and material of every volume can thus be specified at run-time rather than compile-time. A custom parser attached to every volume allows interdependencies between components and supports looping, for instance to position identical elements in a regular pattern.
-
-Once the simulation geometry is assembled, it is also translated into the ROOT \texttt{TGeo} representation, which simplifies its visualisation and its storage on disk as metadata inside \oaEvent files. This representation can furthermore be interpreted by the MARS15 tracking software, which simplifies the process of running comparative simulations.
-
-%Once the whole geometry is assembled, it is translated into an equivalent ROOT representation that will be stored into the output file for book-keeping. This copy can also be rendered more readily by the 3D utility classes of the ROOT package. % Link to DisplayCore? !! REMOVED --> out of scope of section?
-
-
-The \SimG package includes geometries for the Phase-$\alpha$, Phase-I (CyDet and StrawECAL configurations), and Phase-II setups. Over time, these simulation worlds are refined by developers to better reflect the exact configuration of the experiment. 
-Figure~\ref{fig:comet_geometries} shows the simulation geometries for the two conversion-searching COMET designs.
 
 \begin{figure}
     \centering
@@ -146,26 +218,65 @@ Figure~\ref{fig:comet_geometries} shows the simulation geometries for the two co
     \noindent\makebox[\linewidth][c]{
     \begin{subfigure}[t]{0.57\textwidth}
         \centering
-        \includegraphics[width=0.95\textwidth]{chapter3/geometries_Phase-I_iso_cropless_huesat_croppedleft.png}
+        \includegraphics[width=0.95\textwidth]{
+            chapter3/geometries_Phase-I_iso_cropless_huesat_croppedleft.png}
         \caption{Phase-I in the CyDet configuration.}
     \end{subfigure}
     \hfill
     \begin{subfigure}[t]{0.57\textwidth}
         \centering
-        \includegraphics[width=0.95\textwidth]{chapter3/geometries_Phase-II_iso_huesat_human.png}
+        \includegraphics[width=0.95\textwidth]{
+            chapter3/geometries_Phase-II_iso_huesat_human.png}
         \caption{Phase-II.}
     \end{subfigure}}
     
-    \caption{Cutaway views of the simulation geometries implemented in \SimG and visualised with \texttt{DisplayCore}. The experiment hall is also modelled in the simulation but was hidden here for clarity.}
+    \caption{Cutaway views of the simulation geometries implemented in \SimG and
+    visualised with \texttt{DisplayCore}. The experiment hall is also modelled
+    in the simulation but was hidden here for clarity.}
     \label{fig:comet_geometries}
 \end{figure}
+
+The \SimG package contains the most detailed and up-to-date definitions of the
+COMET simulation geometries. The various components that make up a simulation
+world are defined with constructive solid geometry, using the standard \Geant
+geometry classes. In addition, \SimG extends the \Geant macro language to allow
+geometrical parameters to be defined in macro files. The position, dimensions,
+and material of every volume can thus be specified at run-time rather than
+compile-time. A custom parser attached to every volume allows interdependencies
+between components and supports looping, for instance to position identical
+elements in a regular pattern.
+
+Once the simulation geometry is assembled, it is also translated into the ROOT
+\texttt{TGeo} representation, which simplifies its visualisation and its storage
+on disk as metadata inside \oaEvent files. This representation can furthermore
+be interpreted by the MARS15 tracking software, which simplifies the process of
+running comparative simulations.
+
+
+The \SimG package includes geometries for the Phase-$\alpha$, Phase-I (CyDet and
+StrECAL configurations), and Phase-II setups. Over time, these simulation
+worlds are refined by developers to better reflect the exact configuration of
+the experiment. Figure~\ref{fig:comet_geometries} shows the simulation
+geometries for the two conversion-searching COMET designs.
+
 
 % vvvv Moved to first section
 % % Event generation 
 % \section{Event generation and bunch structure}
-% Protons are sampled from a beam profile histogram at a distance of \SI{70}{\cm} upstream of the target. The histogram is generated via a Turtle~\cite{Carey1974DecayT} simulation of the proton beamline.
+% Protons are sampled from a beam profile histogram at a distance of
+% \SI{70}{\cm} upstream of the target. The histogram is generated via a
+% Turtle~\cite{Carey1974DecayT} simulation of the proton beamline.
 
-% In the simulation, a single proton is sampled from the beam histogram for each event, which differs from the real situation in that the actual beam is arranged into bunches, each containing about 16 million protons. Hence we assume that proton collisions in a bunch are independent of each other, and we merge POT events into bunch events by overlaying the produced trajectories and hits. This task is handled by the \texttt{SimHitMerger} program after \SimG has finished simulating single-proton events. The time structure of the proton bunch is modelled as a square wave with a width of \SI{100}{\ns}. To simulate this structure, a time shift is sampled uniformly between -50 and \SI{50}{\ns} for each POT event and applied to every trajectory and hit.
+% In the simulation, a single proton is sampled from the beam histogram for each
+% event, which differs from the real situation in that the actual beam is
+% arranged into bunches, each containing about 16 million protons. Hence we
+% assume that proton collisions in a bunch are independent of each other, and we
+% merge POT events into bunch events by overlaying the produced trajectories and
+% hits. This task is handled by the \texttt{SimHitMerger} program after \SimG
+% has finished simulating single-proton events. The time structure of the proton
+% bunch is modelled as a square wave with a width of \SI{100}{\ns}. To simulate
+% this structure, a time shift is sampled uniformly between -50 and \SI{50}{\ns}
+% for each POT event and applied to every trajectory and hit.
 
 % ----------
 
@@ -177,7 +288,10 @@ realistically estimate the experiment's performance. Hence, the \SimG simulation
 associates standard \Geant hadronic and electromagnetic physics lists with
 custom logic for nuclear muon capture and muon decay-in-orbit.
 
-To model hadronic interactions, \SimG uses the \texttt{QGSP\_BERT\_HP} reference physics list as the default. In this model, hadron-nucleus interactions between the \SI{8}{\GeV} proton beam and the pion-production target are handled by the Bertini Cascade model~\cite{WRIGHT2015175}.
+To model hadronic interactions, \SimG uses the \texttt{QGSP\_BERT\_HP} reference
+physics list as the default. In this model, hadron-nucleus interactions between
+the \SI{8}{\GeV} proton beam and the pion-production target are handled by the
+Bertini Cascade model~\cite{WRIGHT2015175}.
 
 Muons at rest receive special treatment in \SimG due to their important
 contribution toward the background rate. The default energy spectrum of
@@ -202,27 +316,8 @@ distributions of muons being stopped in the stopping target, and subsequently
 sample conversion electrons from it. In sensitivity studies, signal events are
 commonly overlaid onto a pure background sample in order to evaluate the signal
 acceptance and background rejection efficiencies of the hit filtering and track
-finding routines. % Accurate?
+finding routines.
 
-%% Moved to COMET chapter
-% \begin{figure}
-%     \centering
-%     \captionsetup[subfigure]{justification=centering}
-%     \begin{subfigure}[t]{0.43\textwidth}
-%     \centering
-%     \includegraphics[width=0.95\textwidth]{chapter3/signal_event_display_crop_axes.pdf}
-%     \caption{Event shown in \texttt{DisplayCore}, the 3D event display.}
-%     \end{subfigure}
-%     \hfill
-%     \begin{subfigure}[t]{0.48\textwidth}
-%     \centering
-%     \includegraphics[width=0.95\textwidth]{chapter3/cydet_signal_track_v2.pdf}
-%     \caption{Event as seen by the CDC and CTH detectors.}
-%     \end{subfigure}
-    
-%     \caption{Example of a simulated signal trajectory in the CyDet system. This particular event triggers the CTH and would be considered as an ideal candidate of a $\mu$--$e$ conversion signal.}
-%     \label{fig:signal_event}
-% \end{figure}
 
 Figure~\ref{fig:cydet_signal_event} shows a simulated conversion electron
 emerging from the stopping target, depositing energy inside the CDC gas, to
@@ -231,19 +326,41 @@ eventually trigger the CTH by hitting four adjacent counters.
 \subsection{Representation of simulated CDC hits}
 \label{subsec:SD}
 % Sensitive detectors, truth-hit representation
-As a particle passes through a material, it tends to lose energy to the medium, e.g. through inelastic scattering or ionisation. 
-In MC simulations, simulated energy deposits must be recorded inside active detector elements in order for us to determine the response of the detector and readout systems to the passage of the particle.
+As a particle passes through a material, it tends to lose energy to the medium,
+e.g. through inelastic scattering or ionisation. In MC simulations, simulated
+energy deposits must be recorded inside active detector elements in order for us
+to determine the response of the detector and readout systems to the passage of
+the particle.
 
-Detector elements in a \Geant simulation are defined as ``sensitive volumes'', and energy deposits of incoming particles are accumulated and recorded as ``hits''. 
-The way in which hits are instantiated is typically dependent on the type of detector, because of differing granularities between e.g.\ a plastic scintillator and a drift chamber. A higher-granularity detector type requires finer-detailed information, hence more hit instances along the trajectory.
+Detector elements in a \Geant simulation are defined as ``sensitive volumes'',
+and energy deposits of incoming particles are accumulated and recorded as
+``hits''. The way in which hits are instantiated is typically dependent on the
+type of detector, because of differing granularities between e.g.\ a plastic
+scintillator and a drift chamber. A higher-granularity detector type requires
+finer-detailed information, hence more hit instances along the trajectory.
 
-In \SimG, the data type associated with CDC hits is called \texttt{IG4HitGas}. When \Geant reports an energy deposit inside the CDC, an instance of that class is created. If a particle makes multiple steps in a CDC cell, the deposit from each step is accumulated into the same hit instance, such that only one instance per particle per cell may exist. If a particle enters the same cell multiple times, one hit instance is created per entry.
-This is shown in Figure~\ref{fig:sim_cdc_hits}, where the position and granularity of \texttt{IG4HitGas} instances is drawn along an electron's trajectory in the CDC.
+In \SimG, the data type associated with CDC hits is called \texttt{IG4HitGas}.
+When \Geant reports an energy deposit inside the CDC, an instance of that class
+is created. If a particle makes multiple steps in a CDC cell, the deposit from
+each step is accumulated into the same hit instance, such that only one instance
+per particle per cell may exist. If a particle enters the same cell multiple
+times, one hit instance is created per entry. This is shown in
+Figure~\ref{fig:sim_cdc_hits}, where the position and granularity of
+\texttt{IG4HitGas} instances is drawn along an electron's trajectory in the CDC.
 
 
-% In early 2019, ICEDUST developers agreed to change the definition of hits inside the CDC gas volume in order to more accurately portray the energy deposit information in that detector. Along that process, I came to be thoroughly involved in the testing and refinement of this new CDC hit representation, named \texttt{IG4HitGas}. 
+% In early 2019, ICEDUST developers agreed to change the definition of hits
+% inside the CDC gas volume in order to more accurately portray the energy
+% deposit information in that detector. Along that process, I came to be
+% thoroughly involved in the testing and refinement of this new CDC hit
+% representation, named \texttt{IG4HitGas}. 
 
-% A hit representation is formulated as a C++ class which holds the hit's data. It must be coupled to a sensitive detector class, whose role is to receive information from \Geant's particle tracking system and accumulate it into instances of the hit class. For example, the sensitive detector class for a calorimeter might produce hits containing the total energy deposited for each inbound particle as well as a timestamp.
+% A hit representation is formulated as a C++ class which holds the hit's data.
+% It must be coupled to a sensitive detector class, whose role is to receive
+% information from \Geant's particle tracking system and accumulate it into
+% instances of the hit class. For example, the sensitive detector class for a
+% calorimeter might produce hits containing the total energy deposited for each
+% inbound particle as well as a timestamp.
 
 \begin{figure}
     \centering
@@ -252,7 +369,7 @@ This is shown in Figure~\ref{fig:sim_cdc_hits}, where the position and granulari
         Hits, shown as red dots, produced by the CDC sensitive detector class
         when a particle deposits charge inside the gas. One instance of
         \texttt{IG4HitGas} is created every time the particle traverses a CDC
-        cell, i.e.\ roughly every \SI{16}{mm}.
+        cell, i.e.\ roughly every \SI{16}{\mm}.
         }
     \label{fig:sim_cdc_hits}
 \end{figure}
@@ -263,27 +380,48 @@ This is shown in Figure~\ref{fig:sim_cdc_hits}, where the position and granulari
 This hit representation is designed toward gaseous detectors, hence it
 also applies to the Straw-Tube Tracker of Phase-I and Phase-II. Because of the
 relatively low density of hit instances along a trajectory, important details of
-the true energy deposition pattern may be lost. Hence \SimG implements a
+the true energy deposition pattern may be lost. Therefore, \SimG implements a
 run-time option to store \emph{auxiliary points} inside each hit instance, which
 provide a more fine-grained description of the particle's steps inside the cell.
 
-% The \texttt{IG4HitGas} class was designed to condense and record energy loss information inside gaseous ionisation detectors in \SimG (e.g. the CDC and Straw-Tube Tracker). Every energy deposit made by a particle inside the same CDC cell is accumulated into a single instance of the class, such that only one hit per cell per particle may exist. While this saves memory and disk space, it limits the amount of detail that can be stored. The recorded information allows for basic detector response simulation, but if more detail is required one can tune the \SimG simulation to store finer details inside each \texttt{IG4HitGas} instance.
+% The \texttt{IG4HitGas} class was designed to condense and record energy loss
+% information inside gaseous ionisation detectors in \SimG (e.g. the CDC and
+% Straw-Tube Tracker). Every energy deposit made by a particle inside the same
+% CDC cell is accumulated into a single instance of the class, such that only
+% one hit per cell per particle may exist. While this saves memory and disk
+% space, it limits the amount of detail that can be stored. The recorded
+% information allows for basic detector response simulation, but if more detail
+% is required one can tune the \SimG simulation to store finer details inside
+% each \texttt{IG4HitGas} instance.
 
 
 
 \section{Large-scale simulation: MC5}
 \label{sec:mc5}
-The 5th large-scale production of simulation data, MC5, was run in 2020 using computing facilities at the French National Institute of Nuclear and Particle Physics Computing Centre (CC-IN2P3) in Lyon, France.
-Using \numprint{2000} concurrent machines over the course of a few weeks, the outcomes of 1 billion proton-on-target (POT) collisions were simulated with \SimG in the CyDet configuration of COMET Phase-I.
+The 5th large-scale production of simulation data, MC5, was run in 2020 using
+computing facilities at the French National Institute of Nuclear and Particle
+Physics Computing Centre (CC-IN2P3) in Lyon, France. Using \numprint{2000}
+concurrent machines over the course of a few weeks, the outcomes of 1 billion
+proton-on-target (POT) collisions were simulated with \SimG in the CyDet
+configuration of COMET Phase-I.
 
 \subsubsection{Software}
-Leading up to the MC5 production, several aspects of the software were changed or updated in comparison with the previous large-scale production:
+Leading up to the MC5 production, several aspects of the software were changed
+or updated in comparison with the previous large-scale production:
 \begin{itemize}
-    \item The CMake build configuration system was introduced to replace the legacy CMT system. 
-    \item The external ROOT software, upon which the \oaEvent data format depends, was updated from major version 5 to 6.
-    \item The CyDet geometry received multiple updates to make it as faithful as possible to the design, adding detailed elements such as readout boards and fixing errors in the positioning of CDC wires. 
-    \item As discussed in Section~\ref{subsec:SD}, the treatment of energy deposits in the CDC was also changed to the \texttt{IG4HitGas} representation.
-    \item All memory-related problems identified by \texttt{valgrind} at the time were resolved to bring the simulation software into a production-ready state.
+    \item The CMake build configuration system was introduced to replace the
+    legacy CMT system. 
+    \item The external ROOT software, upon which the \oaEvent data format
+    depends, was updated from major version 5 to 6.
+    \item The CyDet geometry received multiple updates to make it as faithful as
+    possible to the design, adding detailed elements such as readout boards and
+    fixing errors in the positioning of CDC wires. 
+    \item As discussed in Section~\ref{subsec:SD}, the treatment of energy
+    deposits in the CDC was also changed to the \texttt{IG4HitGas}
+    representation.
+    \item All memory-related problems identified by \texttt{valgrind} at the
+    time were resolved to bring the simulation software into a production-ready
+    state.
 \end{itemize}
 
 \subsubsection{Run configuration}
@@ -312,11 +450,20 @@ particles will enter via the beamline, but a small fraction (mostly neutrons)
 also penetrates through the wall, floor and ceiling. In the upstream run, only
 particles that enter the detector region are saved to disk, along with their
 ancestors. Upon doing so, their position and momentum is recorded to an
-\texttt{oaRooTracker} file (see Section~\ref{subsec:RT}) which is used as input for the
-downstream simulation.
+\texttt{oaRooTracker} file (see Section~\ref{subsec:RT}) which is used as input
+for the downstream simulation.
 
-This way to proceed means that the upstream simulation is unaffected by the disposition of the detector region, hence one can perform the upstream run once and use the results to seed multiple downstream configurations, e.g.\ changing the detector geometry (e.g.\ between CyDet and the StrawECAL) or magnetic field. Since most of the simulation time is spent in the pion-production section, this gives a flexible way to produce high-statistics MC datasets in multiple experimental configurations.
-%Another benefit is that it allows for re-seeding of the downstream run, whereby each event retains the same initial conditions but uses several different seedings of the random number generator, yielding a more diverse dataset at the cost of potentially biasing the sample.
+This way to proceed means that the upstream simulation is unaffected by the
+disposition of the detector region, hence one can perform the upstream run once
+and use the results to seed multiple downstream configurations, e.g.\ changing
+the detector geometry (e.g.\ between CyDet and the StrECAL) or magnetic field.
+Since most of the simulation time is spent in the pion-production section, this
+gives a flexible way to produce high-statistics MC datasets in multiple
+experimental configurations.
+%Another benefit is that it allows for re-seeding of the downstream run, whereby
+% each event retains the same initial conditions but uses several different
+% seedings of the random number generator, yielding a more diverse dataset at
+% the cost of potentially biasing the sample. 
 % ^ Off-topic?
 
 \subsubsection{Outcome}
@@ -338,13 +485,15 @@ frames from one such animation involving a $\mu$--$e$ conversion electron.
     \begin{subfigure}[t]{0.49\textwidth}
     \centering
     \includegraphics[width=0.95\textwidth]{chapter3/frame_005.png}
-    \caption{$t=\SI{0}{ns}$. Ignoring pileup and cosmics, the detector is clear of hits before the POT collision.}
+    \caption{$t=\SI{0}{ns}$. Ignoring pileup and cosmics, the detector is clear
+    of hits before the POT collision.}
     \end{subfigure}
     \hfill
     \begin{subfigure}[t]{0.49\textwidth}
     \centering
     \includegraphics[width=0.95\textwidth]{chapter3/frame_036.png}  
-    \caption{$t=\SI{155}{ns}$: many tracks occupy the detector soon after the beam flash.}
+    \caption{$t=\SI{155}{ns}$: many tracks occupy the detector soon after the
+    beam flash.}
     \end{subfigure}
     
     \vspace{0.3cm}
@@ -352,17 +501,21 @@ frames from one such animation involving a $\mu$--$e$ conversion electron.
     \begin{subfigure}[t]{0.49\textwidth}
     \centering
     \includegraphics[width=\textwidth]{chapter3/frame_067.png}
-    \caption{$t=\SI{310}{ns}$: the hit rate decreases significantly once the beam flash has ended.}
+    \caption{$t=\SI{310}{ns}$: the hit rate decreases significantly once the
+    beam flash has ended.}
     \end{subfigure}
     \hfill
     \begin{subfigure}[t]{0.49\textwidth}
     \centering
     \includegraphics[width=\textwidth]{chapter3/frame_192.png}
-    \caption{$t=\SI{815}{ns}$: a conversion electron appears in the CDC and triggers the CTH.}
+    \caption{$t=\SI{815}{ns}$: a conversion electron appears in the CDC and
+    triggers the CTH.}
     \label{fig:animation:conv}
     \end{subfigure}
     
-    \caption{Still frames of an animation rendered by the visualisation tool. The event shown outlines how a conversion electron would be seen by the CyDet system among background hits.}
+    \caption{ Still frames of an animation rendered by the visualisation tool.
+        The event shown outlines how a conversion electron would be seen by the
+        CyDet system among background hits.}
     \label{fig:animation}
 \end{figure}
 
@@ -404,13 +557,12 @@ been rendered, a \texttt{bash} script runs \texttt{ffmpeg} to assemble them into
 a video format, such as \texttt{webm}, \texttt{gif} or \texttt{mp4}.
 
 
-%\section{Version control and continuous integration}
 \section{ICEDUST development}
 
 \subsection{Version control}
 
 The source code of the ICEDUST software project is version-controlled using Git.
-A shared repository is hosted on the Gitlab instance of the IN2P3, where
+A shared repository is hosted on the GitLab instance of the IN2P3, where
 developers collaborate on building up and improving the code base. The
 repository contains a full history of the code, an issue tracker, and a set of
 wiki pages documenting the software. 
@@ -419,7 +571,7 @@ Additions and changes are submitted to the central repository through merge
 requests from the developers. When submitting a merge request, changes to the
 code are typically reviewed by another developer or maintainer who verifies that
 no new bugs are introduced into the main branch. To further reduce the
-likelihood of new issues appearing, the ICEDUST repository makes use of Gitlab's
+likelihood of new issues appearing, the ICEDUST repository makes use of GitLab's
 continuous integration system.
 
 \subsection{Continuous integration and deployment}
@@ -453,7 +605,7 @@ the continuous integration pipeline. Whenever a merge request is accepted,
 Doxygen is run on the updated code base to generate a new set of web pages
 containing the source code reference. This content is then pushed to the
 built-in \emph{Pages} of the ICEDUST repository, a static web server hosted on
-the Gitlab instance alongside the Git repository and wiki pages. This then
+the GitLab instance alongside the Git repository and wiki pages. This then
 provides a central, always up-to-date version of the documentation that all
 developers and users can access and use as reference.
 
