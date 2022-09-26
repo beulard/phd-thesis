@@ -166,7 +166,7 @@ discriminator and the generator are implemented as multi-layer perceptrons,
 denoted as $D$ and $G$ respectively. 
 The discriminator $D$ is designed as a binary classifier whose goal is to tell
 real samples (from the \emph{training} dataset) apart from fake (generated)
-ones. Given a sample $\bm{x}$, it outputs a score between 0 and 1, i.e.\
+ones. Given a sample $\bm{x}$, it outputs a score between 0 and 1, i.e.\ 
 $D(\bm{x}) \in [0, 1]$. Similar to a classification task, we define the loss
 function of $D$ as the cross entropy between its prediction and the true label
 (conventionally, 0 for a fake sample and 1 for a real sample):
@@ -290,7 +290,7 @@ fake sample will fool the discriminator:
     -\mathbb{E}_{\bm{z} \sim p_{\bm{z}}} \left[ D(G(\bm{z})) \right],
 \end{equation}
 which is the second term of Equation~\ref{eq:WGAN-GP} with a minus sign, similarly to
-the relationship between Eqs.~\ref{eq:GAN} and~\ref{eq:GAN_gen}. Note that more
+the relationship between Equations~\ref{eq:GAN} and~\ref{eq:GAN_gen}. Note that more
 generally, the generator loss should be defined as $\mathcal{L}_G \equiv
 -\mathcal{L}_D$ to achieve adversarial training. However, in the case of neural
 networks trained by gradient descent, only the derivative of $\mathcal{L}_G$
@@ -640,7 +640,7 @@ function is used as the generator's final layer.
 At each step of the training, the discriminator receives two mini-batches of hit
 sequences: one from the training data and one synthesised by the generator. The
 discriminator's output is then used to compute the loss for $G$ and $D$,
-according to Eqs.~\ref{eq:WGAN-GP} and~\ref{eq:WGAN-GP_gen}.
+according to Equations~\ref{eq:WGAN-GP} and~\ref{eq:WGAN-GP_gen}.
 
 To allow parallel processing of the hit sequences by the networks, a fixed
 sequence length $L$ is defined prior to training. Hence hits can be packed
