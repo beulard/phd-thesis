@@ -43,17 +43,6 @@
 \usepackage[separate-uncertainty=true]{siunitx}
 \DeclareSIUnit\clight{\text{\ensuremath{c}}}
 
-% Acronyms
-\usepackage[acronym,nonumberlist]{glossaries}
-\renewcommand*{\glstextformat}[1]{\textcolor{black}{#1}}
-%\makeglossaries
-\newacronym{COMET}{COMET}{Coherent Muon to Electron Conversion}
-
-% Path of figures for each chapter
-%\graphicspath{{introduction/}{chapter2/}{conclusion/}}
-
-%
-\newcommand{\diff}[2]{\frac{\textrm{d}{#1}}{\textrm{d}{#2}}}
 
 % If table of contents goes too deep, we can limit depth.
 %\setcounter{tocdepth}{0}
@@ -71,11 +60,13 @@
 
 \begin{center}
     
-    {\huge Sensitivity Estimates and\\[-0.2cm]
-    Background Study toward the \\[-0.2cm]
-    COMET Phase-I Experiment \par }%Conversion Search \par}
+    {\LARGE 
+    Sensitivity and Background Estimates \\[-0.2cm]
+    towards Phase-I of the COMET\\[-0.2cm]
+    Muon-to-Electron Conversion Search
+    \par }
 
-    \vspace{1cm}
+    \vspace{1.5cm}
     
     {\Large Matthias Dubouchet}
 
@@ -112,7 +103,6 @@ Imperial College London \par
 \include{acknowledgements}
 
 \tableofcontents
-\printglossary[type=\acronymtype]
 \cleardoublepage
 
 \pagenumbering{arabic}
