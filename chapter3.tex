@@ -281,23 +281,24 @@ for the two conversion-searching COMET designs.
 % ----------
 
 \subsection{Physics}
-The COMET experiment involves many physical processes to go from the initial
-proton collision to backgrounds in the detector. The MC simulation must
-faithfully account for any process which could lead to backgrounds if we are to
+The COMET experiment involves many physical processes, from the initial proton
+collision to energy depositions in the detector. The MC simulation must
+faithfully account for any process which could lead to backgrounds in order to
 realistically estimate the experiment's performance. Hence, the \SimG simulation
-associates standard \Geant hadronic and electromagnetic physics lists with
-custom logic for nuclear muon capture and muon decay-in-orbit.
+associates standard \Geant hadronic and electromagnetic physics models with
+custom code for nuclear muon capture and muon decay-in-orbit.
 
-To model hadronic interactions, \SimG uses the \texttt{QGSP\_BERT\_HP} reference
-physics list as the default. In this model, hadron-nucleus interactions between
-the \SI{8}{\GeV} proton beam and the pion-production target are handled by the
-Bertini Cascade model~\cite{WRIGHT2015175}.
+To simulate collisions between the proton beam and the pion-production target,
+\SimG uses the \texttt{QGSP\_BERT\_HP} reference physics list, which handles
+hadronic interactions by modelling elastic, inelastic, capture and fission
+processes~\cite{APOSTOLAKIS2009859}. Electromagnetic processes are handled by
+the standard \Geant electromagnetic physics model.
 
-Muons at rest receive special treatment in \SimG due to their important
-contribution toward the background rate. The default energy spectrum of
-electrons from muon decay-in-orbit is replaced by the numerical evaluation
-of~\cite{czarnecki}, which includes the effect of nuclear recoil and thus allows
-electron energies up to \SI{104.973}{\MeV}. In addition, the nuclear muon
+Muons at rest receive a special treatment due to their important contribution
+toward the background rate in COMET. The default energy spectrum of electrons
+from muon decay-in-orbit is replaced by the numerical evaluation of Czarnecki et
+al.~\cite{czarnecki}, which includes the effect of nuclear recoil and thus
+allows electron energies up to \SI{104.973}{\MeV}. In addition, the nuclear muon
 capture (NMC) model is replaced to adhere to the results of the AlCap
 experiment~\cite{PhysRevC.105.035501} which measured the energy spectrum of
 protons emitted after NMC in aluminium.

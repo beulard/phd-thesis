@@ -491,21 +491,21 @@ will have undergone decay or capture before the start of the window.
 Intrinsic backgrounds from muon decay-in-orbit and nuclear muon capture can
 mimic the conversion signal, as discussed in Section~\ref{sec:sm_backgrounds}.
 The COMET experiment is also affected by experimental backgrounds caused by the
-intense beam, as well as cosmic ray-induced events.
+intense beam as well as cosmic rays.
 
 Beam-induced backgrounds include delayed events caused by slow particles and
-products of stray protons arriving between two bunches.
-Antiprotons are the main source of delayed backgrounds due to their slow
-speed relative to pions and muons of the same momentum. They are negatively
-charged so cannot be efficiently selected out by the beamline, hence they can
-collide late with the muon stopping target and produce signal-like secondary
-electrons during the trigger window.
+products of stray protons arriving between two bunches. Antiprotons are the main
+source of delayed backgrounds due to their slow speed relative to pions and
+muons of the same momentum. They are negatively charged, therefore they cannot
+be efficiently selected out by the beamline. Hence, they can move slowly toward
+the muon stopping target and produce signal-like secondary electrons during the
+trigger window.
 
-When a stray proton hits the pion-production target late, secondaries may
-quickly travel to the detector region and produce a signal-like electron, which
-can also be mistaken for the conversion signal. This is the main reason for
-requiring the strict extinction factor $R_\mathrm{extinction}$ of
-Equation~\ref{eq:extinction} from the J-PARC proton beam.
+Stray protons, i.e.\ protons from the proton beam that arrive at the
+pion-production target in the interval between bunches, can produce secondary
+particles that reach the detector during the trigger window. To reduce the
+background rate from this type of event, COMET requires a strict extinction
+factor $R_\mathrm{extinction} = 10^{-10}$ from the J-PARC beam.
 
 Finally, cosmic rays are a major source of background events. The background
 rate depends heavily on the amount of shielding and material above the COMET
@@ -519,11 +519,11 @@ Table~\ref{tab:backgrounds} shows the rates estimated in the COMET Phase-I
 technical design report (TDR)~\cite[Section
 10.6]{the_comet_collaboration_comet_2020} for each source of background in the
 $\mu$--$e$ conversion search. The total number of background events over the
-data acquisition run time is predicted to be 0.032 given an extinction factor
-$R_\mathrm{extinction} = 3 \times 10^{-11}$. Since this background event count
-is much smaller than one, the observation of a single signal-like electron may
-suggest that a CLFV process is at play, which would further motivate this search
-through COMET Phase-II and beyond.
+data acquisition run time is predicted to be $N_\mathrm{background} = 0.032$
+given an extinction factor $R_\mathrm{extinction} = 3 \times 10^{-11}$. Since
+\mbox{$N_\mathrm{background} \ll 1$}, the observation of a single signal
+electron would suggest that there is a CLFV process at play, which would further
+motivate this search through COMET Phase-II and beyond.
 
 
 
@@ -543,7 +543,7 @@ event (smaller is better). SES takes into account the net acceptance of signal e
 detector system, however it does not say anything about the experimental
 backgrounds. When using SES as a figure of merit, a study of potential
 background sources is usually necessary to show that the expected number of
-background events is not greater than one. 
+background events is less than one. 
 
 The total number of coherent $\mu$--$e$ conversions produced by a
 population of $N_\mu$ bound muons can be expressed as
