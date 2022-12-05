@@ -268,14 +268,15 @@ would yield important clues as to what new physics lies beyond the SM.
 Three muon processes can be investigated in order to search for CLFV: ${\mu
 \rightarrow e\gamma}$, ${\mu \rightarrow eee}$ and ${\mu N \rightarrow e N}$
 (muon-to-electron conversion)~\cite{BERNSTEIN201327}. Observing any one of them
-would corroborate the fact that the SM Lagrangian is incomplete, as is now known
-from neutrino oscillations. Observing two would then help us to determine which
-of the many theorised models for new physics is realised in nature. 
+would fundamentally contradict the Standard Model and thus provide undeniable
+evidence for a new interaction. Then, observing a second CLFV process would help
+us to determine which of the many theorised models for new physics is realised
+in nature. 
 
 
 \begin{figure}
     \centering
-    \includegraphics[width=\textwidth]{chapter1/clfv_upper_limit_v2.pdf}
+    \includegraphics[width=\linewidth]{chapter1/clfv_upper_limit_v2.pdf}\hspace{-1.5cm}
     \caption{
         90\%-confidence upper limit on the branching ratio of three charged
         lepton flavour-violating processes over time. 
@@ -312,9 +313,9 @@ times more sensitive than the last generation.
 % mu-e conversion
 Muon-to-electron conversion is the neutrino-less decay of a muon bound to an
 atomic nucleus:
-$$
+\begin{equation}
 \mu^- + N(A, Z) \rightarrow e^- + N(A, Z),
-$$
+\end{equation}
 where $A$ is the mass number and $Z$ the atomic number.
 Similarly to $\mu\rightarrow e\gamma$, this process is allowed in the SM
 extended with massive neutrinos via the diagram shown in
@@ -324,24 +325,25 @@ sensitivities would suggest a BSM origin.
 
 In order to search for this process, muons must be stopped in matter to form
 muonic atoms. Initially bound in the outer atomic layers, the muon
-electromagnetically cascades down to the $1s$ orbital within \SI{1}{\ns}
-and gets in close range of the nucleus~\cite{Knecht2020}. 
-When interacting with the nucleus, the reaction is called \emph{coherent} if the
-nucleus remains in its ground state. For elements heavier than magnesium, the
+electromagnetically cascades down to the $1s$ orbital within close range of the
+nucleus over the following nanosecond~\cite{Knecht2020}. When interacting with
+the nucleus, the reaction is called \emph{coherent} if the nucleus remains
+unchanged and in its ground state. For elements heavier than magnesium, the
 ratio of coherent to incoherent $\mu$--$e$ conversion is expected to be around
 9:1~\cite{CHIANG1993526}.
 
 In a coherent $\mu$--$e$ conversion, the kinematics are those of a
 straightforward two-body decay, hence the electron always has an energy
-\begin{equation*}\label{eq:mu_e_conv_energy}
+\begin{equation}\label{eq:mu_e_conv_energy}
 E_{\mu\text{--}e} = m_\mu - B_\mu - E_\mathrm{recoil},
-\end{equation*}
+\end{equation}
 where $B_\mu$ is the binding energy of the $1s$-state muonic atom and
 $E_\mathrm{recoil}$ is the recoil energy of the nucleus. In aluminium, the
 target material of the COMET and Mu2e experiments, this yields
-$$
+
+\begin{equation}
     E^\mathrm{Al}_{\mu\text{--}e} = \SI{104.97}{\MeV}.
-$$
+\end{equation}
 Since the signature of $\mu$--$e$ conversion is a single, mono-energetic
 electron, this process should be relatively easily identified by means of a
 momentum-measuring detector. However, this signal must also be discriminated
@@ -349,11 +351,33 @@ from backgrounds originating from other processes, contamination of the beam and
 cosmic rays.
 
 \subsection{Standard Model backgrounds}\label{sec:sm_backgrounds}
+
+\begin{figure}
+    \centering
+    \begin{subfigure}[t]{0.47\textwidth}
+        \hspace{-.5cm}
+        \includegraphics[width=\textwidth]{chapter1/dio_spectrum_lin.pdf}
+        \caption{Linear vertical axis.}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[t]{0.47\textwidth}
+        \hspace{-.5cm}
+        \includegraphics[width=\textwidth]{chapter1/dio_spectrum_log.pdf}
+        \caption{Logarithmic vertical axis.}
+    \end{subfigure}
+    \caption{Energy spectrum of decay-in-orbit electrons produced by muonic
+    aluminium atoms, calculated by Czarnecki et al.~\cite{czarnecki}. The
+    logarithmic scale reveals the shape of the high-energy tail up to the
+    endpoint energy of \SI{104.97}{\MeV}.}
+    \label{fig:dio_energy_spectrum}
+\end{figure}
+
+
 \subsubsection{Decay in orbit}
 In the SM, a bound muon is allowed to decay in orbit (DIO):
-\begin{equation*}\label{eq:dio}
+\begin{equation}\label{eq:dio}
     \mu^- + N(A, Z) \rightarrow e^- + \nu_\mu + \overline{\nu}_e + N(A, Z).
-\end{equation*}
+\end{equation}
 Although the process is the same as a free decay, shown in
 Figure~\ref{fig:weak_decay}, here the nucleus is also involved in the kinematics
 of the process. In a free decay, the electron may carry at most half of the muon
@@ -368,27 +392,50 @@ be mistaken for the CLFV signal.
 
 The energy spectrum of DIO electrons for various target nuclei is well
 understood theoretically~\cite{czarnecki}, hence the expected background rate
-for $\mu$--$e$ conversion searches is precisely known. Although it is extremely
-unlikely that a DIO electron might carry as much energy as a conversion
-electron, the high sensitivity aimed at by upcoming $\mu$--$e$ conversion
-searches means that DIO remains one of the main sources of
-background~\cite{the_comet_collaboration_comet_2020}.
+for $\mu$--$e$ conversion searches can be estimated. The DIO energy spectrum for
+aluminium is shown in Figure~\ref{fig:dio_energy_spectrum}. Although it is
+highly unlikely that a DIO electron might carry as much energy as a conversion
+electron, DIO remains one of the main sources of background because of the
+extreme sensitivity aimed at by upcoming $\mu$--$e$ conversion searches, as well
+as the finite resolution achievable by the detectors given the high-intensity
+environment~\cite{the_comet_collaboration_comet_2020}. These effects are
+illustrated in Figure~\ref{fig:signal_dio_momentum_spectrum_tdr}, which shows
+the expected momentum distributions for conversion and DIO electron tracks in
+COMET Phase-I.
 
 
 \subsubsection{Nuclear capture}
 A muon in proximity with a nucleus may also be captured via $W$-boson exchange:
-\begin{equation*}\label{eq:capture}
+\begin{equation}\label{eq:capture}
     \mu^- + N(A, Z) \rightarrow \nu_\mu + N(A, Z-1).
-\end{equation*}
+\end{equation}
 This process is similar to an electron capture and transmutes the nucleus into a
 potentially unstable isotope, which can be the source of proton, photon and
 neutron emissions as it readjusts. Particles emitted by the nucleus after muon
-capture may hit and damage the readout electronics if they are close to the
-target, as is the case in COMET Phase-I. The AlCap experiment, performed in 2013
-at the Paul Scherrer Institute, measured the spectrum of particles emitted after
-capture of stopped muons by aluminium, titanium and silicon
-nuclei~\cite{PhysRevC.105.035501}.
+capture may fly into the detector system and cause unwanted occupancy of the
+readout. This is especially concerning if the detector is close to the target,
+as is the case in Phase-I. Hence, the AlCap experiment was performed in 2013 at
+the Paul Scherrer Institute to measure the spectrum and yield of particles
+emitted after capture of stopped muons by aluminium
+nuclei~\cite{PhysRevC.105.035501}. The yield of highly-ionising particles was
+found to be half as much as the previous expectation, deduced from observations
+of nuclear capture by silicon nuclei, and the amount of detector shielding
+required in the Phase-I design was subsequently reduced.
 
+\begin{figure}
+    \centering
+    \includegraphics[width=0.6\textwidth]{chapter1/signal_dio_momentum_spectrum.pdf}
+    \caption{ Momentum distribution of reconstructed signal and decay-in-orbit
+        electrons in COMET Phase-I, assuming a conversion branching ratio of
+        $3\times 10^{-15}$. A momentum resolution of
+        \SI{200}{\keV/\clight} is assumed, and detector efficiency factors are
+        extracted from the technical design
+        report~\cite{the_comet_collaboration_comet_2020}. The vertical dashed
+        line shows the lower bound of the momentum window at
+        \SI{103.6}{\MeV/\clight}, which is used to discriminate background
+        events from the conversion signal. }
+    \label{fig:signal_dio_momentum_spectrum_tdr}
+\end{figure}
 
 Radiative muon capture (RMC) occurs when a photon is emitted during the capture
 process. Kinematically, the photon can carry energies close to the muon mass.
