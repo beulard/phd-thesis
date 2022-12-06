@@ -85,7 +85,8 @@ An additional curved solenoid, the \emph{electron spectrometer,} further
 eliminates particles whose momenta do not match the \SI{104.97}{\MeV} conversion
 signature before they enter the detector system. While Phase-I will use the
 StrECAL to study the beam properties, Phase-II will use it as the
-conversion-searching detector system.\\
+conversion-searching detector system.
+
 The following sections describe in more detail each component of the COMET
 beamline.
 
@@ -117,14 +118,15 @@ beamline.
 
 Muons in the COMET experiment are produced from the decay of pions created in
 proton collisions on a static solid target. The primary proton beam is provided
-by the J-PARC facility. Protons are delivered with an energy of \SI{8}{\GeV},
-which is picked to maximise the pion yield while minimising the production of
-anti-protons, a potential background source.
+by the J-PARC Main Ring synchrotron. Protons are delivered with an energy of
+\SI{8}{\GeV}, which is chosen to optimise between a high pion yield and a low
+yield of anti-protons, which are a potential background source.
 
 The timeline of a COMET event is shown in Figure~\ref{fig:timing_distributions}.
 The beam has a pulsed time profile: protons are grouped into \SI{100}{\ns}
 bunches, each containing $16\times 10^6$ protons. Bunches are separated by
-\SI{1170}{\ns}. Just after the collision, secondary particles will quickly move
+\SI{1170}{\ns}, and every fifth bunch is delayed by an additional
+\SI{585}{\ns}. Just after the collision, secondary particles will quickly move
 down the COMET beamline and produce numerous background hits in the detector
 system. This prompt and intense flooding of the detector is called the
 \emph{beam flash}, and typically dies down within a few hundred nanoseconds.
@@ -139,7 +141,9 @@ the beam flash has ended, and until the next collision occurs.
     \caption{ Timeline of a COMET event. Shortly after the proton collision, the
         beam flash floods the detector and muons begin to be bound in the muon
         stopping target. The Phase-I trigger window shown here starts at
-        $t=\SI{700}{\ns}$ and lasts until the next proton bunch collision.  }
+        $t=\SI{700}{\ns}$ and lasts until the next proton bunch collision.
+        Electron tracks with a momentum around \SI{105}{\MeV/\clight} observed
+        within this timing window are considered as signal candidates. }
     \label{fig:timing_distributions}
 \end{figure}
 
@@ -204,20 +208,20 @@ forward-moving pions.
     \label{fig:transport_solenoid}
 \end{figure}
 
-The transport solenoid is a curved pipe connecting the pion-production section
+The transport solenoid is a curved magnet connecting the pion-production section
 to the muon stopping section. Its purpose is twofold. Firstly, it allows a
 larger fraction of pions to decay along the length of the beamline. Secondly,
 the curved shape combined with its magnetic field and collimators allows it to
-select negatively charged particles of a specific momentum. 
+select negatively-charged particles of a specific momentum. 
 
 
 The magnetic field of a curved solenoid is slightly stronger on the inside of
 the curve than on the outside. Since charged particles follow helical
 trajectories, this has the net effect of making them drift vertically and the
 amount of drift $D$ depends on momentum $p$ according to the equation
-\begin{equation*}
+\begin{equation}\label{eq:drift}
     D = \frac{1}{q B} \frac{s}{R} \frac{2 p^2_L + p^2_T}{2 p_L},
-\end{equation*}
+\end{equation}
 where $q$ is the charge, $B$ is the strength of the field along the gyration
 axis, $s$ is the distance travelled along the solenoid, $R$ is the radius of the
 curve, and $p_L$ and $p_T$ respectively denote momentum longitudinal and
@@ -229,28 +233,30 @@ also a major factor in a particle's drift.
 
 \begin{figure}
     \centering
-    \begin{subfigure}[b]{0.46\textwidth}
+    \begin{subfigure}[b]{0.48\textwidth}
         \centering
         \hspace{-0.8cm}
-        \includegraphics[width=\textwidth]{chapter2/drift_vs_s_0mT.pdf}
+        \includegraphics[width=\textwidth]{chapter2/drift_vs_s_0mT_with_charge.pdf}
         \caption{No dipole field.}
     \end{subfigure}
     \hfill
-    \begin{subfigure}[b]{0.46\textwidth}
+    \begin{subfigure}[b]{0.48\textwidth}
         \centering
         \hspace{-0.8cm}
-        \includegraphics[width=\textwidth]{chapter2/drift_vs_s_0.05mT.pdf}
+        \includegraphics[width=\textwidth]{chapter2/drift_vs_s_0.05mT_with_charge.pdf}
         \caption{\SI{0.05}{\tesla} vertical dipole field.}
     \end{subfigure}
-    \caption{ Effective drift of particles of various momenta as they progress
-        along the Phase-I transport solenoid. Solid lines show drift for a pitch
-        angle of \SI{45}{\degree}, and the surrounding bands show the effect of
-        a $\pm \SI{10}{\degree}$ change in pitch angle on the drift. By applying
-        an additional vertical magnetic field, particles of a specific momentum
-        can be selected. Here, a \SI{0.05}{\tesla} dipole field allows
+    \caption{ Effective drift of particles of various momenta and either charge
+        as they progress along the Phase-I transport solenoid, calculated using
+        Equation~\ref{eq:drift}. The pitch angle is assumed to be
+        \SI{45}{\degree} and the bands show  the effect of a $\pm
+        \SI{10}{\degree}$ difference. 
+        As shown on the right, a \SI{0.05}{\tesla} dipole field allows negative
         particles around \SI{45}{\MeV/\clight} to stay on axis while higher- and
-        lower-momentum particles drift in opposite directions, and can then be
-        suppressed by collimators at the end of the transport section. }
+        lower-momentum particles drift in opposite directions and positive
+        particles all drift one way. By use of collimators at the end of the
+        transport section, only particles of the right momentum and charge are
+        allowed through. }
     \label{fig:drift}
 \end{figure}
 
@@ -320,12 +326,12 @@ curved solenoid section designed to select conversion electrons, as shown in
 Figure~\ref{fig:comet_schematic}. Figure~\ref{fig:strecal} shows a rendering of
 the StrECAL detector system in Phase-II.
 
-The Straw Tracker uses thin straw tubes as drift chambers, arranged into
-circular planes. A series of stations, each one able to measure the horizontal
-and vertical position of a particle, are positioned along the beam direction.
-The straws have a resolution better than \SI{100}{\um}, which allows the Straw
-Tracker to reconstruct trajectories and estimate particle momenta via
-time-of-flight information.
+The Straw Tracker uses long, thin-walled PET tubes as gaseous drift chambers.
+The tubes are first arranged into circular planes, four of which constitute a
+station. Each station is able to measure the horizontal and vertical position of
+a particle and has a spatial resolution of \SI{120}{\um}. Using time-of-flight
+information, the Straw Tracker can therefore reconstruct trajectories and
+estimate particle momenta.
 
 The ECAL is a crystal electromagnetic calorimeter which supplements the Straw
 Tracker in measuring energy and thus in identifying electrons. The ECAL uses
@@ -370,7 +376,7 @@ tails of the decay-in-orbit and radiative muon capture spectra.
 
 % Geometry
 The CDC contains 4986 \emph{sense wires} strung out parallel to its axis in 20
-concentric layers. The wires in each layer are rotated slightly off of the
+concentric layers. The wires in each layer are rotated slightly off from the
 longitudinal axis, and the rotation is alternatively clockwise and
 anti-clockwise from one layer to the next. This special property, called the
 \emph{stereo angle}, allows the drift chamber to stereoscopically reconstruct,
@@ -442,12 +448,12 @@ produce such a fourfold coincidence.
 
 \subsection{Cosmic ray veto}
 \label{sec:crv}
-The COMET experiment hall is constantly irradiated by muons produced in the
-atmosphere by cosmic rays. The cosmic ray veto (CRV) is an additional active
-detector which will tightly enclose the CyDet and StrECAL detector systems. Its
-purpose is to identify events induced by atmospheric muons rather than by the
-COMET beam, and thus reduce the probability that such events will be mistaken
-for a conversion signal.
+The COMET experiment hall, being at sea level, is constantly irradiated by muons
+produced in the atmosphere by cosmic rays. The cosmic ray veto (CRV) is an
+additional active detector which will tightly enclose the CyDet and StrECAL
+detector systems. Its purpose is to identify events induced by atmospheric muons
+rather than by the COMET beam, and thus reduce the probability that such events
+will be mistaken for a conversion signal.
 
 \section{Conversion signature}
 Conversion electrons are mono-energetic at $E=\SI{104.97}{\MeV}$ and emitted
@@ -497,7 +503,7 @@ Beam-induced backgrounds include delayed events caused by slow particles and
 products of stray protons arriving between two bunches. Antiprotons are the main
 source of delayed backgrounds due to their slow speed relative to pions and
 muons of the same momentum. They are negatively charged, therefore they cannot
-be efficiently selected out by the beamline. Hence, they can move slowly toward
+be efficiently filtered out by the beamline. Hence, they can move slowly toward
 the muon stopping target and produce signal-like secondary electrons during the
 trigger window.
 
