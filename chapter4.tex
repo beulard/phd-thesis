@@ -1094,11 +1094,11 @@ Inception-v3 model~\cite{7780677} is applied to real and generated samples.
 Activations from an intermediate layer are extracted and their mean $\bm{\mu}$
 and covariance $\bm{\Sigma}$ are estimated, from which the Fréchet (or
 Wasserstein-2) distance is calculated as
-$$
+\begin{equation}
 d^2 = | \bm{\mu}_G - \bm{\mu}_R |^2 + 
     \mathrm{Tr}(\bm{\Sigma}_G + \bm{\Sigma}_R - 
-    2(\bm{\Sigma}_G \bm{\Sigma}_R)^{1/2})
-$$
+    2(\bm{\Sigma}_G \bm{\Sigma}_R)^{1/2})    
+\end{equation}
 where the $G$ and $R$ subscripts respectively denote generated and real statistics.
 
 Applying these methods to domains other than image generation is not

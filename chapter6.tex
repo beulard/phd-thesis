@@ -71,9 +71,9 @@ Signal events are selected based on detector acceptance criteria. We first
 require fourfold coincidence in the CTH. Figure~\ref{fig:cydet_signal_event}
 shows an example of a conversion event which passes this trigger criterion. The
 fraction of events remaining defines the geometrical acceptance 
-$$
+\begin{equation}
 A_\mathrm{geom} \equiv  \frac{\text{fourfold coincidences}}{N_\mathrm{signal}}.
-$$
+\end{equation}
 In this simulation, the estimated geometrical acceptance is $A_\mathrm{geom} =
 \SI{21}{\percent}$. In comparison, the TDR cites $A_\mathrm{geom} =
 \SI{26}{\percent}$ with the previous design of the CTH.
@@ -262,9 +262,9 @@ muon capture\sepfootnote{fn:conv_br_norm} and $f_\mathrm{coherent}=0.9$ is the
 fraction of conversions that are coherent.
 
 Similarly, the total number of DIO electrons can be expressed as:
-$$
+\begin{equation}
 N_\mathrm{DIO} = N_\mu \, \mathcal{B}_\mathrm{DIO},
-$$
+\end{equation}
 where $\mathcal{B}_\mathrm{DIO} = 1 - \mathcal{B}_\mathrm{capture} = 0.39$ is
 the branching ratio of DIO. Our simulation sample, however, only covers the part
 of the DIO spectrum where $E_e > \SI{95}{\MeV}$, so we cannot simply use
@@ -303,10 +303,10 @@ In order to take into account the trigger timing window, we assume that
 atmospheric muons irradiate the detector with a uniform time distribution.
 Hence, the time window efficiency factor is the average fraction of time when
 the trigger is active:
-$$
+\begin{equation}
 \epsilon_\text{time window}^\mathrm{atmospheric} =
 \frac{8}{9}\,\frac{1170 - 700}{1170} = \SI{36}{\percent}
-$$
+\end{equation}
 assuming the trigger window is between 700 and \SI{1170}{\ns}, and where the
 factor $\frac{8}{9}$ arises from the bunch structure of the J-PARC main ring. In
 contrast, the efficiency factor for conversion and DIO electrons
@@ -323,10 +323,10 @@ defined as the value of the $\mu$--$e$ conversion branching ratio required for
 the experiment to observe one signal event. It can be expressed in terms of the
 experimental acceptance $A_{\mu-e}$ and the total number of muons stopped in the
 stopping target $N_\mu$:
-\begin{equation*}
+\begin{equation}
 \mathrm{SES} = 
 \frac{1}{N_\mu\,A_{\mu-e}\,\mathcal{B}_\mathrm{capture}\,f_\mathrm{coherent}},
-\end{equation*}
+\end{equation}
 where $\mathcal{B}_\mathrm{capture} = 0.61$ and $f_\mathrm{coherent} = 0.9$.
 
 In this simulation study, we found the geometrical acceptance $A_\mathrm{geom}$
@@ -339,9 +339,9 @@ value. Overall, although the total number of bound muons is increased for the
 same run time, it is outweighed by the decrease in acceptance. Keeping
 $T_\mathrm{DAQ}$ fixed at 146 days, we obtain $N_\mu = 1.53 \times 10^{16}$,
 hence our estimation of the COMET Phase-I sensitivity is
-$$
+\begin{equation}
 \mathrm{SES} = 3.61 \times 10^{-15}.
-$$
+\end{equation}
 
 
 \section{Signal and background event counts}

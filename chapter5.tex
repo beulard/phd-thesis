@@ -116,20 +116,20 @@ step $j$ of the propagation, a multiplicative weight $w^i_j$ is computed given
 the path taken and the interactions along it. When the particle reaches the
 source, the directional flux at the source $\phi_\mathrm{s}$ is used as a
 normalisation factor to yield a weighted event flux
-$$
+\begin{equation}
 \phi(\bm{x}'_i, \bm{p}'_i, E'_i) = \prod_j w^i_j\ \times\ 
 \phi_\mathrm{s}(\bm{x}'_i, \bm{p}'_i, E'_i),
-$$
+\end{equation}
 where $\bm{x}'$, $\bm{p}'$ and $E'$ denote respectively the position, direction
 and energy of the particle upon reaching the source.
 
 The weighted event flux $\phi$ is related to the event rate $R$ by the
 inverse of the sampling PDF of Equation~\ref{eq:sampling_pdf} used to generate
 the event initially:
-\begin{align*}
+\begin{align}
 R\,(\bm{x}_i, \bm{p}_i, E_i, \bm{x}'_i, \bm{p}'_i, E'_i) = 
     \frac{\phi(\bm{x}'_i, \bm{p}'_i, E'_i)}{p(\bm{x}_i, \bm{p}_i, E_i)}.
-\end{align*}
+\end{align}
 Since the rate depends on the position, direction and energy of the particle at
 the source, it is susceptible to variation across backward runs because of the
 stochastic aspect of Monte Carlo transport. Hence, backward transport is
@@ -221,27 +221,27 @@ our volume of interest, the Cylindrical Detector. We define a sampling
 envelope around the CRV, where muons (and anti-muons) are generated and
 backward-propagated. Events are sampled uniformly over this
 envelope, i.e. the position PDF $p(\bm{x})$ is independent of $\bm{x}$:
-$$
+\begin{equation}
 p(\bm{x}) = \frac{1}{N_{\bm{x}}},
-$$
+\end{equation}
 where $N_{\bm{x}}$ is the normalisation term satisfying 
 $\int p(\bm{x}) \: \textnormal{d}\bm{x} = 1$.
 
 The direction is sampled according to Lambert's cosine law, which favours events
 with a large vertical momentum component:
-$$
+\begin{equation}
 p(\bm{p}) = 
     \frac{1}{N_{\bm{p}}} \ (-\hat{\bm{p}}) \cdot \hat{\bm{y}} = 
     \frac{1}{N_{\bm{p}}}\:\cos(\theta_z),
-$$
+\end{equation}
 where $\theta_z$ is the angle between $-\bm{p}$ and the vertical axis $\hat{\bm{y}}$
 (or zenith angle), and $N_{\bm{p}}$ is the normalisation factor. 
 
 The energy is sampled according to an inverse law to
 favour low-energy events, since they are more likely on average:
-$$
+\begin{equation}
 p(E) = \frac{1}{N_E}  \frac{1}{E},
-$$
+\end{equation}
 where $N_E$ is the normalisation factor. 
 
 The arbitrary PDFs selected for event sampling do not affect the results so long
