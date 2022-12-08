@@ -10,10 +10,10 @@ ICEDUST}
 
 \section{Original implementation}
 The backward Monte Carlo simulation software was originally written and applied
-to the COMET Phase-I experiment by Valentin Niess, author
+to the COMET Phase\nobreakdash-I experiment by Valentin Niess, author
 of~\cite{Niess_Barnoud_Carloganu_Menedeu_2018,NIESS2022108438}.
 Figure~\ref{fig:pumas_integration_strategy} shows the layout of the original set
-of software layers used to run backward MC simulations in the Phase-I world. 
+of software layers used to run backward MC simulations in the Phase\nobreakdash-I world. 
 
 At the core of the backward Monte Carlo simulation is the backward transport
 engine, PUMAS~\cite{NIESS2022108438}. PUMAS is responsible for the propagation
@@ -37,7 +37,7 @@ to estimate their flux.
     \centering
     \includegraphics[width=0.6\textwidth]{appendixA/integration_strategy.drawio.pdf}
     \caption{ Software packages that compose the original backward MC simulation
-        stack for the Phase-I study, and organisation of their integrated
+        stack for the Phase\nobreakdash-I study, and organisation of their integrated
         ICEDUST counterparts.}
     \label{fig:pumas_integration_strategy}
 \end{figure}
@@ -78,7 +78,7 @@ workflow.
 The integrated backward MC software presented here was used to obtain the
 results of Chapters~\ref{ch:cosmics} and~\ref{ch:phase-I_study}. It is also
 currently being used in the work of others, for instance to estimate the
-atmospheric muon flux at various locations around the Phase-I detector system
+atmospheric muon flux at various locations around the Phase\nobreakdash-I detector system
 and validate the results with real measurements. Through our standardisation of
 some parts of the original software and the addition of specific documentation,
 we hope that the \texttt{SimBackwardMC} package will remain a readily accessible

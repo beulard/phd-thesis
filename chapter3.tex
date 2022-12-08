@@ -83,7 +83,7 @@ Figure~\ref{fig:oaEvent}. Each event object contains an arborescence of data
 containers, each of which holds an array of some given data type (e.g.\ detector
 hits, calibrated energy deposits, reconstructed tracks, etc.).
 
-From Phase-I onward, data will be collected using the MIDAS data acquisition
+From Phase\nobreakdash-I onward, data will be collected using the MIDAS data acquisition
 system, hence the online on-disk format is based on MIDAS data banks. ICEDUST
 provides a direct translation from this format to \oaEvent via the
 \texttt{oaRawEvent} and \texttt{oaUnpack} packages. Once translated, the data
@@ -220,14 +220,14 @@ and \texttt{SimDetectorResponse} performs detector response simulation.
         \centering
         \includegraphics[width=0.95\textwidth]{
             chapter3/geometries_Phase-I_iso_cropless_huesat_croppedleft.png}
-        \caption{Phase-I in the CyDet configuration.}
+        \caption{Phase\nobreakdash-I in the CyDet configuration.}
     \end{subfigure}
     \hfill
     \begin{subfigure}[t]{0.57\textwidth}
         \centering
         \includegraphics[width=0.95\textwidth]{
             chapter3/geometries_Phase-II_iso_huesat_human.png}
-        \caption{Phase-II.}
+        \caption{Phase\nobreakdash-II.}
     \end{subfigure}}
     
     \caption{Cutaway views of the simulation geometries implemented in \SimG and
@@ -253,8 +253,8 @@ be interpreted by the MARS15 tracking software, which simplifies the process of
 running comparative simulations.
 
 
-The \SimG package includes geometries for the Phase-I (CyDet and StrECAL
-configurations) and Phase-II setups. Over time, these simulation worlds are
+The \SimG package includes geometries for the Phase\nobreakdash-I (CyDet and StrECAL
+configurations) and Phase\nobreakdash-II setups. Over time, these simulation worlds are
 refined by developers to better reflect the exact configuration of the
 experiment. Figure~\ref{fig:comet_geometries} shows the simulation geometries
 for the two conversion-searching COMET designs.
@@ -296,12 +296,12 @@ the standard \Geant electromagnetic physics model.
 
 Muons at rest receive a special treatment due to their important contribution
 toward the background rate in COMET. The default energy spectrum of electrons
-from muon decay-in-orbit is replaced by the numerical evaluation of Czarnecki et
-al.~\cite{czarnecki}, which includes the effect of nuclear recoil and thus
-allows electron energies up to \SI{104.973}{\MeV}. In addition, the nuclear muon
-capture (NMC) model is replaced to adhere to the results of the AlCap
-experiment~\cite{PhysRevC.105.035501} which measured the energy spectrum of
-protons emitted after NMC in aluminium.
+from muon decay-in-orbit is replaced by the 2011 numerical evaluation of
+Czarnecki et al.~\cite{czarnecki}, which includes the effect of nuclear recoil
+and thus allows electron energies up to \SI{104.973}{\MeV}. In addition, the
+nuclear muon capture (NMC) model is replaced to adhere to the results of the
+AlCap experiment~\cite{PhysRevC.105.035501} which measured the energy spectrum
+of protons emitted after NMC in aluminium.
 
 
 
@@ -309,7 +309,7 @@ protons emitted after NMC in aluminium.
 \subsection{Signal simulation}
 By default, the list of physical processes considered by \SimG includes only
 SM-allowed interactions and decays, and hence does not include $\mu$--$e$
-conversion. In order to simulate signal events, one can manually produce
+conversion. In order to simulate signal events, one must manually produce
 conversion electrons out of the muons stopped inside the stopping target.
 
 From the normal beam simulation, one can estimate the spatial and temporal
@@ -379,7 +379,7 @@ Figure~\ref{fig:sim_cdc_hits}, where the position and granularity of
 % This new hit class and the associated algorithms were introduced to \SimG in
 % 2019. 
 This hit representation is designed toward gaseous detectors, hence it
-also applies to the Straw-Tube Tracker of Phase-I and Phase-II. Because of the
+also applies to the Straw-Tube Tracker of Phase\nobreakdash-I and Phase\nobreakdash-II. Because of the
 relatively low density of hit instances along a trajectory, important details of
 the true energy deposition pattern may be lost. Therefore, \SimG implements a
 run-time option to store \emph{auxiliary points} inside each hit instance, which
@@ -404,25 +404,26 @@ computing facilities at the French National Institute of Nuclear and Particle
 Physics Computing Centre (CC-IN2P3) in Lyon, France. Using \numprint{2000}
 concurrent machines over the course of a few weeks, the outcomes of 1 billion
 proton-on-target (POT) collisions were simulated with \SimG in the CyDet
-configuration of COMET Phase-I.
+configuration of COMET Phase\nobreakdash-I.
 
 \subsubsection{Software}
 Leading up to the MC5 production, several aspects of the software were changed
 or updated in comparison with the previous large-scale production:
 \begin{itemize}
-    \item The CMake build configuration system was introduced to replace the
-    legacy CMT system. 
-    \item The external ROOT software, upon which the \oaEvent data format
-    depends, was updated from major version 5 to 6.
+    \item The CMake build configuration system was integrated by Andreas Jansen
+    to replace the legacy CMT system. 
+    \item I led the upgrade of the ROOT software, upon which the \oaEvent data format
+    depends, from major version 5 to 6.
     \item The CyDet geometry received multiple updates to make it as faithful as
-    possible to the design, adding detailed elements such as readout boards and
-    fixing errors in the positioning of CDC wires. 
-    \item As discussed in Section~\ref{subsec:SD}, the treatment of energy
-    deposits in the CDC was also changed to the \texttt{IG4HitGas}
-    representation.
-    \item All memory-related problems identified by \texttt{valgrind} at the
-    time were resolved to bring the simulation software into a production-ready
-    state.
+    possible to the design. Detailed elements such as readout boards were added,
+    and I contributed in tracing back and fixing inaccurate positioning of the
+    CDC wires.
+    \item As discussed in Section~\ref{subsec:SD}, I participated in changing
+    the treatment of energy deposits in the CDC to the current
+    \texttt{IG4HitGas} representation and thoroughly tested the new behaviour.
+    \item I identified and resolved all memory-related issues in the \SimG code
+    using \texttt{valgrind} to bring the simulation software into a
+    production-ready state.
 \end{itemize}
 
 \subsubsection{Run configuration}
@@ -471,13 +472,16 @@ configurations.
 The data produced with MC5 has a total disk size of \SI{13}{TB} and is archived
 on the tape storage system at CC-IN2P3. The sample size of $10^9$ POT events
 represents 62 unique beam bunches when merged, or the equivalent of
-about $\SI{0.1}{\ms}$ of data acquisition in Phase-I.
+about $\SI{0.1}{\ms}$ of data acquisition in Phase\nobreakdash-I.
 
 \section{Animated CyDet event display}
-In order to visualise events in the CyDet system, a tool was developed to display
+In order to visualise events in the CyDet system, I developed a tool to display
 hit data from MC simulations as animations, visually similar to a slow-motion
-online monitor of the detector. Figure~\ref{fig:animation} shows a series of
-frames from one such animation involving a $\mu$--$e$ conversion electron.
+online monitor of the detector. The software used to produce these animations
+has been committed to the CC-IN2P3 GitLab instance under the name
+\texttt{cydet\_animations}~\cite{cydetanimations}.
+Figure~\ref{fig:animation} shows a series of frames from one such animation
+involving a $\mu$--$e$ conversion electron.
 
 \begin{figure}
     \centering

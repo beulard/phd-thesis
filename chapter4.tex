@@ -50,7 +50,7 @@ Augmentation with \\ Generative Adversarial Networks}
 %running. Most importantly, it provides an estimate of the kinds of patterns we
 %can expect to observe in the detector system. 
 
-When performing a full simulation of COMET Phase-I, most of the activity takes
+When performing a full simulation of COMET Phase\nobreakdash-I, most of the activity takes
 place in the initial collision between the proton beam and the graphite target.
 The many hadronic interactions caused by the proton beam collision
 represent \SI{99.7}{\percent} of the computational cost of the Monte Carlo
@@ -64,7 +64,7 @@ accurate means to synthesise data in the detector, simulating each proton
 individually is also very computationally inefficient. Using this brute-force
 method with the infrastructure used for MC5, it is only possible to produce the
 equivalent of 100 to \numprint{1000} beam bunches, which is far from the $2\times 10^{12}$
-expected bunch collisions of COMET Phase-I.
+expected bunch collisions of COMET Phase\nobreakdash-I.
 
 
 % Calculation of MC5 simulation "efficiency" We can
@@ -184,6 +184,7 @@ score to generated samples.
 
 \begin{figure}
     \centering
+    \hspace{-2cm}
     \includegraphics[width=0.75\textwidth]{chapter4/gan_diagram.pdf}
     \caption{
         Schematic diagram of the data flow in the GAN training procedure. Real samples from the training dataset and fake samples from the generator
@@ -362,7 +363,7 @@ beam collision. An event-generating GAN could for instance be trained to sample
 backward-going particles from the collisions. However, because of the large
 separation between the proton target and the detector, generating hits directly
 is a more efficient approach. The rest of this chapter focuses on hit
-generation inside the CDC of COMET Phase-I.
+generation inside the CDC of COMET Phase\nobreakdash-I.
 %this approach seems especially useful because of the large physical separation
 %between the initial beam collision and the detector volume. Secondary particles
 %are heavily selected based on their charge and momentum before they can reach
@@ -379,7 +380,7 @@ Our approach draws inspiration from recent GAN implementations in other high
 energy physics experiments and in other areas, such as image and text
 synthesis. We design a GAN model whose purpose is to efficiently and
 realistically generate hits in the CDC, with the aim of augmenting MC datasets
-for COMET Phase-I.
+for COMET Phase\nobreakdash-I.
 
 %The training dataset is composed of discrete energy deposits made by simulated
 %particles in the gas of the drift chamber. Each hit occurs on a specific sense

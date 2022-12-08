@@ -3,7 +3,7 @@
 
 This thesis presents two main original contributions: we designed a fake Monte
 Carlo data generator for the CDC using machine learning, and we estimated the rate of
-atmospheric muon backgrounds in the COMET Phase-I $\,\mu$--$e$ conversion search
+atmospheric muon backgrounds in the COMET Phase\nobreakdash-I $\,\mu$--$e$ conversion search
 using a backward MC simulation technique. In this chapter, we discuss our main
 findings, the limitations we encountered and ideas toward future studies on
 either topic.
@@ -145,14 +145,14 @@ design and training procedure.
 
 \subsection{Summary}
 In Chapter~\ref{ch:cosmics}, we presented the backward Monte Carlo simulation
-principle, method, validations, and results when applied to the COMET Phase-I
+principle, method, validations, and results when applied to the COMET Phase\nobreakdash-I
 setup. Backward MC consists in the time-reversed transport of particles from a
 volume of interest to a source where the flux is known. Since events are
 generated arbitrarily near the volume of interest, this provides a way to focus
 computational resources on important events. In this study, we used backward MC
 transport of atmospheric muons in order to determine the rate of cosmic
 ray-induced backgrounds in the $\mu$--$e$ conversion search. Events are
-generated from the surface of the Cosmic Ray Veto in Phase-I and transported to
+generated from the surface of the Cosmic Ray Veto in Phase\nobreakdash-I and transported to
 a \SI{1600}{\metre}-high atmospheric plane where a pre-computed flux model is
 sampled. The flux estimated at the surface of the CRV is then compared with
 experimental data from the BESS-TeV and Kiel-DESY spectrometers in order to
@@ -160,10 +160,10 @@ validate that the backward sampling yields realistic results.
 
 Then, in Chapter~\ref{ch:phase-I_study}, we combine the BMC method with a
 $\mu$--$e$ conversion sample and a DIO sample in order to determine how each
-process contributes in the event counts recorded during the Phase-I data
+process contributes in the event counts recorded during the Phase\nobreakdash-I data
 acquisition run. The analysis of signal events yields our estimate of the single
-event sensitivity of the COMET Phase-I experiment. Integrating over the entire
-run time of Phase-I, we find that atmospheric muon backgrounds outnumber the
+event sensitivity of the COMET Phase\nobreakdash-I experiment. Integrating over the entire
+run time of Phase\nobreakdash-I, we find that atmospheric muon backgrounds outnumber the
 next largest source of background, DIO, by an order of magnitude or more
 depending on the exact conditions. The main factor in eliminating atmospheric
 backgrounds is the efficiency of the CRV, followed by the CyDet system's ability
@@ -180,13 +180,13 @@ falls to 0.08 assuming a \SI{99}{\percent} $\mu^\pm$ identification rate.
 Backward MC simulation is a powerful tool which enabled us to determine that
 extremely rare conversion-like events can be produced by atmospheric muons
 sneaking into the COMET detector system. These events can be an important
-obstacle for the COMET Phase-I conversion search if no additional way to
+obstacle for the COMET Phase\nobreakdash-I conversion search if no additional way to
 reject them, such as particle type identification, is put in place. Using a
 standard MC simulation where events are generated far from the detector system,
 those rare events that get past the CRV and produce signal-like tracks would
 most likely not appear at all in the sample. Hence, the backward MC method is
 absolutely key in this study and should continue to prove useful in COMET toward
-Phase-I and Phase-II. More generally, any experiment searching for rare
+Phase\nobreakdash-I and Phase\nobreakdash-II. More generally, any experiment searching for rare
 processes and which is susceptible to cosmic ray-induced backgrounds will also
 benefit from using backward MC to identify the kinds of atmospheric events that
 are likely to mimic their signal, and estimate their frequency.
@@ -251,14 +251,14 @@ sneaking component to be unaffected.
 
 \subsubsection{Reconstruction and detector response}
 Various aspects of our study are not faithful to the actual conditions of
-Phase-I. On the reconstruction side, for the atmospheric muon sample, we use a
+Phase\nobreakdash-I. On the reconstruction side, for the atmospheric muon sample, we use a
 helix fit to reconstruct the trajectory of each event where a fourfold
 coincidence is produced. During data acquisition, a more complex fitting
 algorithm, based on Kalman filtering, will be used. Similarly, for the
 conversion and DIO samples, we do not perform reconstruction but naively
 smear the true momentum of the track using the design momentum resolution of the
 CDC. Because of those simplifications, we expect the resulting momentum spectra
-to differ slightly in the real conditions of Phase-I. 
+to differ slightly in the real conditions of Phase\nobreakdash-I. 
 
 Although ICEDUST has the capability to fully simulate each sub-detector's
 response to incoming energy deposits, digitisation and calibration were not
@@ -273,7 +273,7 @@ the trigger window.
 Hence, our study takes a few shortcuts in the detector response and
 reconstruction aspects, which we attempt to correct for using
 efficiency factors estimated in prior studies. In future studies, and as the
-Phase-I data acquisition period approaches, it will be especially important to 
+Phase\nobreakdash-I data acquisition period approaches, it will be especially important to 
 rigorously simulate these effects to assess the performance of the experiment as
 accurately as possible.
 
