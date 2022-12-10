@@ -3,12 +3,14 @@
 
 With the framework to simulate backgrounds from atmospheric muons in place, we
 can now combine the results into a complete sensitivity and background
-simulation study for COMET Phase\nobreakdash-I. In this chapter, we discuss our simulation
-samples consisting of signal, decay in orbit (DIO), and atmospheric events, and
-present our resulting expectations of the performance of Phase\nobreakdash-I.
+simulation study for COMET Phase\nobreakdash-I. In this chapter, we discuss our
+simulation samples consisting of signal, decay in orbit (DIO), and atmospheric
+events, and present our resulting expectations of the performance of
+Phase\nobreakdash-I. All data samples simulated for this study were produced
+on the CC-IN2P3 cluster.
 
 \section{Data samples}
-Three simulation samples are produced for this study. A $\mu$--$e$ conversion
+Three simulation samples are produced for this study: a $\mu$--$e$ conversion
 sample, a DIO sample and an atmospheric muon sample. All three are simulated in
 the geometrical world shown in Figure~\ref{fig:bmc_geometry}. This geometry
 differs from the older TDR design~\cite{the_comet_collaboration_comet_2020} by
@@ -17,7 +19,7 @@ instead of the original 48, which mainly affects the detector's geometrical
 acceptance. In addition, we use the first-stage layout of the CTH, where both
 layers are composed entirely of plastic scintillation counters. In contrast, the
 final stage will have Cherenkov counters in the outer layer. As we shall see,
-this has an important impact on the detector's ability to discriminate
+this has a considerable impact on the detector's ability to discriminate
 atmospheric muons from conversion electrons.
 
 \subsection{\texorpdfstring{$\mu$--$e$}{Muon-to-electron} conversion} 
@@ -72,7 +74,7 @@ require fourfold coincidence in the CTH. Figure~\ref{fig:cydet_signal_event}
 shows an example of a conversion event which passes this trigger criterion. The
 fraction of events remaining defines the geometrical acceptance 
 \begin{equation}
-A_\mathrm{geom} \equiv  \frac{\text{fourfold coincidences}}{N_\mathrm{signal}}.
+A_\mathrm{geom} \equiv  \frac{N_\text{4-fold}}{N_\mathrm{signal}}.
 \end{equation}
 In this simulation, the estimated geometrical acceptance is $A_\mathrm{geom} =
 \SI{21}{\percent}$. In comparison, the TDR cites $A_\mathrm{geom} =
@@ -138,7 +140,7 @@ four $a$ coefficients provided by the authors. This approximation is valid in
 the region $E_e > \SI{85}{\MeV}$, which is sufficient to cover our whole DIO
 sample. We use this spectrum parametrisation to weight DIO events based on their
 energy. Similarly to the position weighting procedure, DIO events are first
-generated with a uniform energy distribution in the range $p \in [95,
+generated with a uniform energy distribution in the range $E \in [95,
 110]~\si{\MeV/\clight}$, and then weighted according to the probability for a
 DIO electron to have the sampled energy. Figure~\ref{fig:czarnecki_spectrum}
 shows the momentum spectrum of DIO electrons before and after weighting.
@@ -479,7 +481,7 @@ additional way to identify them.
 
 
 So far, we have assumed that the CyDet system has no way of discriminating
-between electrons, muons, and anti-muons. However, this is only partly true. At
+between electrons, muons, and anti-muons. However, this is not accurate. At
 a momentum of \SI{105}{\MeV/\clight}, an electron has a velocity close to the speed of
 light, whereas a muon travels only at around $0.7 c$. This allows the two to be
 distinguished when they pass through a Cherenkov detector with the right index
@@ -612,10 +614,10 @@ for $T_\mathrm{DAQ}=146$~days under various run conditions. Obviously, one major
 aspect of identifying atmospheric muons is the CRV, and the background rate
 greatly depends on its efficiency.
 
-The problem caused by sneaking muons is more subtle. However, it can still plague
-the conversion search by producing $\mathcal{O}(1)$ signal-like events during
-data acquisition. The most frequent sneaking backgrounds are produced by
-anti-muons disguising as negative particles by flying from the detector to the
+The problem caused by sneaking muons is more subtle. However, it can still
+plague the conversion search by producing on the order of one signal-like events
+during data acquisition. The most frequent sneaking backgrounds are produced by
+anti-muons disguised as negative particles by flying from the detector to the
 muon stopping target. These events can, however, be distinguished from
 conversion electrons via a direction identification technique using timing
 information from the CDC and CTH. Being able to identify \SI{89}{\percent} of
