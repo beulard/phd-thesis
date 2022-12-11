@@ -927,6 +927,16 @@ demonstrated in Reference~\cite{NIPS2017_892c3b1c}.
 
 \subsection{Evaluation}
 \label{sec:gan_eval}
+Comparing the raw rate of hit production in the CDC, the GAN, once trained,
+generates hits six orders of magnitude faster than the downstream simulation
+used to produce MC5. Using MC5 as reference, the GAN model can produce as many
+noise-like hits as there are in the downstream dataset in six seconds on a
+single GPU machine, versus a day on 2000 cores for the Monte Carlo simulation.
+The increase in speed is indeed the main reason for using a generative model,
+however it is also crucial to determine how faithful the generated samples are
+to the original dataset.
+
+
 Evaluation of GAN-generated samples is notoriously difficult in all domains
 because of the lack of a well-defined, unique metric for quality\footnote{Unlike
 in supervised learning, where an obvious quality metric is usually the loss
