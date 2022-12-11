@@ -241,13 +241,13 @@ leading to low diversity in the generated samples.}. Training a GAN model is
 highly sensitive to the choice of hyperparameters: learning rate, optimisation
 algorithm, network architecture.
 
-\sepfootnotecontent{A}{ Also called earth mover's distance, Wasserstein distance
+\sepfootnotecontent{fn:wasserstein_dist}{ Also called earth mover's distance, Wasserstein distance
     is a distance function between probability distributions. If each
     distribution is a pile of soil, it corresponds to the minimum cost of
     turning one pile into the other, where cost is defined as mass times
     distance. Wasserstein-1 denotes the first order Wasserstein distance. }
 
-\sepfootnotecontent{B}{ A function is 1-Lipschitz continuous if its
+\sepfootnotecontent{fn:lipschitz_continuity}{ A function is 1-Lipschitz continuous if its
     gradient has a norm less or equal to 1 everywhere.
 }
 
@@ -256,11 +256,11 @@ issues of the original GAN~\cite{arjovsky2017wasserstein}. The authors argue
 that solving Equation~\ref{eq:GAN}, which implicitly minimises the
 Jensen-Shannon divergence between $p$ and $g$, leads to vanishing gradients when
 the discriminator is too powerful, and thus to unstable training. Instead, they
-propose that the Wasserstein-1 distance\sepfootnote{A} between $p$ and $g$
-should be minimised, because of the superior continuity and differentiability
-properties of that metric. They go on to show that if the discriminator is
-1-Lipschitz continuous\sepfootnote{B}, then the adversarial training problem can
-be formulated as:
+propose that the Wasserstein-1 distance\sepfootnote{fn:wasserstein_dist} between
+$p$ and $g$ should be minimised, because of the superior continuity and
+differentiability properties of that metric. They go on to show that if the
+discriminator is 1-Lipschitz continuous\sepfootnote{fn:lipschitz_continuity},
+then the adversarial training problem can be formulated as:
 \begin{equation}
     \min_G \max_D \quad
     \mathbb{E}_{\bm{x} \sim p} \left[ D(\bm{x}) \right] -
