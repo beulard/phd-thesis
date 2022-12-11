@@ -105,10 +105,6 @@ considered, the discrete distribution of particles can also enter
 Equation~\ref{eq:sampling_pdf}. In our case, both atmospheric muons and anti-muons
 are relevant, so they are sampled identically and in equal proportions.
 
-\sepfootnotecontent{A}{Reference~\cite{DESORGHER2010247} also provides a more
-thorough discussion of adjoint cross-sections, weights, weight corrections and
-source normalisation.}
-
 Each event $i$ is propagated backward using adjoint transport and interaction
 kernels such that the particle undergoes reverse continuous energy loss and
 reverse discrete processes, while moving backward toward the source. At each
@@ -122,6 +118,11 @@ normalisation factor to yield a weighted event flux
 \end{equation}
 where $\bm{x}'$, $\bm{p}'$ and $E'$ denote respectively the position, direction
 and energy of the particle upon reaching the source.
+
+\sepfootnotecontent{fn:bmc_theory}{The article
+by~\citeauthor{DESORGHER2010247}~\cite{DESORGHER2010247} also provides a more
+thorough discussion of adjoint cross-sections, weights, weight corrections and
+source normalisation.}
 
 The weighted event flux $\phi$ is related to the event rate $R$ by the
 inverse of the sampling PDF of Equation~\ref{eq:sampling_pdf} used to generate
@@ -141,9 +142,10 @@ repeated $N$ times for each event to find the average rate
 \end{align}
 smearing out the dependence on $\bm{x}'$, $\bm{p}'$ and $E'$. Given a large
 enough $N$, i.e.\ a significant enough sample of backward transports, the sum of
-weighted fluxes becomes equivalent to an integration over the possible transport paths
-and interactions. Reference~\cite{DESORGHER2010247} demonstrates that the
-obtained results are consistent with forward Monte Carlo\sepfootnote{A}.
+weighted fluxes becomes equivalent to an integration over the possible transport
+paths and interactions. Results obtained by following this procedure were
+demonstrated to be consistent with forward Monte
+Carlo~\cite{DESORGHER2010247}\sepfootnote{fn:bmc_theory}.
 
 
 
