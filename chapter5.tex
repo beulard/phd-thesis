@@ -267,18 +267,6 @@ to simulate fewer events in order to find a sneaking signal-like track than with
 the envelope sample. This allows us to obtain reasonable statistics in the
 background rate study while saving on computational resources and storage space.
 
-
-
-\subsection{Atmospheric muon flux}
-Estimating rates requires knowledge of $\phi_s$, the directional flux at the
-source. We use tabulated flux data from a CORSIKA~\cite{corsika} simulation as
-an efficient way to query the flux as a function of energy and direction. The
-flux data, shown as a function of energy in
-Figure~\ref{fig:corsika_flux_distribution}, was estimated \SI{1600}{\metre}
-above sea level for energies between \SI{10}{\MeV} and \SI{10}{\TeV}, separately
-for muons and anti-muons. In the backward simulation, any event which is unable to
-travel back to this infinite source plane is assumed to have a rate of zero.
-
 \begin{figure}
     \centering
     \includegraphics[width=0.6\textwidth]{chapter5/flux_distribution.pdf}
@@ -291,6 +279,17 @@ travel back to this infinite source plane is assumed to have a rate of zero.
     \label{fig:corsika_flux_distribution}
 \end{figure}
 
+\subsection{Atmospheric muon flux}
+Estimating rates requires knowledge of $\phi_s$, the directional flux at the
+source. We use tabulated flux data from a CORSIKA~\cite{corsika} simulation as
+an efficient way to query the flux as a function of energy and direction. The
+flux data, shown as a function of energy in
+Figure~\ref{fig:corsika_flux_distribution}, was estimated \SI{1600}{\metre}
+above sea level for energies between \SI{10}{\MeV} and \SI{10}{\TeV}, separately
+for muons and anti-muons. In the backward simulation, any event which is unable to
+travel back to this infinite source plane is assumed to have a rate of zero.
+
+
 % Do we talk about the PUMAS, GOUPIL setup?
 % ICEDUST integration?
 % Maybe in appendix
@@ -298,28 +297,6 @@ travel back to this infinite source plane is assumed to have a rate of zero.
 % Describe data sample? How many events generated, how many times
 % backward-propagated, how much storage space, etc.
 
-\subsection{Validations}
-In order to ensure that the backward MC simulation yields accurate results, the
-flux of atmospheric muons estimated around the CRV is compared to two
-independent measurements of the flux at sea level.
-
-\subsubsection{BESS-TeV}
-The atmospheric muon flux in Manitoba, Canada was measured using the BESS-TeV
-spectrometer in 2004~\cite{besstev}. The apparatus only observed muons incident
-at a near-vertical zenith angle $\theta_z$. In order to compare our simulation
-results with the experimental data, we select simulated events based on the
-condition that $\cos \theta_z > 0.98$ to replicate the acceptance of the
-spectrometer. The comparison of the differential flux as a function of momentum
-is shown in Figure~\ref{fig:bmc_validations_bess}.
-
-\subsubsection{Kiel-DESY}
-The Kiel-DESY spectrometer was used to measure the atmospheric muon flux in
-Hamburg, Germany in 1975~\cite{kieldesy}. This detector measures particles
-within a zenith angle $\theta_z =\SI{75}{\degree} \pm \SI{7}{\degree}$ and an
-azimuthal angle $\phi = \SI{288}{\degree} \pm \SI{20}{\degree}$. Similarly to
-the previous comparison, simulated events are selected to replicate these
-acceptances such that the flux can be compared.
-Figure~\ref{fig:bmc_validations_kiel} shows the comparison of the flux spectra.
 
 \begin{figure}
     \centering
@@ -347,6 +324,30 @@ Figure~\ref{fig:bmc_validations_kiel} shows the comparison of the flux spectra.
         reflect the angular acceptance of the corresponding experiment. }
     \label{fig:bmc_validations}
 \end{figure}
+
+\subsection{Validations}
+In order to ensure that the backward MC simulation yields accurate results, the
+flux of atmospheric muons estimated around the CRV is compared to two
+independent measurements of the flux at sea level.
+
+\subsubsection{BESS-TeV}
+The atmospheric muon flux in Manitoba, Canada was measured using the BESS-TeV
+spectrometer in 2004~\cite{besstev}. The apparatus only observed muons incident
+at a near-vertical zenith angle $\theta_z$. In order to compare our simulation
+results with the experimental data, we select simulated events based on the
+condition that $\cos \theta_z > 0.98$ to replicate the acceptance of the
+spectrometer. The comparison of the differential flux as a function of momentum
+is shown in Figure~\ref{fig:bmc_validations_bess}.
+
+\subsubsection{Kiel-DESY}
+The Kiel-DESY spectrometer was used to measure the atmospheric muon flux in
+Hamburg, Germany in 1975~\cite{kieldesy}. This detector measures particles
+within a zenith angle $\theta_z =\SI{75}{\degree} \pm \SI{7}{\degree}$ and an
+azimuthal angle $\phi = \SI{288}{\degree} \pm \SI{20}{\degree}$. Similarly to
+the previous comparison, simulated events are selected to replicate these
+acceptances such that the flux can be compared.
+Figure~\ref{fig:bmc_validations_kiel} shows the comparison of the flux spectra.
+
 
 The fact that both comparisons are in reasonable agreement with the backward
 simulation results increases our confidence in the method. Here, we have shown
