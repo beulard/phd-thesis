@@ -283,11 +283,11 @@ network architectures.
 % WGAN-GP
 \subsubsection{Gradient penalty}
 The same year, another method to enforce the Lipschitz constraint on $D$ was
-discussed in Reference~\cite{NIPS2017_892c3b1c}, which outlines the shortcomings
-of weight clipping and instead proposes that the discriminator's gradient should
-be constrained. Since this is difficult to achieve in practice, the authors
-suggest a soft constraint on the gradient norm of $D$ using an explicit term in
-its loss function:
+discussed by \citeauthor{NIPS2017_892c3b1c}~\cite{NIPS2017_892c3b1c}, which
+outlines the shortcomings of weight clipping and instead proposes that the
+discriminator's gradient should be constrained. Since this is difficult to
+achieve in practice, the authors suggest a soft constraint on the gradient norm
+of $D$ using an explicit term in its loss function:
 \begin{equation}\label{eq:WGAN-GP}
     \mathcal{L}_D =
     -\mathbb{E}_{\bm{x} \sim p} \left[ D(\bm{x}) \right] +
@@ -440,7 +440,7 @@ This position is represented as the unique index of the cell, from 0 to 4985, wh
 Table~\ref{tab:gan_features}.
 
 \begin{table}
-    \setlength{\tabcolsep}{12pt}
+    \setlength{\tabcolsep}{8pt}
     \centering
     \begin{tabular}{l|cccc}
         \toprule
@@ -850,7 +850,7 @@ weight corresponding to the softmax probability. Hence, the result is not an
 exact wire location but an approximate region of the detector in which the
 generator envisions the hit to be.
 
-As discussed by \citeauthor{NIPS2017_892c3b1c}~\cite{NIPS2017_892c3b1c}, one
+As discussed in the original WGAN-GP article~\cite{NIPS2017_892c3b1c}, one
 might suspect that the discriminator can learn to reject the output of the
 generator because it does not look like a one-hot vector. However, the
 Wasserstein distance between the real and generated data remains well-defined
@@ -890,8 +890,8 @@ to show the progression and ensure that the networks are learning. In addition,
 every 100 mini-batch iterations, the critic loss is evaluated on test samples
 which are absent from the training dataset. This allows us to determine whether
 $D$ is overfitting to the training data, in which case the loss calculated using
-training and test samples (Figure~\ref{fig:gan_losses:test}) would diverge, as
-demonstrated in Reference~\cite{NIPS2017_892c3b1c}.
+training and test samples (Figure~\ref{fig:gan_losses:test}) would
+diverge~\cite{NIPS2017_892c3b1c}.
 
 
 \begin{figure}
@@ -932,10 +932,10 @@ Comparing the raw rate of hit production in the CDC, the GAN, once trained,
 generates hits six orders of magnitude faster than the downstream simulation
 used to produce MC5. Using MC5 as reference, the GAN model can produce as many
 noise-like hits as there are in the downstream dataset in six seconds on a
-single GPU machine, versus a day on 2000 cores for the Monte Carlo simulation.
-The increase in speed is indeed the main reason for using a generative model,
-however it is also crucial to determine how faithful the generated samples are
-to the original dataset.
+single GPU machine, versus a day of running on 2000 cores for the Monte Carlo
+simulation. The increase in speed is indeed the main reason for using a
+generative model, however it is also crucial to determine how faithful the
+generated samples are to the original dataset.
 
 
 Evaluation of GAN-generated samples is notoriously difficult in all domains
