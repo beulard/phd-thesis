@@ -69,7 +69,7 @@ electromagnetic calorimeter, will study the beam composition and timing
 properties and increase our understanding of potential backgrounds. The
 Cylindrical Detector, composed of a cylindrical drift chamber and a trigger
 hodoscope, will be used to perform a $\mu$--$e$ conversion search with a
-single-event sensitivity (see Section~\ref{sec:SES}) of $3\times 10^{-15}$, a
+single-event sensitivity (see Section~\ref{sec:SES}) of $3.1\times 10^{-15}$, a
 factor-100 improvement over SINDRUM II. COMET Phase\nobreakdash-II is a planned upgrade to
 Phase\nobreakdash-I with higher beam intensity and better background rejection via a longer
 momentum-selecting beamline. Phase\nobreakdash-II aims to improve on the single-event
@@ -194,8 +194,9 @@ forward-moving pions.
     \centering
     \includegraphics[width=0.6\textwidth]{chapter2/pion_mom-v2.pdf}
     \caption{ Momentum distribution of pions produced by simulating proton
-    collisions with Geant4, depending on whether their initial direction is
-    forward or backward with respect to the proton beam direction. }
+    collisions with Geant4~\cite{AGOSTINELLI2003250}, depending on whether their
+    initial direction is forward or backward with respect to the proton beam
+    direction. }
     \label{fig:pion_momentum}
 \end{figure}
 
@@ -528,7 +529,7 @@ technical design report (TDR)~\cite[Section
 10.6]{the_comet_collaboration_comet_2020} for each source of background in the
 $\mu$--$e$ conversion search. The total number of background events over the
 data acquisition run time is predicted to be $N_\mathrm{background} = 0.032$
-given an extinction factor $R_\mathrm{extinction} = 3 \times 10^{-11}$. Since
+given an extinction factor $R_\mathrm{extinction} = 3,1 \times 10^{-11}$. Since
 \mbox{$N_\mathrm{background} \ll 1$}, the observation of a single signal
 electron would suggest that there is a CLFV process at play, which would further
 motivate this search through COMET Phase\nobreakdash-II and beyond.
@@ -604,7 +605,7 @@ COMET Phase\nobreakdash-I TDR~\cite[Section 10.1]{the_comet_collaboration_comet_
 
 From the net signal acceptance $A_{\mu-e} = \SI{4.1}{\percent}$, we can now
 estimate the total data acquisition run time required to reach the sensitivity
-goal of the experiment, $\mathrm{SES} = 3\times 10^{-15}$, using
+goal of the experiment, $\mathrm{SES} = 3.1\times 10^{-15}$, using
 Equation~\ref{eq:ses}. The required number of bound muons is thus $N_\mu = 1.5
 \times 10^{16}$. This quantity can be related to the total run time $T$ via the
 proton beam current $I_p = \SI{0.4}{\micro\ampere}$ and the yield of stopped
@@ -613,4 +614,4 @@ muons per collision $R_{\mu / p} = 4.7\times 10^{-4}$:
 N_\mu = T \cdot \frac{I_p}{e} \cdot R_{\mu / p}.
 \end{equation}
 This equation is rearranged for $T$ to yield $T = 146$~days of data acquisition
-for a Phase\nobreakdash-I SES of $3 \times 10^{-15}$.
+for a Phase\nobreakdash-I SES of $3.1 \times 10^{-15}$.
