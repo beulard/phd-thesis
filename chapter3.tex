@@ -79,9 +79,9 @@ and analysis can be thoroughly tested with only simulation data, in advance of
 the data acquisition stage. This offline data format is called \oaEvent. Based
 on the ROOT~\cite{BRUN199781} serialisation system, \oaEvent defines a file
 format where data is laid out as a sequence of events, shown schematically in
-Figure~\ref{fig:oaEvent}. Each event object contains an arborescence of data
-containers, each of which holds an array of some given data type (e.g.\ detector
-hits, calibrated energy deposits, reconstructed tracks, etc.).
+Figure~\ref{fig:oaEvent}. Each event object contains a tree of data containers,
+each of which holds an array of some given data type (e.g.\ detector hits,
+calibrated energy deposits, reconstructed tracks, etc.).
 
 From Phase\nobreakdash-I onward, data will be collected using the MIDAS data acquisition
 system, hence the online on-disk format is based on MIDAS data banks. ICEDUST
