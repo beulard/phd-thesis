@@ -1316,4 +1316,134 @@ to perform, which subsequently helps to adjust its design and architecture.
 % not GANs can yield increase in efficiency (they can), but whether their output
 % respects all the physical properties expected from MC data.
 
-%\subsection{\hl{How GAN-generated hits are merged back into a dataset}}
+\section{Discussion}
+
+\subsection{Summary}
+The CDC GAN discussed in this chapter provides a way to produce synthetic Monte
+Carlo data in the Cylindrical Drift Chamber. The design of this generative
+algorithm is based on Generative Adversarial Networks, a technique which is more
+and more widely used in HEP and in other domains to produce fake samples by
+learning from an existing dataset of real samples. The CDC GAN is trained on
+MC-simulated hits using the WGAN-GP algorithm. Its discriminator and generator
+are convolutional neural networks that can process ordered sequences of hits,
+which allows the GAN to learn both from per-hit features, and from the relations
+between multiple consecutive hits. Once trained, the GAN is evaluated in
+multiple ways. Firstly, the distributions of the synthetic data are compared to
+those of the training dataset. In addition, we investigated quality metrics,
+which typically involve an external performance criterion implemented by a third
+neural network trained independently. These evaluation methods allow us to
+determine which aspects of the training data are adequately modelled by the GAN,
+and where there are discrepancies. This then helps to guide the design of the
+model to increase the quality of generated samples.
+
+% Interpretation
+After training, the CDC GAN provides a way to produce original hit data at least
+six orders of magnitude more quickly than by means of traditional MC simulation,
+using GPUs. We are therefore able to generate large samples of background events
+very efficiently. This can be useful, for instance, in studies which require a
+pure signal sample to be overlaid onto an ambient background, e.g.\ to optimise
+a hit filtering algorithm. Alternatively, GAN-generated data can serve to
+compose a mock dataset, combining signal events with all sources of backgrounds
+into one large-scale simulation sample used to test the readiness of our
+data-processing chain prior to the data acquisition period.
+
+
+
+
+The CDC GAN design and architecture are generalisable to other detector systems
+that have discrete elements. For instance, the CTH is somewhat analogous to the
+CDC if we treat the scintillation counters like the cells of the CDC. One
+difference is that distance of closest approach (\texttt{doca}) has meaning for
+CDC hits but not for CTH hits. Although it is not discussed in detail in this
+thesis, a CTH GAN prototype was developed based on this analogy, with the
+\texttt{wire} feature acting as the counter index, and the
+\texttt{doca} feature removed. Based on early evaluations, we observed similar
+performance and sample quality as exhibited by the CDC GAN.
+
+
+
+
+% Limitations
+\subsection{Limitations and recommendations}
+\subsubsection{Training data preselection}
+The CDC GAN is only trained on a restricted part of the CDC hit data.
+Reconstructible tracks, defined by their momentum $p>\SI{50}{\MeV/\clight}$, are
+removed from the training dataset in order to prevent the model from generating
+patterns that are too similar to the conversion signal without the proper
+associated truth information. Unlike high-momentum tracks whose source
+(conversion, DIO, RMC, etc.) matters in studies of the experimental outcomes,
+the origin of low-momentum tracks is typically irrelevant, hence those hits can
+be grouped into one large ``noise'' category. The GAN then learns only from hits
+in that category, and all GAN-generated data can safely be labelled as noise as
+well. However, training on a subset of hit data prevents us from using the GAN
+to generate an entire background dataset: the GAN must be complemented by real
+MC hits of reconstructible tracks, which is computationally expensive to
+produce. 
+
+Training a conditional GAN~\cite{Mirza2014ConditionalGA} with the ability to
+generate labelled hits was considered. However, the concern that the model would
+be unable to grasp the physical laws at play in the hit patterns of
+high-momentum particles was too great, hence this solution was discarded. In a
+future study, a physics-informed conditional GAN, where the dynamics of charged
+particle transport in a magnetic field are encoded into the discriminator in
+order to regulate the generator, could be considered to build a universal
+background hit generator.
+
+\subsubsection{Feature representation}
+One of the difficulties in designing the GAN was in determining the best way to
+handle the discrete feature, wire index. Multiple methods were considered, such
+as using actual or transformed wire positions as a real-valued feature, or using
+a trainable embedding matrix to make the GAN learn its preferred representation
+of the geometry. Eventually, we chose to represent the wire index as a one-hot
+encoded vector and use a matrix of wire positions to assist the model in
+locating wires, since that yielded the most faithful results. However, this
+aspect of the GAN design appears to be one of the major quality-limiting factors
+because of the large dimensionality of this one-hot vector compared to the other
+features. 
+
+A better design would be achieved by representing the wire index as a
+low-dimensional quantity while informing both networks of the location of hits,
+however a way to fulfil both requirements at once was not found in our
+investigations.
+
+\subsubsection{Hit sequence arrangement}
+
+In order to train the GAN as efficiently as possible, we arrange hits from
+multiple particles together into fixed-length sequences that can be processed
+quickly convolutional layers. This arrangement is not physical: unrelated hits
+from different particles become neighbours in the sequence. When processed by a
+convolution kernel, consecutive hits will be treated as if there was some
+relationship between them (as for neighbour pixels on an image), but this is
+sometimes false. This leads the GAN to learn patterns that are artificial and
+only the product of our arrangement. 
+
+Keeping hits from different tracks separate would most likely yield a better
+model of the underlying tracks. However, it would also prevent the networks from
+being built with convolutional layers. Techniques developed and used in natural
+language processing, such as transformers~\cite{10.5555/3295222.3295349}, could
+be applied here to build a model that can process variable-length hit sequences
+(in analogy with sentences) while remaining efficient to train.
+
+
+\subsubsection{Quality evaluation}
+
+Evaluating samples generated by the CDC GAN is inherently difficult. Unlike
+visual or audio data, one cannot precisely estimate the sample quality
+perceptually. Hence, in Section~\ref{sec:gan_eval}, we compare feature
+distributions and use KL divergence and more complex metrics to define a
+quantitative measure of sample quality. Although these methods help in refining
+the GAN architecture and in tuning training parameters, no metric can affirm
+that the generated data is physical enough to be used to study the experiment
+and its outcomes. This is in part due to the fact that the GAN generates
+unlabelled hits from the broad category of ``noise'', hence one can only hope to
+determine if generated hits belong in that category, or not.
+
+One option could be to condition the GAN~\cite{Mirza2014ConditionalGA} on
+particle type and momentum. If the model is able to generate a sequence of hits
+based on a prompt, such as ``electron with $p=\SI{15}{\MeV/\clight}$'', then it
+becomes easier to verify whether the hit sequence is faithful to the prompt by
+comparing to real samples of a similar description \emph{and} by checking that
+the physical rules are respected (e.g.\ track curvature, total energy deposit,
+etc.). Of course, conditioning comes at the cost of a more complex network
+design and training procedure.
+
