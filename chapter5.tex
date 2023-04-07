@@ -489,6 +489,59 @@ tend to have a signal-like signature.
 % integrated rates shown in Figure~\ref{fig:bmc_rate_vs_momentum} are over the
 % entire momentum range of selected events.
 
+\subsubsection{Uncertainties}
+The backward MC simulation algorithm allows us to compute a statistical
+uncertainty on the estimated rate of each event, which is given by the standard
+deviation of the rate over $N$ backward samplings. These uncertainty estimates
+are shown on Figure~\ref{fig:bmc_rate_vs_momentum}. 
+
+This fluctuation in the sampled rate is not the only source of uncertainty in
+our rate estimation, and a more careful consideration of each one would be
+necessary for our results to be complete. For now, let us briefly list what we
+believe would be important sources to consider in a future study.
+
+\paragraph{Atmospheric muon flux model}
+We estimate the flux of muons and anti-muons at the atmospheric flux boundary by
+sampling from a model of the flux as a function of angle and energy, which was
+computed by a CORSIKA simulation. In this study, the uncertainty on the sampled
+flux is not known, and therefore we cannot propagate it to our final rate
+estimation. However, validations of the flux were performed with respect to
+experimental data (see Figure~\ref{fig:bmc_validations}) so we expect our
+results to be reasonably realistic. A more rigorous approach would be to
+associate an uncertainty to the flux model such that it can be propagated along
+with the atmospheric events and yield an uncertainty on the total estimated rate.
+
+\paragraph{Material budget around the detector system}
+One of the major factors affecting the rate of false-positives in the conversion
+search will be the amount and type of material surrounding the COMET detector
+system. Depending on the accuracy of the simulation geometry compared to the
+actual experiment, the cosmic ray-induced background rate will be more or less
+accurate. With the backward MC method, one could determine how much the
+estimated background rate fluctuates depending on the material budget around the
+detector, and thus how uncertain our result is given the inaccuracies in
+our simulation world.
+
+% \paragraph{Extrapolation of the rate}
+% Our background sample is not sufficient to represent every possible event that
+% might produce a signal candidate. The rate estimated via backward MC is
+% extrapolated to an absolute background count, which gives rise to a statistical
+% uncertainty.
+
+\paragraph{Occupancy, detector resolution and reconstruction effects}
+In our study, we ignored the effects of detector occupancy, which might hinder
+the finding of track candidates in the cylindrical detector, and used true hit
+positions to reconstruct trajectories rather than trying to perform a perfectly
+realistic simulation of the reconstruction procedure. In addition, our track
+reconstruction algorithm (helix fitting) is different from the one that will be
+used in the experiment. These inaccuracies ought to induce some systematic
+uncertainty between our background rate estimate and the one that will be
+present in COMET Phase-I. In a future iteration of this study, one should strive
+to emulate the real experiment as closely as possible in order to bring the
+results closer to reality.
+
+
+% ---
+
 \section{Conclusion}
 
 In this chapter, we presented the backward Monte Carlo simulation principle,
