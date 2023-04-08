@@ -501,7 +501,7 @@ additional way to identify them.
     \label{fig:cosmic_antimuon_bg_in_cydet}
 \end{figure}
 
-
+% TODO: read this over and remove ref to Moritsu
 So far, we have assumed that the CyDet system has no way of discriminating
 between electrons, muons, and anti-muons. However, this is not accurate. At
 a momentum of \SI{105}{\MeV/\clight}, an electron has a velocity close to the speed of
@@ -540,17 +540,19 @@ event.
 
 In order to lower the atmospheric background rate, the identification of
 atmospheric $\mu^+$-induced backgrounds via time-of-flight information was
-studied for COMET Phase\nobreakdash-I. The principle is to determine the direction of the
-track using timing information from the CDC and CTH. Depending on the direction
-of the particle, hits in the CDC will either occur earlier or later than hits in
-the CTH. Each track is fitted under two hypotheses: either the particle is a
-negative electron flying from the muon stopping target to the CTH via the CDC,
-or it is a positive muon doing the same in reverse. The quality of the resulting
-fit depends on the hypothesis, and thus the difference in quality between the
-two fits can be used to distinguish electrons from anti-muons. An early
-simulation study of this method indicates that \SI{89}{\percent} of
-$\mu^+$-induced backgrounds can be rejected using timing information, while
-preserving \SI{87}{\percent} of signal events~\cite{moritsu}. 
+studied for COMET Phase\nobreakdash-I. The principle is to determine the
+direction of the track using timing information from the CDC and CTH. Depending
+on the direction of the particle, hits in the CDC will either occur earlier or
+later than hits in the CTH. Each track is fitted under two hypotheses: either
+the particle is a negative electron flying from the muon stopping target to the
+CTH via the CDC, or it is a positive muon doing the same in reverse. The quality
+of the resulting fit depends on the hypothesis, and thus the difference in
+quality between the two fits can be used to distinguish electrons from
+anti-muons.
+
+% An early simulation study of this method indicates that \SI{89}{\percent} of
+% $\mu^+$-induced backgrounds can be rejected using timing information, while
+% preserving \SI{87}{\percent} of signal events~\cite{moritsu}. 
 
 In Figure~\ref{fig:spectrum_with_direction_id}, we use this result to show the
 effect of $\mu^+$ identification on the background spectrum. The integrated
